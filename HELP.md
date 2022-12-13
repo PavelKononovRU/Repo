@@ -31,6 +31,8 @@
 Проект пишется на базе `Java 11`, `Spring Boot 2`, `Spring Cloud `, `Maven` и архитектуре REST. Работаем с базой
 данных `PostgreSQL` через `Spring Data` и `Hibernate`, общение между сервисами `REST` и брокер сообщений `RabbitQM` , для просмотра схемы приложения используется [drawio](https://app.diagrams.net/).
 
+Для работы с БД используем Docker. Быстрый запуск postgres в Docker - (docker run --name postgresql-container -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres)
+
 Чтобы не писать boilerplate-код, используем на проекте [Lombok](https://projectlombok.org/features/all).
 
 **_`TODO`_** Все контроллеры и их методы нужно сразу описывать
