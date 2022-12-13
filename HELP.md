@@ -29,7 +29,7 @@
 ### Stack
 
 Проект пишется на базе `Java 11`, `Spring Boot 2`, `Spring Cloud `, `Maven` и архитектуре REST. Работаем с базой
-данных `PostgreSQL` через `Spring Data` и `Hibernate`, общение между сервисами `REST` и брокер сообщений `RabbitQM`.
+данных `PostgreSQL` через `Spring Data` и `Hibernate`, общение между сервисами `REST` и брокер сообщений `RabbitQM` , для просмотра схемы приложения используется [drawio](https://app.diagrams.net/).
 
 Чтобы не писать boilerplate-код, используем на проекте [Lombok](https://projectlombok.org/features/all).
 
