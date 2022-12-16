@@ -4,6 +4,7 @@ import com.exchangeinformat.userprofile.model.Tariff;
 import com.exchangeinformat.userprofile.repository.TariffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TariffServiceImpl implements TariffService{
@@ -16,6 +17,7 @@ public class TariffServiceImpl implements TariffService{
     }
 
     @Override
+    @Transactional
     public void createTariff(Tariff tariff) {
         tariffRepository.save(tariff);
     }
@@ -26,11 +28,13 @@ public class TariffServiceImpl implements TariffService{
     }
 
     @Override
+    @Transactional
     public void updateTariff(Tariff tariff) {
         tariffRepository.save(tariff);
     }
 
     @Override
+    @Transactional
     public void deleteTariff(Long id) {
         tariffRepository.deleteById(id);
     }
