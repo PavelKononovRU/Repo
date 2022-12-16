@@ -2,7 +2,6 @@ package com.exchangeinformat.userprofile.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.Accessors;
 
 import java.util.Objects;
 
