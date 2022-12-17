@@ -8,10 +8,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-
+@NoArgsConstructor
 @Table(name = "tariff")
 public class Tariff {
     @Id
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
