@@ -26,19 +26,19 @@ public class Product {
     private String title;
 
     @Column(name = "create_at")
-    private Date create;
+    private Date createdAt;
 
     @Column(name = "update_at")
-    private Date update;
+    private Date updatedAt;
 
     @Column(name = "price")
     private Double price;
 
     @Column(name = "experies_at")
-    private Date experies;
+    private Date experiesedAt;
 
     @Column(name = "is_blocked")
-    private Boolean blocked;
+    private Boolean isBlocked;
 
     @Override
     public boolean equals(Object o) {
@@ -46,13 +46,13 @@ public class Product {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return type.equals(product.type) && title.equals(product.title)
-                && create.equals(product.create) && update.equals(product.update)
-                && price.equals(product.price) && experies.equals(product.experies)
-                && blocked.equals(product.blocked);
+                && createdAt.equals(product.createdAt) && updatedAt.equals(product.updatedAt)
+                && price.equals(product.price) && experiesedAt.equals(product.experiesedAt)
+                && isBlocked.equals(product.isBlocked);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, title, create, update, price, experies, blocked);
+        return Objects.hash(type, title, createdAt, updatedAt, price, experiesedAt, isBlocked);
     }
 }
