@@ -34,8 +34,8 @@ public class Product {
     @Column(name = "price")
     private Double price;
 
-    @Column(name = "expenes_at")
-    private Date expenes;
+    @Column(name = "experies_at")
+    private Date experies;
 
     @Column(name = "is_blocked")
     private Boolean blocked;
@@ -47,12 +47,12 @@ public class Product {
         Product product = (Product) o;
         return type.equals(product.type) && title.equals(product.title)
                 && create.equals(product.create) && update.equals(product.update)
-                && price.equals(product.price) && expenes.equals(product.expenes)
+                && price.equals(product.price) && experies.equals(product.experies)
                 && blocked.equals(product.blocked);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, title, create, update, price, expenes, blocked);
+        return Objects.hash(type, title, create, update, price, experies, blocked);
     }
 }
