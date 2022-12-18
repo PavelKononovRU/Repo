@@ -12,9 +12,12 @@ import java.util.Objects;
 @Table(name = "tariff")
 public class Tariff {
     @Id
-    @Column(name = "id")
+    @Column(name = "tariff_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(mappedBy="tariff")
+    private Subscription subscription;
 
     @Column(name = "title")
     private String title;
