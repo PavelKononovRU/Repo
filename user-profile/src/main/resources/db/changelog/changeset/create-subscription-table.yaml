@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-subscription
+      author: Vladislav
+      changes:
+        - createTable:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: subscription_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: create_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: create_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: update_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expires_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: interval
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: interval_count
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: send_sms
+                  type: bigint
