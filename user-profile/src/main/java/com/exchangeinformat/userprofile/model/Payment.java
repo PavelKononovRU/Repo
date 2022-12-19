@@ -20,9 +20,9 @@ public class Payment {
     @JoinColumn(name = "card_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "card"))
     private Card card;
     @Column(name = "create_at")
-    private Date create_at;
+    private Date createAt;
     @Column(name = "update_at")
-    private Date update_at;
+    private Date updateAt;
     @ManyToOne(fetch = FetchType.LAZY)
     @Column(name = "user")
     private User user;
@@ -36,12 +36,12 @@ public class Payment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Payment payment = (Payment) o;
-        return id.equals(payment.id) && card.equals(payment.card) && Objects.equals(create_at, payment.create_at) && Objects.equals(update_at, payment.update_at) && user.equals(payment.user) && Objects.equals(message, payment.message);
+        return id.equals(payment.id) && card.equals(payment.card) && Objects.equals(createAt, payment.createAt) && Objects.equals(updateAt, payment.updateAt) && user.equals(payment.user) && Objects.equals(message, payment.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, card, create_at, update_at, user, message);
+        return Objects.hash(id, card, createAt, updateAt, user, message);
     }
 
     @Override
@@ -49,8 +49,8 @@ public class Payment {
         return "Payment{" +
                 "id=" + id +
                 ", card=" + card +
-                ", create_at=" + create_at +
-                ", update_at=" + update_at +
+                ", create_at=" + createAt +
+                ", update_at=" + updateAt +
                 ", user=" + user +
                 ", message='" + message + '\'' +
                 '}';
