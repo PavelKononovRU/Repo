@@ -55,4 +55,10 @@ public class Payment {
                 ", message='" + message + '\'' +
                 '}';
     }
+
+    public enum Status{
+        OK,
+        DENIED,
+        ERROR
+    }
 }
