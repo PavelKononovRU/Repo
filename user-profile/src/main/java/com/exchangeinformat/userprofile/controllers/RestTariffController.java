@@ -31,13 +31,13 @@ public class RestTariffController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createTariff(Tariff tariff) {
+    public ResponseEntity<HttpStatus> createTariff(@RequestBody Tariff tariff) {
         tariffService.createTariff(tariff);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> updateTariff(Tariff tariff) {
+    public ResponseEntity<HttpStatus> updateTariff(@RequestBody Tariff tariff) {
         tariffService.updateTariff(tariff);
         return ResponseEntity.ok(HttpStatus.OK);
     }

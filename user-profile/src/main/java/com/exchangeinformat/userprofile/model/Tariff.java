@@ -16,9 +16,6 @@ public class Tariff {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy="tariff")
-    private Subscription subscription;
-
     @Column(name = "title")
     private String title;
 
