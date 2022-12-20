@@ -17,14 +17,14 @@ public class Payment {
     @Column(name = "payment_id")
     private Long id;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "card_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "card"))
+    @JoinColumn(name = "card_id")
     private Card card;
     @Column(name = "create_at")
     private Date createAt;
     @Column(name = "update_at")
     private Date updateAt;
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "user")
+    @JoinColumn(name = "id")
     private User user;
     @Column(name = "status")
     private Status status;
@@ -54,5 +54,8 @@ public class Payment {
                 ", user=" + user +
                 ", message='" + message + '\'' +
                 '}';
+    }
+    public enum  Status {
+
     }
 }

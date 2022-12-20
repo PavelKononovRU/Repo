@@ -19,11 +19,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: create_at
-                  type: DATETIME
-                  constraints:
-                    nullable: false
-              - column:
                   name: update_at
                   type: DATETIME
                   constraints:
