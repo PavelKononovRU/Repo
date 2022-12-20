@@ -17,6 +17,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long id;
 
     @Column(name = "type")
@@ -53,6 +54,17 @@ public class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(type, title, createdAt, updatedAt, price, experiesedAt, isBlocked);
+        int result = 1;
+        result = 31 * result + ((id==null) ? 0 : id.hashCode());
+        result = 31 * result + ((type==null) ? 0 : type.hashCode());
+        result = 31 * result + ((title==null) ? 0 : title.hashCode());
+        result = 31 * result + ((createdAt==null) ? 0 : createdAt.hashCode());
+        result = 31 * result + ((updatedAt==null) ? 0 : updatedAt.hashCode());
+        result = 31 * result + ((price==null) ? 0 : price.hashCode());
+        result = 31 * result + ((experiesedAt==null) ? 0 : experiesedAt.hashCode());
+        result = 31 * result + ((isBlocked==null) ? 0 : isBlocked.hashCode());
+        return result;
     }
+
+
 }
