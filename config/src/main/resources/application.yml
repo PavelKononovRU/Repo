@@ -1,14 +1,21 @@
-server:
-  port: 8888
 spring:
   application:
     name: config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations: classpath:config/
   datasource:
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
-  cloud:
-    config:
-      server:
-        git:
-          uri: file:///C:/Users/Mark/IdeaProjects/securities-exchange/config/config-files
+server:
+  port: 8888
+
+
+endpoints:
+  restart:
+    enabled: true
