@@ -11,4 +11,4 @@ spring:
     config:
       server:
         git:
-          uri: file:///C:/Users/Mark/Desktop/config-files
+          uri: file:///C:/Users/Mark/IdeaProjects/securities-exchange/config/config-files
