@@ -20,7 +20,7 @@ public class RestTariffController {
         this.tariffService = tariffService;
     }
 
-    @GetMapping("findOne")
+    @GetMapping("/findOne")
     public ResponseEntity<Tariff> getTariff(Long id) {
         return ResponseEntity.ok(tariffService.getTariff(id));
     }
@@ -42,7 +42,7 @@ public class RestTariffController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/delete")
+    @DeleteMapping
     public ResponseEntity<HttpStatus> deleteTariff(Long id) {
         tariffService.deleteTariff(id);
         return ResponseEntity.ok(HttpStatus.OK);
