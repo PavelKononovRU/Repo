@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -38,6 +37,7 @@ public class Subscription {
     private String status;
 
     @Column(name = "interval")
+    @Enumerated(EnumType.STRING)
     private Interval interval;
 
     @Column(name = "interval_count")

@@ -3,3 +3,7 @@ databaseChangeLog:
       file: db/changelog/changeset/create-tariff-table.yaml
   - include:
       file: db/changelog/changeset/create-stock-table.yaml
+  - include:
+      file: db/changelog/changeset/create-subscription-table.yaml
+  - include:
+      file: db/changelog/changeset/create-role-table.yaml
