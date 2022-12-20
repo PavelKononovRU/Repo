@@ -10,6 +10,8 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
 
 @Table(name = "product_table")
@@ -40,31 +42,5 @@ public class Product {
 
     @Column(name = "is_blocked")
     private Boolean isBlocked;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return type.equals(product.type) && title.equals(product.title)
-                && createdAt.equals(product.createdAt) && updatedAt.equals(product.updatedAt)
-                && price.equals(product.price) && experiesedAt.equals(product.experiesedAt)
-                && isBlocked.equals(product.isBlocked);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 1;
-        result = 31 * result + ((id==null) ? 0 : id.hashCode());
-        result = 31 * result + ((type==null) ? 0 : type.hashCode());
-        result = 31 * result + ((title==null) ? 0 : title.hashCode());
-        result = 31 * result + ((createdAt==null) ? 0 : createdAt.hashCode());
-        result = 31 * result + ((updatedAt==null) ? 0 : updatedAt.hashCode());
-        result = 31 * result + ((price==null) ? 0 : price.hashCode());
-        result = 31 * result + ((experiesedAt==null) ? 0 : experiesedAt.hashCode());
-        result = 31 * result + ((isBlocked==null) ? 0 : isBlocked.hashCode());
-        return result;
-    }
-
 
 }
