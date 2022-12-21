@@ -1,7 +1,9 @@
 package com.exchangeinformat.userprofile.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
 
@@ -15,9 +17,6 @@ public class Tariff {
     @Column(name = "tariff_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(mappedBy="tariff")
-    private Subscription subscription;
 
     @Column(name = "title")
     private String title;
