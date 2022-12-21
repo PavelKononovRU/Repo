@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
-import java.util.Objects;
+import java.util.List;
 
 @Getter
 @Setter
@@ -42,5 +42,10 @@ public class Product {
 
     @Column(name = "is_blocked")
     private Boolean isBlocked;
+
+    @ManyToMany(mappedBy = "products")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<User> userList;
 
 }
