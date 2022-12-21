@@ -4,7 +4,6 @@ import com.exchangeinformant.subscription.util.Interval;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data
