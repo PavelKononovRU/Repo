@@ -1,8 +1,6 @@
-package com.exchangeinformat.userprofile.service;
+package com.exchangeinformant.subscription.service;
 
-import com.exchangeinformat.userprofile.model.Stock;
-import com.exchangeinformat.userprofile.model.Tariff;
-
+import com.exchangeinformant.subscription.model.Tariff;
 import java.util.List;
 
 public interface TariffService {

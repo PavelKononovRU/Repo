@@ -1,13 +1,14 @@
-package com.exchangeinformat.userprofile.model;
+package com.exchangeinformant.subscription.model;
 
-import com.exchangeinformat.userprofile.util.Interval;
+import com.exchangeinformant.subscription.util.Interval;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "subscriptions")
 public class Subscription {
@@ -48,24 +49,5 @@ public class Subscription {
 
     @Column(name = "send_sms")
     private String sendSMS;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Subscription subscription = (Subscription) o;
-        return status.equals(subscription.status) && interval.equals(subscription.interval)
-                && sendSMS.equals(subscription.sendSMS);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 1;
-        result = 31 * result + ((id==null) ? 0 : id.hashCode());
-        result = 31 * result + ((status==null) ? 0 : status.hashCode());
-        result = 31 * result + ((interval==null) ? 0 : interval.hashCode());
-        result = 31 * result + ((sendSMS==null) ? 0 : sendSMS.hashCode());
-        return result;
-    }
 
 }
