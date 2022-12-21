@@ -1,5 +1,6 @@
 package com.exchangeinformant.services;
 
+import com.exchangeinformant.model.Stock;
 import org.springframework.stereotype.Service;
 
 /**
