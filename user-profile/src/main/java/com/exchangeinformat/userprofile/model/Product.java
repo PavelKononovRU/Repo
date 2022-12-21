@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
-import java.util.Objects;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity
 
 @Table(name = "product_table")
@@ -17,6 +19,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
     private Long id;
 
     @Column(name = "type")
@@ -40,19 +43,9 @@ public class Product {
     @Column(name = "is_blocked")
     private Boolean isBlocked;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return type.equals(product.type) && title.equals(product.title)
-                && createdAt.equals(product.createdAt) && updatedAt.equals(product.updatedAt)
-                && price.equals(product.price) && experiesedAt.equals(product.experiesedAt)
-                && isBlocked.equals(product.isBlocked);
-    }
+    @ManyToMany(mappedBy = "products")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<User> userList;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, title, createdAt, updatedAt, price, experiesedAt, isBlocked);
-    }
 }
