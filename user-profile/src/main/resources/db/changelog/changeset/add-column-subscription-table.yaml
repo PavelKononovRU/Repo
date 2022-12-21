@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-column-subscription-table
+      author: Vladislav
+      changes:
+        - addColumn:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: tariff_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                      nullable: false
+                      foreignKeyName: fk_tariff
+                      references: tariff(tariff_id)
