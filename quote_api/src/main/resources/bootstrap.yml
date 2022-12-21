@@ -1,0 +1,11 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: quote_api
+  cloud:
+    config:
+      profile: local
+      discovery:
+        enabled: false
+        service-id: config-server
