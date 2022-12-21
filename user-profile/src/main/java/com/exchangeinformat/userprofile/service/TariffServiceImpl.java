@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class TariffServiceImpl implements TariffService{
 
@@ -14,6 +16,11 @@ public class TariffServiceImpl implements TariffService{
     @Autowired
     public TariffServiceImpl(TariffRepository tariffRepository) {
         this.tariffRepository = tariffRepository;
+    }
+
+    @Override
+    public List<Tariff> getAllTariff() {
+        return tariffRepository.findAll();
     }
 
     @Override

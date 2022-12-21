@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-product
+      author: Misha
+      changes:
+        - createTable:
+            tableName: product_table
+            columns:
+              - column:
+                  name: product_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                   nullable: false
+              - column:
+                  name: create_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: update_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: experies_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_blocked
+                  type: boolean
+                  constraints:
+                    nullable: false
