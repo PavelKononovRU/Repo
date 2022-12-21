@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StockService {
 
-    List<Stock> getAllStockServices();
+    List<Stock> getAllStock();
 
     void createStock(Stock stock);
 
