@@ -1,22 +1,17 @@
 package com.exchangeinformat.userprofile.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-@Getter
-@Setter
+
+@Data
 @Entity
-@NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(onlyExplicitlyIncluded = true)
-
 @Table(name = "users")
 public class User {
 
@@ -76,7 +71,9 @@ public class User {
 
     @ManyToMany(cascade=CascadeType.PERSIST)
     @Fetch(FetchMode.JOIN)
-    @JoinTable(name = "users_products",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JoinTable(name = "users_products",
+            joinColumns = @JoinColumn(name = "id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
     @Column(name = "create_at")
@@ -96,5 +93,4 @@ public class User {
 
     @Column(name = "token")
     private String token;
-
 }

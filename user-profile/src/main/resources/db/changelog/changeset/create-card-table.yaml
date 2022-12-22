@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-card
+      author: Sergey
+      changes:
+        - createTable:
+            tableName: cards
+            columns:
+              - column:
+                  name: card_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false

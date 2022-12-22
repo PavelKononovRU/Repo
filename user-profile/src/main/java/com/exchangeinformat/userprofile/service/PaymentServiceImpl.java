@@ -6,14 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class PaymentServiceImpl implements PaymentService {
-
     private final PaymentRepository paymentRepo;
 
     @Autowired
     public PaymentServiceImpl(PaymentRepository paymentRepo) {
         this.paymentRepo = paymentRepo;
+    }
+    @Override
+    public List<Payment> getAllPayments() {
+        return paymentRepo.findAll();
     }
 
     @Override
