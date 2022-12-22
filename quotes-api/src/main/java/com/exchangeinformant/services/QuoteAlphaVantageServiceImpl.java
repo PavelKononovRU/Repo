@@ -42,10 +42,10 @@ public class QuoteAlphaVantageServiceImpl implements QuoteService{
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         ObjectMapper objectMapper = new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        JsonNode nodeRoot = objectMapper.readTree(response.body());
-        JsonNode nodePrice = nodeRoot.get("Global Quote").get("05. price");
+        JsonNode nodeRoot = objectMapper.readTree(response.body()).get("Global Quote");
         StockDto stockDto = new StockDto();
-        stockDto.setCurrentPrice(nodePrice.asDouble());
+        stockDto.setCurrentPrice(nodeRoot.get("05. price").asDouble());
+        //TODO
         return response.body();
     }
 }
