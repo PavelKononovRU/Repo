@@ -1,0 +1,93 @@
+databaseChangeLog:
+  - changeSet:
+      id: user-to-address-and-to-job
+      author: Pavel
+      changes:
+        - addForeignKeyConstraint:
+            - constraintName: fk_userToAddress
+            - baseTableName: users
+            - baseColumnNames: address_id
+            - referencedTableName: address
+            - referencedColumnNames: address_id
+        - addForeignKeyConstraint:
+            - constraintName: fk_AddressToUser
+            - baseTableName: address
+            - baseColumnNames: user_id
+            - referencedTableName: users
+            - referencedColumnNames: user_id
+        - addForeignKeyConstraint:
+            - constraintName: fk_userToJob
+            - baseTableName: users
+            - baseColumnNames: job_id
+            - referencedTableName: jobs
+            - referencedColumnNames: job_id
+        - addForeignKeyConstraint:
+            - constraintName: fk_JobToUser
+            - baseTableName: jobs
+            - baseColumnNames: user_id
+            - referencedTableName: users
+            - referencedColumnNames: user_id
+  - changeSet:
+      id: job-address-many-to-many
+      author: Pavel
+      changes:
+        - createTable:
+            tableName: jobs_address
+            columns:
+              - column:
+                  name: job_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            columnNames: job_id, address_id
+            tableName: jobs_address
+        - addForeignKeyConstraint:
+            constraintName: fk_JobToAddress
+            baseColumnNames: job_id
+            baseTableName: jobs_address
+            referencedColumnNames: job_id
+            referencedTableName: jobs
+        - addForeignKeyConstraint:
+            constraintName: fk_AddressToJob
+            baseColumnNames: address_id
+            baseTableName: jobs_address
+            referencedColumnNames: address_id
+            referencedTableName: address
+  - changeSet:
+      id: user-products-many-to-many
+      author: Pavel
+      changes:
+        - createTable:
+            tableName: users_products
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            columnNames: user_id, product_id
+            tableName: users_products
+        - addForeignKeyConstraint:
+            constraintName: fk_UserToProduct
+            baseColumnNames: user_id
+            baseTableName: users_products
+            referencedColumnNames: user_id
+            referencedTableName: users
+        - addForeignKeyConstraint:
+            constraintName: fk_Product_User
+            baseColumnNames: product_id
+            baseTableName: users_products
+            referencedColumnNames: product_id
+            referencedTableName: product_table
