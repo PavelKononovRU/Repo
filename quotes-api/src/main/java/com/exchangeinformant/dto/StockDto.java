@@ -1,7 +1,6 @@
 package com.exchangeinformant.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StockDto {
 
-    @JsonProperty("05. price")
+
     private double currentPrice;
+    @JsonProperty("price")
+    public double getCurrentPrice() {
+        return currentPrice;
+    }
+
+    @JsonProperty("05. price")
+    public void setCurrentPrice(double currentPrice) {
+        this.currentPrice = currentPrice;
+    }
+
 }
