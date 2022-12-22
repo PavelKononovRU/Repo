@@ -2,6 +2,7 @@ package com.exchangeinformat.userprofile.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -17,41 +18,27 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    @ToString.Include
     private Long id;
 
     @Column(name = "username")
-    @EqualsAndHashCode.Include
-    @ToString.Include
     private String username;
 
     @Column(name = "first_name")
-    @EqualsAndHashCode.Include
-    @ToString.Include
     private String firstName;
 
     @Column(name = "last_name")
-    @EqualsAndHashCode.Include
-    @ToString.Include
     private String lastName;
 
     @Column(name = "middle_name")
-    @EqualsAndHashCode.Include
-    @ToString.Include
     private String middleName;
 
     @Column(name = "birth_day")
     private Date birthDay;
 
     @Column(name = "email")
-    @EqualsAndHashCode.Include
-    @ToString.Include
     private String email;
 
     @Column(name = "phone")
-    @EqualsAndHashCode.Include
-    @ToString.Include
     private String phone;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -59,7 +46,6 @@ public class User {
     private Address address;
 
     @Column(name = "gender")
-    @EqualsAndHashCode.Include
     private String gender;
 
     @Column(name = "inn")
