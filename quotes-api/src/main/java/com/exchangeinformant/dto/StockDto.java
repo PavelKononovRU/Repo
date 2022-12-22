@@ -15,19 +15,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StockDto {
 
+    private String name;
 
     private double currentPrice;
 
-    private String name;
 
-    @JsonProperty("name")
-    public String getName() {
-        return name;
-    }
-    @JsonProperty("01. symbol")
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @JsonProperty("price")
     public double getCurrentPrice() {
@@ -37,6 +29,15 @@ public class StockDto {
     @JsonProperty("05. price")
     public void setCurrentPrice(double currentPrice) {
         this.currentPrice = currentPrice;
+    }
+
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+    @JsonProperty("01. symbol")
+    public void setName(String name) {
+        this.name = name;
     }
 
 }
