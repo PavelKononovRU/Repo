@@ -1,5 +1,6 @@
 package com.exchangeinformant.controllers;
 
+import com.exchangeinformant.dto.StockDto;
 import com.exchangeinformant.services.QuoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class QuotesRestController {
     }
 
     @GetMapping("/{stock}")
-    public ResponseEntity<String> getUser(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
+    public ResponseEntity<StockDto> getUser(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
         return new ResponseEntity<>(quoteService.getCurrentStock(stock), HttpStatus.OK);
     }
 
