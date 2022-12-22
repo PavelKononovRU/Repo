@@ -1,7 +1,10 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.model.Stock;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 /**
  * Created in IntelliJ
@@ -11,5 +14,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface QuoteService {
-    Stock getCurrentStock(String stockName);
+    String getCurrentStock(String stockName) throws IOException, URISyntaxException, InterruptedException;
 }
