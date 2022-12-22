@@ -6,14 +6,8 @@ import lombok.*;
 import java.sql.Date;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Data
 @Entity
-
 @Table(name = "product_table")
 public class Product {
 
