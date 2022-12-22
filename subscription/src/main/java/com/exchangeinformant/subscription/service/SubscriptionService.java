@@ -1,7 +1,8 @@
-package com.exchangeinformat.userprofile.service;
+package com.exchangeinformant.subscription.service;
 
 
-import com.exchangeinformat.userprofile.model.Subscription;
+import com.exchangeinformant.subscription.model.Subscription;
+
 import java.util.List;
 
 public interface SubscriptionService {

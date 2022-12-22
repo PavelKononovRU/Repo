@@ -1,6 +1,6 @@
-package com.exchangeinformat.userprofile.repository;
+package com.exchangeinformant.subscription.repository;
 
-import com.exchangeinformat.userprofile.model.Tariff;
+import com.exchangeinformant.subscription.model.Tariff;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
