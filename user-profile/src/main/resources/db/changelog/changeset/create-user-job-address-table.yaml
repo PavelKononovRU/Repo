@@ -1,0 +1,165 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user
+      author: Pavel
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: middle_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: birth_day
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_id
+                  type: bigint
+              - column:
+                  name: gender
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: inn
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: job_id
+                  type: bigint
+              - column:
+                  name: create_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: update_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_deleted
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_banned
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: create-job
+      author: Pavel
+      changes:
+        - createTable:
+            tableName: jobs
+            columns:
+              - column:
+                  name: job_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: position
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+  - changeSet:
+      id: create-address
+      author: Pavel
+      changes:
+        - createTable:
+            tableName: address
+            columns:
+              - column:
+                  name: address_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: region
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: street
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: house
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: flat
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
