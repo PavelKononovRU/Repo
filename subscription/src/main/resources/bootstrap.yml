@@ -1,0 +1,11 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: subscription
+  cloud:
+    config:
+      profile: local
+      discovery:
+        enabled: false
+        service-id: config-server
