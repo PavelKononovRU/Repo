@@ -1,5 +1,6 @@
 package com.exchangeinformat.userprofile.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ import java.util.Objects;
 public class Address {
 
     @Id
+    @Column(name = "address_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -35,11 +37,13 @@ public class Address {
     @Column(name="flat")
     private String flat;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "address")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Job> jobs;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "address")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
