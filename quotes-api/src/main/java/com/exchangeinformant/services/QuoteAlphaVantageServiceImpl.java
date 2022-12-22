@@ -5,8 +5,6 @@ import com.exchangeinformant.dto.StockDto;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,12 +23,6 @@ import java.net.http.HttpResponse;
 public class QuoteAlphaVantageServiceImpl implements QuoteService{
 
     private static final String API_KEY = "R5YMX285BT0WOJZ";
-
-    private final WebClient webClient;
-
-    public QuoteAlphaVantageServiceImpl(WebClient webClient) {
-        this.webClient = webClient;
-    }
 
     @Override
     public StockDto getCurrentStock(String stockName) throws IOException, URISyntaxException, InterruptedException {
