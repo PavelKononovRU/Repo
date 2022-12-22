@@ -1,5 +1,6 @@
 package com.exchangeinformant.services;
 
+import com.exchangeinformant.configuration.AlphaVantageConfig;
 import com.exchangeinformant.dto.Root;
 import com.exchangeinformant.dto.StockDto;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -22,12 +23,16 @@ import java.net.http.HttpResponse;
 @Service
 public class QuoteAlphaVantageServiceImpl implements QuoteService{
 
-    private static final String API_KEY = "R5YMX285BT0WOJZ";
+    private final AlphaVantageConfig properties;
+
+    public QuoteAlphaVantageServiceImpl(AlphaVantageConfig properties) {
+        this.properties = properties;
+    }
 
     @Override
     public StockDto getCurrentStock(String stockName) throws IOException, URISyntaxException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + stockName + "&apikey=" + API_KEY))
+                .uri(new URI("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + stockName + "&apikey=" + properties.getKey()))
                 .GET()
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
