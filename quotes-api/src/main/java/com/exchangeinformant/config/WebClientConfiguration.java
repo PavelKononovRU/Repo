@@ -6,10 +6,12 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.TcpClient;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,22 +22,24 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 public class WebClientConfiguration {
-    public static final int TIMEOUT = 10000;
-    private static final String URL = "https://api.bcs.ru/udfdatafeed/v1";
-
     @Bean
-    public WebClient getWebClient() {
-        final var tcpClient = TcpClient
-                .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT)
-                .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(TIMEOUT, TimeUnit.MILLISECONDS));
-                });
+    public WebClient createWebClient() {
+        HttpClient httpClient = HttpClient.create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                .responseTimeout(Duration.ofMillis(5000))
+                .doOnConnected(conn ->
+                        conn.addHandlerLast(new ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS)));
+//        На случай если нужно расширить буфер
+        final int size = 16 * 1024 * 1024;
+        final ExchangeStrategies strategies = ExchangeStrategies.builder()
+                .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
+                .build();
+
 
         return WebClient.builder()
-                .baseUrl(URL)
-                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
+                .exchangeStrategies(strategies)
                 .build();
     }
 }

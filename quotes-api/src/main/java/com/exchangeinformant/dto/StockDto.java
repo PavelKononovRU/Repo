@@ -1,5 +1,9 @@
 package com.exchangeinformant.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * Created in IntelliJ
  * User: e-davidenko
@@ -7,5 +11,9 @@ package com.exchangeinformant.dto;
  * Time: 13:52
  */
 
+@Data
+@NoArgsConstructor
 public class StockDto {
+
+    private double currentPrice;
 }
