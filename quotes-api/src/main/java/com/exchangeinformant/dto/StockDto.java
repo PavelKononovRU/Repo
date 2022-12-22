@@ -14,6 +14,5 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class StockDto {
-
     private double currentPrice;
 }
