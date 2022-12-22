@@ -1,11 +1,9 @@
 package com.exchangeinformant.services;
 
+import com.exchangeinformant.dto.Root;
 import com.exchangeinformant.dto.StockDto;
-import com.exchangeinformant.model.GlobalQuote;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -24,11 +22,9 @@ import java.net.http.HttpResponse;
  * Time: 9:38
  */
 @Service
-@Slf4j
 public class QuoteAlphaVantageServiceImpl implements QuoteService{
 
-    private static final String API_KEY = "KVRW35K5ASFS00CI";
-    private static final String function = "?function=GLOBAL_QUOTE&symbol=stockName&apikey=" + API_KEY;
+    private static final String API_KEY = "R5YMX285BT0WOJZ";
 
     private final WebClient webClient;
 
@@ -36,30 +32,15 @@ public class QuoteAlphaVantageServiceImpl implements QuoteService{
         this.webClient = webClient;
     }
 
-//    @Override
-//    public String getCurrentStock(String stockName) throws IOException, URISyntaxException, InterruptedException {
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(new URI("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + stockName + API_KEY))
-//                .GET()
-//                .build();
-//        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-//        ObjectMapper objectMapper = new ObjectMapper()
-//                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//        JsonNode nodeRoot = objectMapper.readTree(response.body()).get("Global Quote");
-//        StockDto stockDto = new StockDto();
-//        stockDto.setCurrentPrice(nodeRoot.get("05. price").asDouble());
-//        //TODO
-//        return response.body();
-//    }
     @Override
-    public String getCurrentStock(String stockName) {
-        return webClient
-                .get()
-                .uri(String.join("",function).replaceAll("stockName",stockName))
-                .retrieve()
-                .bodyToMono(String.class)
-                .block();
+    public StockDto getCurrentStock(String stockName) throws IOException, URISyntaxException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(new URI("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + stockName + "&apikey=" + API_KEY))
+                .GET()
+                .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        ObjectMapper objectMapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        return objectMapper.readValue(response.body(), Root.class).getStockDto();
     }
-
-
 }
