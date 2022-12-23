@@ -163,3 +163,5 @@ databaseChangeLog:
               - column:
                   name: user_id
                   type: bigint
+
+

@@ -1,7 +1,6 @@
-package com.exchangeinformat.userprofile.controllers;
-
-import com.exchangeinformat.userprofile.model.Tariff;
-import com.exchangeinformat.userprofile.service.TariffService;
+package com.exchangeinformant.subscription.controllers;
+import com.exchangeinformant.subscription.model.Tariff;
+import com.exchangeinformant.subscription.service.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,3 +47,4 @@ public class RestTariffController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
+

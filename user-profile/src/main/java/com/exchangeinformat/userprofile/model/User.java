@@ -2,6 +2,8 @@ package com.exchangeinformat.userprofile.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class User {
 
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -55,7 +58,7 @@ public class User {
     private String phone;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JoinColumn(name = "address_id")
     private Address address;
 
     @Column(name = "gender")
@@ -66,13 +69,13 @@ public class User {
     private String inn;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "job_id", referencedColumnName = "id")
+    @JoinColumn(name = "job_id")
     private Job job;
 
     @ManyToMany(cascade=CascadeType.PERSIST)
     @Fetch(FetchMode.JOIN)
     @JoinTable(name = "users_products",
-            joinColumns = @JoinColumn(name = "id"),
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 

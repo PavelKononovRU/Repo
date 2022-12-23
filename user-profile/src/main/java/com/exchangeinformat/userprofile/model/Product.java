@@ -1,5 +1,6 @@
 package com.exchangeinformat.userprofile.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,7 @@ public class Product {
     @Column(name = "is_blocked")
     private Boolean isBlocked;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "products")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

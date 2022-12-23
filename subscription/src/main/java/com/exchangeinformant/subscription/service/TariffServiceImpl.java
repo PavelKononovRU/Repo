@@ -1,11 +1,10 @@
-package com.exchangeinformat.userprofile.service;
+package com.exchangeinformant.subscription.service;
 
-import com.exchangeinformat.userprofile.model.Tariff;
-import com.exchangeinformat.userprofile.repository.TariffRepository;
+import com.exchangeinformant.subscription.model.Tariff;
+import com.exchangeinformant.subscription.repository.TariffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
