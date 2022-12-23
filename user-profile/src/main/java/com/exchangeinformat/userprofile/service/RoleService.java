@@ -1,8 +1,5 @@
 package com.exchangeinformat.userprofile.service;
-
 import com.exchangeinformat.userprofile.model.Roles;
-import com.exchangeinformat.userprofile.model.Subscription;
-
 import java.util.List;
 
 public interface RoleService {

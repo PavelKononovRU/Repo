@@ -1,7 +1,7 @@
-package com.exchangeinformat.userprofile.service;
+package com.exchangeinformant.subscription.service;
 
-import com.exchangeinformat.userprofile.model.Subscription;
-import com.exchangeinformat.userprofile.repository.SubscriptionRepository;
+import com.exchangeinformant.subscription.model.Subscription;
+import com.exchangeinformant.subscription.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

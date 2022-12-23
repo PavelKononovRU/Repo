@@ -17,8 +17,10 @@
     <modules>
         <module>core</module>
         <module>user-profile</module>
+        <module>subscription</module>
         <module>server</module>
         <module>config</module>
+        <module>quotes-api</module>
         <module>gateway-service</module>
     </modules>
     <properties>

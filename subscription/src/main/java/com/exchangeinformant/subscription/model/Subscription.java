@@ -1,19 +1,19 @@
-package com.exchangeinformat.userprofile.model;
+package com.exchangeinformant.subscription.model;
 
-import com.exchangeinformat.userprofile.util.Interval;
+import com.exchangeinformant.subscription.util.Interval;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "subscriptions")
 public class Subscription {
 
     @Id
-    @Column(name = "subscription_id")
+    @Column(name = "subscriptions_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -48,4 +48,5 @@ public class Subscription {
 
     @Column(name = "send_sms")
     private String sendSMS;
+
 }
