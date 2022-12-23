@@ -19,8 +19,6 @@ public class StockDto {
 
     private double currentPrice;
 
-
-
     @JsonProperty("price")
     public double getCurrentPrice() {
         return currentPrice;
@@ -35,6 +33,7 @@ public class StockDto {
     public String getName() {
         return name;
     }
+
     @JsonProperty("01. symbol")
     public void setName(String name) {
         this.name = name;

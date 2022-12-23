@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: postgres
-    password: postgres
+    password: root
     url: jdbc:postgresql://localhost:5432/postgres
 eureka:
   client:
@@ -10,3 +10,6 @@ eureka:
   instance:
       preferIpAddress: true
       lease-renewal-interval-in-seconds: 30
+alpha-vantage:
+  api:
+    key: R5Y1MX285BT0WOJZ

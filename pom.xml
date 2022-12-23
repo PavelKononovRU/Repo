@@ -20,6 +20,7 @@
         <module>subscription</module>
         <module>server</module>
         <module>config</module>
+        <module>quotes-api</module>
     </modules>
     <properties>
         <java.version>11</java.version>
