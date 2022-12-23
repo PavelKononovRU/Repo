@@ -1,8 +1,0 @@
-spring:
-  cloud:
-    gateway:
-      routes:
-        - id: user-profile
-          uri: http://localhost:8081/
-          predicates:
-            - Path=/api/user/**
