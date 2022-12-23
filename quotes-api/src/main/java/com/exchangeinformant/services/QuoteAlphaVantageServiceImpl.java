@@ -32,7 +32,7 @@ public class QuoteAlphaVantageServiceImpl implements QuoteService{
     @Override
     public StockDto getCurrentStock(String stockName) throws IOException, URISyntaxException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(new URI("https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=" + stockName + "&apikey=" + properties.getKey()))
+                .uri(new URI(String.format(properties.getUrl(), properties.getFunction() , stockName, properties.getKey())))
                 .GET()
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
