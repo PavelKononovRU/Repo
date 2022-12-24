@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-stock-from-alpha-advantage
+      author: Pavel
+      changes:
+        - createTable:
+            tableName: stocks_alpha
+            columns:
+              - column:
+                  name: stock_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: symbol
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: open
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: high
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: low
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: volume
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: latestTradingDay
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: previousClose
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: change
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: change_percent
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false

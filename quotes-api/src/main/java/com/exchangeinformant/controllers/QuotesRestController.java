@@ -1,8 +1,10 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.dto.StockDto;
+import com.exchangeinformant.dto.StockDTO;
+import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.QuoteService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +21,7 @@ import java.net.URISyntaxException;
  * Time: 10:21
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api",produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuotesRestController {
     private final QuoteService quoteService;
 
@@ -27,9 +29,10 @@ public class QuotesRestController {
         this.quoteService = quoteService;
     }
 
-    @GetMapping("/{stock}")
-    public ResponseEntity<StockDto> getUser(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
-        return new ResponseEntity<>(quoteService.getCurrentStock(stock), HttpStatus.OK);
+    @GetMapping(value = "/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StockDTO> getUser(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
+        Stock stockObject = quoteService.getCurrentStock(stock);
+        return new ResponseEntity<>(new StockDTO(stockObject.getSymbol(),stockObject.getPrice()), HttpStatus.OK);
     }
 
 }

@@ -1,12 +1,14 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.configuration.AlphaVantageConfig;
-import com.exchangeinformant.dto.Root;
-import com.exchangeinformant.dto.StockDto;
+import com.exchangeinformant.model.Root;
+import com.exchangeinformant.model.Stock;
+import com.exchangeinformant.repository.StockRepository;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 
@@ -22,19 +24,27 @@ public class QuoteAlphaVantageServiceImpl implements QuoteService {
     private final AlphaVantageConfig properties;
     private final WebClient webClient;
 
-    public QuoteAlphaVantageServiceImpl(AlphaVantageConfig properties, WebClient webClient) {
+    private final StockRepository stockRepository;
+
+
+    public QuoteAlphaVantageServiceImpl(AlphaVantageConfig properties, WebClient webClient, StockRepository stockRepository) {
         this.properties = properties;
         this.webClient = webClient;
+        this.stockRepository = stockRepository;
     }
 
     @Override
-    public StockDto getCurrentStock(String stockName) {
-        return Objects.requireNonNull(webClient.get()
+    public Stock getCurrentStock(String stockName) {
+        Stock stock = Objects.requireNonNull(webClient
+                        .get()
                         .uri(String.format(properties.getUrl(), properties.getFunction(), stockName, properties.getKey()))
                         .accept(MediaType.APPLICATION_JSON)
                         .retrieve()
                         .bodyToMono(Root.class)
                         .block())
-                .getStockDto();
+                .getStock();
+        stock.setCreatedAt(LocalDateTime.now());
+        stockRepository.save(stock);
+        return stock;
     }
 }

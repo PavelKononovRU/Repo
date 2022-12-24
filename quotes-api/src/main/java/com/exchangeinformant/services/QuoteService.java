@@ -1,6 +1,6 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.dto.StockDto;
+import com.exchangeinformant.model.Stock;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,5 +14,5 @@ import java.net.URISyntaxException;
  */
 @Service
 public interface QuoteService {
-    StockDto getCurrentStock(String stockName) throws IOException, URISyntaxException, InterruptedException;
+    Stock getCurrentStock(String stockName) throws IOException, URISyntaxException, InterruptedException;
 }
