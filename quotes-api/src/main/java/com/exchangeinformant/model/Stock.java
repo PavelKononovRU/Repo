@@ -1,5 +1,6 @@
 package com.exchangeinformant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,48 +16,56 @@ public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stock_id")
-    public Long id;
+    private Long id;
 
     @JsonProperty("01. symbol")
     @Column(name = "symbol")
-    public String symbol;
+    private String symbol;
 
     @JsonProperty("02. open")
     @Column(name = "open")
-    public String open;
+    private String open;
 
     @JsonProperty("03. high")
     @Column(name = "high")
-    public String high;
+    private String high;
 
     @JsonProperty("04. low")
     @Column(name = "low")
-    public String low;
+    private String low;
 
     @JsonProperty("05. price")
     @Column(name = "price")
-    public String price;
+    private String price;
 
     @JsonProperty("06. volume")
     @Column(name = "volume")
-    public String volume;
+    private String volume;
 
     @JsonProperty("07. latest trading day")
     @Column(name = "latest_trading_day")
-    public String latestTradingDay;
+    private String latestTradingDay;
 
     @JsonProperty("08. previous close")
     @Column(name = "previous_close")
-    public String previousClose;
+    private String previousClose;
 
     @JsonProperty("09. change")
     @Column(name = "change")
-    public String change;
+    private String change;
 
     @JsonProperty("10. change percent")
     @Column(name = "change_percent")
-    public String changePercent;
+    private String changePercent;
 
     @Column(name = "created_at")
-    public LocalDateTime createdAt;
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "stock_info_id",nullable = false)
+    private StockInfo stockInfo;
 }

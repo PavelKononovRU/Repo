@@ -14,6 +14,7 @@ alpha-vantage:
   api:
     url: https://www.alphavantage.co/query?function=%s&symbol=%s&apikey=%s
     key: R5Y1MX285BT0WOJZ
-    function: GLOBAL_QUOTE
+    global-function: GLOBAL_QUOTE
+    overview-function: OVERVIEW
 webclient:
   timeout: 10000

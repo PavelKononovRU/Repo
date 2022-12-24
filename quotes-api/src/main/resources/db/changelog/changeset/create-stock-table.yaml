@@ -44,12 +44,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: latestTradingDay
+                  name: latest_trading_day
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: previousClose
+                  name: previous_close
                   type: varchar(255)
                   constraints:
                     nullable: false
@@ -66,5 +66,62 @@ databaseChangeLog:
               - column:
                   name: created_at
                   type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stock_info_id
+                  type: bigint
+  - changeSet:
+      id: create-stock-info-from-alpha
+      author: Pavel
+      changes:
+        - createTable:
+            tableName: stocks_info
+            columns:
+              - column:
+                  name: stock_info_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: symbol
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: asset_type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sector
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: industry
+                  type: varchar(255)
                   constraints:
                     nullable: false

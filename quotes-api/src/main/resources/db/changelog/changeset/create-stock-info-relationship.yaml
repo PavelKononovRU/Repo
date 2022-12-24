@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-stock-to-info-relationship
+      author: Pavel
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_stockToInfo
+            baseTableName: stocks_alpha
+            baseColumnNames: stock_info_id
+            referencedTableName: stocks_info
+            referencedColumnNames: stock_info_id
