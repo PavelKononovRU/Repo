@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Created in IntelliJ
@@ -22,7 +23,7 @@ import java.net.URISyntaxException;
  * Time: 10:21
  */
 @RestController
-@RequestMapping(value = "/api",produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/",produces = MediaType.APPLICATION_JSON_VALUE)
 public class QuotesRestController {
     private final QuoteService quoteService;
 
@@ -31,14 +32,24 @@ public class QuotesRestController {
     }
 
     @GetMapping(value = "/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StockDTO> getUser(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
+    public ResponseEntity<StockDTO> getStockPrice(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
         Stock stockObject = quoteService.getStockPrice(stock);
         return new ResponseEntity<>(new StockDTO(stockObject.getSymbol(),stockObject.getPrice()), HttpStatus.OK);
     }
 
-    @GetMapping(value = "info/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
+    public ResponseEntity<List<Stock>> getAllStockPrices() {
+        return new ResponseEntity<>(quoteService.getAllStocks(),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/info/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StockInfo> getStockInfo(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
         return new ResponseEntity<>(quoteService.getStockInfo(stock) , HttpStatus.OK);
+    }
+
+    @GetMapping("/info/")
+    public ResponseEntity<List<StockInfo>> getAllStockInfo() {
+        return new ResponseEntity<>(quoteService.getAllStocksInfo(),HttpStatus.OK);
     }
 
 }

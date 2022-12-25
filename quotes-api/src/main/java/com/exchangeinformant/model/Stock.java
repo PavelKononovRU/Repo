@@ -66,6 +66,6 @@ public class Stock {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "stock_info_id",nullable = false)
+    @JoinColumn(name = "stock_info_id")
     private StockInfo stockInfo;
 }

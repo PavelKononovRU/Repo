@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Created in IntelliJ
@@ -17,4 +18,6 @@ import java.net.URISyntaxException;
 public interface QuoteService {
     Stock getStockPrice(String stockName) throws IOException, URISyntaxException, InterruptedException;
     StockInfo getStockInfo(String stockName) throws IOException, URISyntaxException, InterruptedException;
+    List<Stock> getAllStocks();
+    List<StockInfo> getAllStocksInfo();
 }
