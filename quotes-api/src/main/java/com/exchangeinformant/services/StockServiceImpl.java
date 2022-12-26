@@ -62,7 +62,11 @@ public class StockServiceImpl implements StockService {
     }
 
     private void enhanceStock(Stock stock){
-        stock.setCreatedAt(LocalDateTime.now());
+        if(stockRepository.findAll().stream().anyMatch(s->s.getSymbol().equals(stock.getSymbol()))){
+            stock.setCreatedAt(stockRepository.findAllBySymbol(stock.getSymbol()).stream().findFirst().get().getCreatedAt());
+        } else{
+            stock.setCreatedAt(LocalDateTime.now());
+        }
         stock.setUpdatedAt(LocalDateTime.now());
         if(companyRepository.findAll().contains(companyRepository.findCompanyBySymbol(stock.getSymbol()))){
             stock.setCompany(companyRepository.findCompanyBySymbol(stock.getSymbol()));
