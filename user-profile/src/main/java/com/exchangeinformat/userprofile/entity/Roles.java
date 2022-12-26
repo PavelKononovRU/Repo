@@ -1,4 +1,4 @@
-package com.exchangeinformat.userprofile.model;
+package com.exchangeinformat.userprofile.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.model.Product;
+import com.exchangeinformat.userprofile.entity.Product;
 import com.exchangeinformat.userprofile.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

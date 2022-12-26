@@ -1,13 +1,10 @@
-package com.exchangeinformat.userprofile.model;
+package com.exchangeinformat.userprofile.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -30,7 +27,7 @@ public class Job {
     @Column(name="position")
     private String position;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="jobs_address", joinColumns = @JoinColumn(name = "job_id"),
             inverseJoinColumns = @JoinColumn(name= "address_id"))
     @EqualsAndHashCode.Exclude

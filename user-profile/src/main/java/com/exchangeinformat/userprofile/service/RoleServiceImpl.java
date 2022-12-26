@@ -1,6 +1,6 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.model.Roles;
+import com.exchangeinformat.userprofile.entity.Roles;
 import com.exchangeinformat.userprofile.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
