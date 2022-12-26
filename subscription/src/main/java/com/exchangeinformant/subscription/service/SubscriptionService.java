@@ -1,8 +1,6 @@
 package com.exchangeinformant.subscription.service;
 
-
 import com.exchangeinformant.subscription.model.Subscription;
-
 import java.util.List;
 
 public interface SubscriptionService {
@@ -16,4 +14,5 @@ public interface SubscriptionService {
     void updateSubscription(Subscription subscription);
 
     void deleteSubscription(Long id);
+
 }

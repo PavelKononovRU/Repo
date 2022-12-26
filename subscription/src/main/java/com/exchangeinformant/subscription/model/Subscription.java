@@ -1,6 +1,7 @@
 package com.exchangeinformant.subscription.model;
 
 import com.exchangeinformant.subscription.util.Interval;
+import com.exchangeinformant.subscription.util.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class Subscription {
 
     @Id
-    @Column(name = "subscriptions_id")
+    @Column(name = "subscription_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -34,7 +35,8 @@ public class Subscription {
     private LocalDateTime expiresAt;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Column(name = "interval")
     @Enumerated(EnumType.STRING)
