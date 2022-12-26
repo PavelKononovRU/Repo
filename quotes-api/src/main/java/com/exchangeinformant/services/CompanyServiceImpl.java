@@ -37,12 +37,11 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     @Override
-    public Company getCompanyInfo(String stockName) throws IOException, URISyntaxException, InterruptedException {
-        if(getAllCompanies().stream().anyMatch(s->s.getSymbol().equals(stockName))){
-            Company foundCompany = getAllCompanies().stream().filter(s->s.getSymbol().equals(stockName)).findFirst().get();
-            if(stockRepository.findAll().stream().anyMatch(s->s.getSymbol().equals(stockName))){
-                Set<Stock> newStockSet = stockRepository.findAll().stream().filter(s->s.getSymbol().equals(stockName)).collect(Collectors.toSet());
-                foundCompany.setStocks(newStockSet);
+    public Company getCompanyInfo(String stockName) {
+        if(isCompanyPresent(stockName)){
+            Company foundCompany = companyRepository.findCompanyBySymbol(stockName);
+            if(areStocksAvailable(stockName)){
+                foundCompany.setStocks(stockRepository.findAllBySymbol(stockName));
             }
             return foundCompany;
         }
@@ -58,8 +57,11 @@ public class CompanyServiceImpl implements CompanyService{
         return company;
     }
 
-    @Override
-    public void save(Company company) {
-        companyRepository.save(company);
+    private boolean isCompanyPresent(String stockName) {
+        return getAllCompanies().stream().anyMatch(s->s.getSymbol().equals(stockName));
     }
+    private boolean areStocksAvailable(String stockName) {
+        return stockRepository.findAll().stream().anyMatch(s->s.getSymbol().equals(stockName));
+    }
+
 }

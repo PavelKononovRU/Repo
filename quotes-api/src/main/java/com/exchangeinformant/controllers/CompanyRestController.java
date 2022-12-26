@@ -24,7 +24,7 @@ public class CompanyRestController {
     }
 
     @GetMapping(value = "/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Company> getStockInfo(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
+    public ResponseEntity<Company> getStockInfo(@PathVariable("stock") String stock)  {
         return new ResponseEntity<>(companyService.getCompanyInfo(stock) , HttpStatus.OK);
     }
 

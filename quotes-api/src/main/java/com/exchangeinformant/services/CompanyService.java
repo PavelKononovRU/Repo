@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface CompanyService {
     List<Company> getAllCompanies();
-    Company getCompanyInfo(String stockName) throws IOException, URISyntaxException, InterruptedException;
-    void save(Company company);
+    Company getCompanyInfo(String stockName);
 }
