@@ -74,8 +74,22 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+        </dependency>
     </dependencies>
+    <!-- fix error Lificycle!-->
+    <distributionManagement>
+        <repository>
+            <id>internal.repo</id>
+            <name>Internal repo</name>
+            <url>file:///home/thara/testesb/in</url>
+        </repository>
+    </distributionManagement>
     <dependencyManagement>
+
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -113,6 +127,7 @@
         </plugins>
     </build>
     <repositories>
+
         <repository>
             <id>netflix-candidates</id>
             <name>Netflix Candidates</name>
@@ -129,6 +144,7 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+
     </repositories>
 
 </project>
