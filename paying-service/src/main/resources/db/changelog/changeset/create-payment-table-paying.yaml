@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-payment
+      author: Misha
+      changes:
+        - createTable:
+            tableName: payment_table
+            columns:
+              - column:
+                  name: payment_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: create_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: update_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: message
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

@@ -1,0 +1,11 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: paying-service
+  cloud:
+    config:
+      profile: local
+      discovery:
+        enabled: false
+        service-id: config-server
