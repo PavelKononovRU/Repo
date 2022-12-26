@@ -2,8 +2,9 @@ package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.dto.StockDTO;
 import com.exchangeinformant.model.Stock;
-import com.exchangeinformant.model.StockInfo;
-import com.exchangeinformant.services.QuoteService;
+import com.exchangeinformant.model.Company;
+import com.exchangeinformant.services.CompanyService;
+import com.exchangeinformant.services.StockService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,33 +24,22 @@ import java.util.List;
  * Time: 10:21
  */
 @RestController
-@RequestMapping(value = "/api/",produces = MediaType.APPLICATION_JSON_VALUE)
-public class QuotesRestController {
-    private final QuoteService quoteService;
+@RequestMapping(value = "/api",produces = MediaType.APPLICATION_JSON_VALUE)
+public class StockRestController {
+    private final StockService stockService;
 
-    public QuotesRestController(QuoteService quoteService) {
-        this.quoteService = quoteService;
+    public StockRestController(StockService stockService, CompanyService companyService) {
+        this.stockService = stockService;
     }
 
     @GetMapping(value = "/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StockDTO> getStockPrice(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
-        Stock stockObject = quoteService.getStockPrice(stock);
+        Stock stockObject = stockService.getStockPrice(stock);
         return new ResponseEntity<>(new StockDTO(stockObject.getSymbol(),stockObject.getPrice()), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<Stock>> getAllStockPrices() {
-        return new ResponseEntity<>(quoteService.getAllStocks(),HttpStatus.OK);
+        return new ResponseEntity<>(stockService.getAllStocks(),HttpStatus.OK);
     }
-
-    @GetMapping(value = "/info/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StockInfo> getStockInfo(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
-        return new ResponseEntity<>(quoteService.getStockInfo(stock) , HttpStatus.OK);
-    }
-
-    @GetMapping("/info/")
-    public ResponseEntity<List<StockInfo>> getAllStockInfo() {
-        return new ResponseEntity<>(quoteService.getAllStocksInfo(),HttpStatus.OK);
-    }
-
 }

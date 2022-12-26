@@ -4,8 +4,8 @@ databaseChangeLog:
       author: Pavel
       changes:
         - addForeignKeyConstraint:
-            constraintName: fk_stockToInfo
+            constraintName: fk_stockToCompany
             baseTableName: stocks_alpha
-            baseColumnNames: stock_info_id
-            referencedTableName: stocks_info
-            referencedColumnNames: stock_info_id
+            baseColumnNames: company_id
+            referencedTableName: companies
+            referencedColumnNames: company_id

@@ -3,14 +3,16 @@ package com.exchangeinformant.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
-@NoArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
+@ToString
+@EqualsAndHashCode
 @Table(name = "stocks_alpha")
 public class Stock {
     @Id
@@ -66,6 +68,6 @@ public class Stock {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "stock_info_id")
-    private StockInfo stockInfo;
+    @JoinColumn(name = "company_id")
+    private Company company;
 }

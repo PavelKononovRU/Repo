@@ -1,7 +1,7 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.model.Stock;
-import com.exchangeinformant.model.StockInfo;
+import com.exchangeinformant.model.Company;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,9 +15,7 @@ import java.util.List;
  * Time: 13:50
  */
 @Service
-public interface QuoteService {
+public interface StockService {
     Stock getStockPrice(String stockName) throws IOException, URISyntaxException, InterruptedException;
-    StockInfo getStockInfo(String stockName) throws IOException, URISyntaxException, InterruptedException;
     List<Stock> getAllStocks();
-    List<StockInfo> getAllStocksInfo();
 }

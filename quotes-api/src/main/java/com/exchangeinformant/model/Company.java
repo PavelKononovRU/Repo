@@ -2,18 +2,21 @@ package com.exchangeinformant.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Entity
-@Table(name = "stocks_info")
-public class StockInfo {
+@ToString
+@EqualsAndHashCode
+@Table(name = "companies")
+public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "stock_info_id")
+    @Column(name = "company_id")
     private Long id;
 
     @JsonProperty("Symbol")
@@ -44,6 +47,8 @@ public class StockInfo {
     @Column(name = "industry")
     private String industry;
 
-    @OneToMany(mappedBy = "stockInfo")
+    @OneToMany(mappedBy = "company")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Stock> stocks;
 }

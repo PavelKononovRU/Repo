@@ -74,17 +74,17 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: stock_info_id
+                  name: company_id
                   type: bigint
   - changeSet:
-      id: create-stock-info-from-alpha
+      id: create-company-from-alpha-advantage
       author: Pavel
       changes:
         - createTable:
-            tableName: stocks_info
+            tableName: companies
             columns:
               - column:
-                  name: stock_info_id
+                  name: company_id
                   type: bigint
                   autoIncrement: true
                   constraints:
