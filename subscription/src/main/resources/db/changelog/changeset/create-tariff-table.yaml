@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-tariff
+      author: Mark
+      changes:
+        - createTable:
+            tableName: tariff
+            columns:
+              - column:
+                  name: tariff_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+                  constraints:
+                    nullable: false
+
