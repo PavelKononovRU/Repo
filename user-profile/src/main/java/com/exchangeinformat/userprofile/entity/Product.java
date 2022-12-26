@@ -1,4 +1,4 @@
-package com.exchangeinformat.userprofile.model;
+package com.exchangeinformat.userprofile.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
