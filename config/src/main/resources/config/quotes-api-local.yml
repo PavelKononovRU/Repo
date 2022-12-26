@@ -12,4 +12,8 @@ eureka:
       lease-renewal-interval-in-seconds: 30
 alpha-vantage:
   api:
+    url: https://www.alphavantage.co/query/?function=%s&symbol=%s&apikey=%s
     key: R5Y1MX285BT0WOJZ
+    function: GLOBAL_QUOTE
+webclient:
+  timeout: 10000
