@@ -27,7 +27,7 @@ public class Job {
     @Column(name="position")
     private String position;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name="jobs_address", joinColumns = @JoinColumn(name = "job_id"),
             inverseJoinColumns = @JoinColumn(name= "address_id"))
     @EqualsAndHashCode.Exclude
