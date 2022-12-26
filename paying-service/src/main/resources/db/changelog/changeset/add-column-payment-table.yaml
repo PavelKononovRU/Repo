@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-column-payment-table
+      author: Misha
+      changes:
+        - addColumn:
+            tableName: payment_table
+            columns:
+              - column:
+                  name: card_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    foreignKeyName: cards
+                    references: cards(card_id)

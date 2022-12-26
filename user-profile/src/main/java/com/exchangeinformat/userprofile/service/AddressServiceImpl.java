@@ -1,12 +1,13 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.model.Address;
+import com.exchangeinformat.userprofile.entity.Address;
 import com.exchangeinformat.userprofile.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
+@Service
 public class AddressServiceImpl implements AddressService{
 
     private final AddressRepository addressRepository;

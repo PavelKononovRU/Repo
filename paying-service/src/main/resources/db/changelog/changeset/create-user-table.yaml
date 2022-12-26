@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user
+      author: Misha
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false

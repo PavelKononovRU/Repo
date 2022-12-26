@@ -1,6 +1,6 @@
 package com.exchangeinformat.userprofile.controllers;
 
-import com.exchangeinformat.userprofile.model.User;
+import com.exchangeinformat.userprofile.entity.User;
 import com.exchangeinformat.userprofile.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
