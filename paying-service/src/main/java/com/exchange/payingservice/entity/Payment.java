@@ -1,4 +1,4 @@
-package com.exchange.payingservice.model;
+package com.exchange.payingservice.entity;
 
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
@@ -35,6 +35,7 @@ public class Payment {
     private Long user_id;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column(name = "message")

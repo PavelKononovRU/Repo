@@ -13,3 +13,23 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
+              - column:
+                  name: number
+                  type: varchar(19)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: principal
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: csv
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
