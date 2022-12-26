@@ -6,10 +6,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "cards")
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Card {
