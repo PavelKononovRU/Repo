@@ -1,4 +1,4 @@
-package com.exchange.payingservice.dto;
+package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.util.ResponseHandler;
 import com.exchange.payingservice.util.StatusCards;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/cards")
+@RequestMapping("/api/card")
 public class CardRestController {
     private final CardService cardService;
 
