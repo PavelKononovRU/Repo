@@ -1,4 +1,4 @@
-package com.exchangeinformant.dto;
+package com.exchangeinformant.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -12,5 +12,5 @@ import lombok.Data;
 @Data
 public class Root {
     @JsonProperty("Global Quote")
-    public StockDto stockDto;
+    public Stock Stock;
 }

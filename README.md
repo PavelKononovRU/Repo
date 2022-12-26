@@ -17,6 +17,7 @@
     - [Spring Boot Dev Tools](#Spring Boot Dev Tools)
     - [Аутентификация](#аутентификация)
     - [Liquibase](#liquibase)
+    - [API Руководство](#api-guide)
 
 ### Summary
 
@@ -225,3 +226,13 @@ Swagger и Postman.
 - в db.changelog-master.yaml добавляем путь к скрипту который будет отвечать за создание таблицы.
 - создаем сам скрипт, название должно соответствовать тому что он делает(create-tariff-table.yaml смотрим пример).
 - запускаем, таблица вашей модели создана
+
+### API Guide
+1. Запрашиваем информацию о компании по адресу - info/{stockName}. Список всех акций можно скачать [здесь](https://www.alphavantage.co/query?function=LISTING_STATUS&apikey=demo). Вот несколько stockName для примера - IBM, NVDA, AAPL, MSFT, AMD.
+2. Чтобы узнать стоимость акций компании переходим по адресу - api/{stockName}.
+3. Для получения полно списка запросов по акциям конкретной компании возвращаемся на - info/{stockName}.
+***
+**P.S.** В Alpha Vantage ограничение по количеству запросов - 5 запросов в минут и 500 за один день. Если результат запроса будет null, можно получить свой ключ по этой [ссылке](https://www.alphavantage.co/support/#api-key). 
+
+Вставить свой _ключ_ нужно сюда - config/src/main/resources/config/quotes-api-local.yml
+***
