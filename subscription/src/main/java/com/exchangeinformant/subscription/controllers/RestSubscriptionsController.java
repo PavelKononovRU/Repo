@@ -1,7 +1,7 @@
-package com.exchangeinformat.userprofile.controllers;
+package com.exchangeinformant.subscription.controllers;
 
-import com.exchangeinformat.userprofile.model.Subscription;
-import com.exchangeinformat.userprofile.service.SubscriptionService;
+import com.exchangeinformant.subscription.model.Subscription;
+import com.exchangeinformant.subscription.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
