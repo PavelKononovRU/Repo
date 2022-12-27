@@ -28,12 +28,12 @@ import java.util.List;
 public class StockRestController {
     private final StockService stockService;
 
-    public StockRestController(StockService stockService, CompanyService companyService) {
+    public StockRestController(StockService stockService) {
         this.stockService = stockService;
     }
 
     @GetMapping(value = "/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StockDTO> getStockPrice(@PathVariable("stock") String stock) throws IOException, URISyntaxException, InterruptedException {
+    public ResponseEntity<StockDTO> getStockPrice(@PathVariable("stock") String stock)  {
         Stock stockObject = stockService.getStockPrice(stock);
         return new ResponseEntity<>(new StockDTO(stockObject.getSymbol(),stockObject.getPrice()), HttpStatus.OK);
     }

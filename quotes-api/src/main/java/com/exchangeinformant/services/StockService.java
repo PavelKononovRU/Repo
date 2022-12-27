@@ -16,6 +16,6 @@ import java.util.List;
  */
 @Service
 public interface StockService {
-    Stock getStockPrice(String stockName) throws IOException, URISyntaxException, InterruptedException;
+    Stock getStockPrice(String stockName);
     List<Stock> getAllStocks();
 }

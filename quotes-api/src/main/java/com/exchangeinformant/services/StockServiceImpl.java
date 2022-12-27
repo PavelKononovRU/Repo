@@ -31,18 +31,18 @@ public class StockServiceImpl implements StockService {
     private final AlphaVantageConfig properties;
     private final WebClient webClient;
     private final StockRepository stockRepository;
-    private final CompanyService companyService;
+    private final CompanyRepository companyRepository;
 
 
-    public StockServiceImpl(AlphaVantageConfig properties, WebClient webClient, StockRepository stockRepository, CompanyService companyService) {
+    public StockServiceImpl(AlphaVantageConfig properties, WebClient webClient, StockRepository stockRepository, CompanyRepository companyRepository) {
         this.properties = properties;
         this.webClient = webClient;
         this.stockRepository = stockRepository;
-        this.companyService = companyService;
+        this.companyRepository = companyRepository;
     }
 
     @Override
-    public Stock getStockPrice(String stockName) throws IOException, URISyntaxException, InterruptedException {
+    public Stock getStockPrice(String stockName)  {
         Stock stock = Objects.requireNonNull(webClient
                         .get()
                         .uri(String.format(properties.getUrl(), properties.getGlobalFunction(), stockName, properties.getKey()))
@@ -51,11 +51,7 @@ public class StockServiceImpl implements StockService {
                         .bodyToMono(Root.class)
                         .block())
                 .getStock();
-        stock.setCreatedAt(LocalDateTime.now());
-        stock.setUpdatedAt(LocalDateTime.now());
-        if(companyService.getAllCompanies().contains(companyService.getCompanyInfo(stockName))){
-            stock.setCompany(companyService.getCompanyInfo(stockName));
-        }
+        enhanceStock(stock);
         stockRepository.save(stock);
         return stock;
     }
@@ -63,5 +59,17 @@ public class StockServiceImpl implements StockService {
     @Override
     public List<Stock> getAllStocks() {
         return stockRepository.findAll();
+    }
+
+    private void enhanceStock(Stock stock){
+        if(stockRepository.findAll().stream().anyMatch(s->s.getSymbol().equals(stock.getSymbol()))){
+            stock.setCreatedAt(stockRepository.findAllBySymbol(stock.getSymbol()).stream().findFirst().get().getCreatedAt());
+        } else{
+            stock.setCreatedAt(LocalDateTime.now());
+        }
+        stock.setUpdatedAt(LocalDateTime.now());
+        if(companyRepository.findAll().contains(companyRepository.findCompanyBySymbol(stock.getSymbol()))){
+            stock.setCompany(companyRepository.findCompanyBySymbol(stock.getSymbol()));
+        }
     }
 }
