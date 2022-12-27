@@ -1,5 +1,6 @@
 package com.exchange.payingservice.controllers;
 
+import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.util.ResponseHandler;
 import com.exchange.payingservice.util.StatusCards;
 import com.exchange.payingservice.service.CardService;
@@ -8,12 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/api/cards")
 public class CardRestController {
     private final CardService cardService;
-
 
     public CardRestController(CardService cardService) {
         this.cardService = cardService;
@@ -24,6 +26,12 @@ public class CardRestController {
         StatusCards result = cardService.createCard(card);
         return ResponseHandler.generateResponse(result);
     }
+
+    @GetMapping
+    public ResponseEntity<List<Card>> getAllCards() {
+        return ResponseEntity.ok(cardService.getAllCard());
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
