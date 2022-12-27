@@ -28,13 +28,13 @@ public class RestSubscriptionsController {
     }
 
     @GetMapping("/subscriptions")
-    public ResponseEntity<Page<Subscription>> getSubscriptionsByStatus(@RequestParam String status,
-        @RequestParam int offset, @RequestParam int limit, Pageable pageable) {
-        List<Subscription> list = subscriptionService.getAllSubscriptions();
-        list = list.stream()
-                .filter(n -> String.valueOf(n.getStatus()).equals(status))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(new PageImpl<>(list.subList(offset, limit), pageable, list.size()));
+    public ResponseEntity<List<Subscription>> getSubscriptionsByStatus() {
+        return ResponseEntity.ok(subscriptionService.getAllSubscriptions());
+    }
+
+    @GetMapping("/subscriptions")
+    public ResponseEntity<Page<Subscription>> getSubscriptionsByStatus(@RequestParam String status, @RequestParam int offset, @RequestParam int limit, Pageable pageable) {
+        return ResponseEntity.ok(subscriptionService.getAllSubscriptionsByStatus(status, offset, limit, pageable));
     }
 
     @PostMapping("/subscriptions")

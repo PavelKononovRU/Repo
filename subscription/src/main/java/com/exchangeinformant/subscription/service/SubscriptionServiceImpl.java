@@ -3,9 +3,13 @@ package com.exchangeinformant.subscription.service;
 import com.exchangeinformant.subscription.model.Subscription;
 import com.exchangeinformant.subscription.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService{
@@ -31,6 +35,15 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     @Override
     public List<Subscription> getAllSubscriptions() {
         return subscriptionRepository.findAll();
+    }
+
+    @Override
+    public Page<Subscription> getAllSubscriptionsByStatus(String status, int offset, int limit, Pageable pageable) {
+        List<Subscription> list = subscriptionRepository.findAll();
+        list = list.stream()
+                .filter(n -> String.valueOf(n.getStatus()).equals(status))
+                .collect(Collectors.toList());
+        return new PageImpl<>(list.subList(offset, limit), pageable, list.size());
     }
 
     @Override

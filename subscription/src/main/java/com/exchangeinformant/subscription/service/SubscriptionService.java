@@ -1,6 +1,9 @@
 package com.exchangeinformant.subscription.service;
 
 import com.exchangeinformant.subscription.model.Subscription;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface SubscriptionService {
@@ -10,6 +13,8 @@ public interface SubscriptionService {
     Subscription getSubscription(Long id);
 
     List<Subscription> getAllSubscriptions();
+
+    Page<Subscription> getAllSubscriptionsByStatus(String status, int offset, int limit, Pageable pageable);
 
     void updateSubscription(Subscription subscription);
 
