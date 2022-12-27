@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/api/payments")
 public class PaymentRestController {
     private final PaymentService paymentService;
 
@@ -19,8 +19,8 @@ public class PaymentRestController {
         this.paymentService = paymentService;
     }
 
-    @GetMapping("/findOne")
-    public ResponseEntity<Payment> getPayment(Long id) {
+    @GetMapping(("/{id}"))
+    public ResponseEntity<Payment> getPayment(@PathVariable Long id) {
         return ResponseEntity.ok(paymentService.getPaymentById(id));
     }
 
@@ -41,8 +41,8 @@ public class PaymentRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deletePayment(Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deletePayment(@PathVariable Long id) {
         paymentService.deletePaymentById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
