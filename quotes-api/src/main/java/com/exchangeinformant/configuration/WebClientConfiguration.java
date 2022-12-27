@@ -28,12 +28,6 @@ public class WebClientConfiguration {
 
     @Bean
     public WebClient webClientWithTimeout() {
-        HttpClient httpClient = HttpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, timeout)
-                .responseTimeout(Duration.ofMillis(timeout))
-                .doOnConnected(conn ->
-                        conn.addHandlerLast(new ReadTimeoutHandler(timeout, TimeUnit.MILLISECONDS))
-                                .addHandlerLast(new WriteTimeoutHandler(timeout, TimeUnit.MILLISECONDS)));
         return WebClient.builder()
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.create().followRedirect(true)))
                 .build();
