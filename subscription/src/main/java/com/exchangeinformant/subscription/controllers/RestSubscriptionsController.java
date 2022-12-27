@@ -3,6 +3,9 @@ package com.exchangeinformant.subscription.controllers;
 import com.exchangeinformant.subscription.model.Subscription;
 import com.exchangeinformant.subscription.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,13 +28,13 @@ public class RestSubscriptionsController {
     }
 
     @GetMapping("/subscriptions")
-    public ResponseEntity<List<Subscription>> getSubscriptions(@RequestParam String status, @RequestParam int offset, @RequestParam int limit ) {
+    public ResponseEntity<Page<Subscription>> getSubscriptionsByStatus(@RequestParam String status,
+        @RequestParam int offset, @RequestParam int limit, Pageable pageable) {
         List<Subscription> list = subscriptionService.getAllSubscriptions();
-        return ResponseEntity.ok(list.stream()
+        list = list.stream()
                 .filter(n -> String.valueOf(n.getStatus()).equals(status))
-                .skip(offset)
-                .limit(limit)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new PageImpl<>(list.subList(offset, limit), pageable, list.size()));
     }
 
     @PostMapping("/subscriptions")
