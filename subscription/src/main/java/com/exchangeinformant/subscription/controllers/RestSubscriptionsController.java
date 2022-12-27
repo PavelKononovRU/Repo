@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/subscription")
+@RequestMapping("/api")
 public class RestSubscriptionsController {
     private final SubscriptionService subscriptionService;
 
@@ -19,29 +19,29 @@ public class RestSubscriptionsController {
         this.subscriptionService = subscriptionService;
     }
 
-    @GetMapping("/findOne")
-    public ResponseEntity<Subscription> getSubscription(Long id) {
+    @GetMapping("/subscriptions/{id}")
+    public ResponseEntity<Subscription> getSubscription(@PathVariable Long id) {
         return ResponseEntity.ok(subscriptionService.getSubscription(id));
     }
 
-    @GetMapping
+    @GetMapping("/subscriptions")
     public ResponseEntity<List<Subscription>> getSubscriptions() {
         return ResponseEntity.ok(subscriptionService.getAllSubscriptions());
     }
 
-    @PostMapping
+    @PostMapping("/subscriptions")
     public ResponseEntity<HttpStatus> createSubscription(@RequestBody Subscription subscription) {
         subscriptionService.createSubscription(subscription);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/subscriptions")
     public ResponseEntity<HttpStatus> updateSubscription(@RequestBody Subscription subscription) {
         subscriptionService.updateSubscription(subscription);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/subscriptions/{id}")
     public ResponseEntity<HttpStatus> deleteSubscription(Long id) {
         subscriptionService.deleteSubscription(id);
         return ResponseEntity.ok(HttpStatus.OK);
