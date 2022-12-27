@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changeset/add-column-payment-table.yaml
   - include:
       file: db/changelog/changeset/add-column-paying-service-payment.yaml
+  - include:
+      file: db/changelog/changeset/user_table.yml
