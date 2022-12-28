@@ -21,10 +21,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 10:13
  */
 @Configuration
-@ConfigurationProperties(prefix = "webclient")
 public class WebClientConfiguration {
-
-    private int timeout;
 
     @Bean
     public WebClient webClientWithTimeout() {
