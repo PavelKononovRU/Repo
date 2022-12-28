@@ -41,8 +41,8 @@ public class RestPromoSubscriptionController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/promosubscription")
-    public ResponseEntity<HttpStatus> deletePromoSubscription(Long id) {
+    @DeleteMapping("/promosubscription/{id}")
+    public ResponseEntity<HttpStatus> deletePromoSubscription(@PathVariable Long id) {
         promoSubscriptionService.deletePromoSubscription(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
