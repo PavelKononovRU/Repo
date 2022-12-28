@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: postgres
-    password: postgres
+    password: 4815asd
     url: jdbc:postgresql://localhost:5432/postgres
 eureka:
   client:

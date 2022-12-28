@@ -1,6 +1,6 @@
 package com.exchange.payingservice.service;
 
-import com.exchange.payingservice.util.StatusCards;
+import com.exchange.payingservice.dto.StatusCards;
 import com.exchange.payingservice.repository.CardRepository;
 import com.exchange.payingservice.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;

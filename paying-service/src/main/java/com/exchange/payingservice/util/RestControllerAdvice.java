@@ -2,12 +2,14 @@ package com.exchange.payingservice.util;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResponseHandler {
+@ControllerAdvice
+public class RestControllerAdvice {
     public static ResponseEntity<Object> generateResponse(Object resObject) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("date", resObject);

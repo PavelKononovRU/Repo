@@ -1,8 +1,7 @@
 package com.exchange.payingservice.controllers;
 
-import com.exchange.payingservice.entity.Payment;
-import com.exchange.payingservice.util.ResponseHandler;
-import com.exchange.payingservice.util.StatusCards;
+import com.exchange.payingservice.util.RestControllerAdvice;
+import com.exchange.payingservice.dto.StatusCards;
 import com.exchange.payingservice.service.CardService;
 import com.exchange.payingservice.entity.Card;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,7 @@ public class CardRestController {
     @PostMapping
     public ResponseEntity<Object> saveCardController(@RequestBody Card card) {
         StatusCards result = cardService.createCard(card);
-        return ResponseHandler.generateResponse(result);
+        return RestControllerAdvice.generateResponse(result);
     }
 
     @GetMapping
@@ -35,6 +34,6 @@ public class CardRestController {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {
-        return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.MULTI_STATUS);
+        return RestControllerAdvice.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
