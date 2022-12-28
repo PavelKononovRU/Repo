@@ -4,13 +4,11 @@ import com.exchangeinformant.subscription.model.Subscription;
 import com.exchangeinformant.subscription.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -28,7 +26,7 @@ public class RestSubscriptionsController {
     }
 
     @GetMapping("/subscriptions")
-    public ResponseEntity<List<Subscription>> getSubscriptionsByStatus() {
+    public ResponseEntity<List<Subscription>> getSubscriptions() {
         return ResponseEntity.ok(subscriptionService.getAllSubscriptions());
     }
 
@@ -37,19 +35,19 @@ public class RestSubscriptionsController {
         return ResponseEntity.ok(subscriptionService.getAllSubscriptionsByStatus(status, offset, limit, pageable));
     }
 
-    @PostMapping("/subscriptions")
+    @PostMapping("/subscriptions/new")
     public ResponseEntity<HttpStatus> createSubscription(@RequestBody Subscription subscription) {
         subscriptionService.createSubscription(subscription);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping("/subscriptions")
+    @PutMapping("/subscriptions/update")
     public ResponseEntity<HttpStatus> updateSubscription(@RequestBody Subscription subscription) {
         subscriptionService.updateSubscription(subscription);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping("/subscriptions/{id}")
+    @DeleteMapping("/subscriptions/delete/{id}")
     public ResponseEntity<HttpStatus> deleteSubscription(@PathVariable Long id) {
         subscriptionService.deleteSubscription(id);
         return ResponseEntity.ok(HttpStatus.OK);
