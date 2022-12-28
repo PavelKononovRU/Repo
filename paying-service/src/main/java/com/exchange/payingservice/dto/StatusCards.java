@@ -9,6 +9,6 @@ public class StatusCards {
 
     private String title;
     private String user_message;
-    private Long card_id;
 
 }
+

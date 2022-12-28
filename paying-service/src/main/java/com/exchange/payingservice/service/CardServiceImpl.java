@@ -1,13 +1,16 @@
 package com.exchange.payingservice.service;
 
-import com.exchange.payingservice.dto.StatusCards;
+import com.exchange.payingservice.dto.CardDTO;
+import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.repository.CardRepository;
 import com.exchange.payingservice.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -21,17 +24,28 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional
-    public StatusCards createCard(Card card) {
+    public CardDTO createCard(Card card) {
+        System.out.println(card);
         cardRepository.saveAndFlush(card);
-        return new StatusCards("Карта сохранена",
-                "Управляйте картами в платежной информации",
-                cardRepository.getCardByNumber(card.getNumber()).getId());
+        return CardMapper.INSTANCE.toDTO(cardRepository.getCardByNumber(card.getNumber()));
     }
 
     @Override
     @Transactional
-    public void updateCard(Card card) {
-        cardRepository.save(card);
+    public void updateCard(Long id, Card card) {
+        Optional<Card> cardOptional = cardRepository.findById(id);
+        if (cardOptional.isPresent()) {
+            Card updateCard = cardOptional.get();
+            updateCard.setId(card.getId());
+            updateCard.setCSV(card.getCSV());
+            updateCard.setNumber(card.getNumber());
+            updateCard.setPrincipal(card.getPrincipal());
+            updateCard.setUser_id(card.getUser_id());
+            cardRepository.save(updateCard);
+            System.out.println(updateCard);
+        } else {
+            throw new UsernameNotFoundException(String.format("Card '%s' not found: ", card));
+        }
     }
 
     @Override
