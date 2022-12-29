@@ -18,7 +18,6 @@ import java.util.Map;
 public class RestControllerAdvice {
 
     public static ResponseEntity<Object> generateResponsePost(Card card) {
-        System.out.println(card.getId());
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("date", new StatusCards("Карта сохранена",
                 "Управляйте картами в платежной информации"));
@@ -42,4 +41,19 @@ public class RestControllerAdvice {
         return new ResponseEntity<Object>(map, HttpStatus.OK);
     }
 
+    public static ResponseEntity<Object> generateResponsePut(Card card) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("date", new StatusCards("Карта изменена",
+                "Управляйте картами в платежной информации"));
+        map.put("create_at", LocalDateTime.now());
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    public static ResponseEntity<Object> generateResponseDelete(Long id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("date", new StatusCards(String.format("Карта c id %d удалена", id),
+                "Управляйте картами в платежной информации"));
+        map.put("create_at", LocalDateTime.now());
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 }

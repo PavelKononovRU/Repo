@@ -5,21 +5,22 @@ import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.repository.CardRepository;
 import com.exchange.payingservice.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
 
+    private final CardMapper cardMapper;
+
     @Autowired
-    public CardServiceImpl(CardRepository cardRepository) {
+    public CardServiceImpl(CardRepository cardRepository, CardMapper cardMapper) {
         this.cardRepository = cardRepository;
+        this.cardMapper = cardMapper;
     }
 
     @Override
@@ -32,20 +33,10 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional
-    public void updateCard(Long id, Card card) {
-        Optional<Card> cardOptional = cardRepository.findById(id);
-        if (cardOptional.isPresent()) {
-            Card updateCard = cardOptional.get();
-            updateCard.setId(card.getId());
-            updateCard.setCSV(card.getCSV());
-            updateCard.setNumber(card.getNumber());
-            updateCard.setPrincipal(card.getPrincipal());
-            updateCard.setUser_id(card.getUser_id());
-            cardRepository.save(updateCard);
-            System.out.println(updateCard);
-        } else {
-            throw new UsernameNotFoundException(String.format("Card '%s' not found: ", card));
-        }
+    public void updateCard(Long id, CardDTO cardDTO) {
+        Card cardUp = cardRepository.getReferenceById(id);
+        cardMapper.updateCardFromDto(cardDTO, cardUp);
+        cardRepository.save(cardUp);
     }
 
     @Override

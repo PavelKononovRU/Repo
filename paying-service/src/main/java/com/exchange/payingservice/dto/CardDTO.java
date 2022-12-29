@@ -1,19 +1,23 @@
 package com.exchange.payingservice.dto;
 
-import com.exchange.payingservice.mappers.CardMapper;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CardDTO {
 
     private Long id;
+
 
     private String number;
 
 
     private String principal;
+
 
 
     private Long CSV;
