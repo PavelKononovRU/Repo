@@ -236,3 +236,11 @@ Swagger и Postman.
 
 Вставить свой _ключ_ нужно сюда - config/src/main/resources/config/quotes-api-local.yml
 ***
+
+### API Gateway
+
+В bootstrap.yml gateway-service прописываем следующие данные для своего сервиса:
+1. Открываем новый раздел routes.
+2. Прописываем id: (название вашего сервиса)
+3. Прописываем uri: lb://(название вашего сервиса)
+4. В predicates прописываем адреса к которым будет обращаться gateway - Path=/адрес
