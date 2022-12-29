@@ -4,7 +4,6 @@ import com.exchangeinformant.subscription.util.enums.Interval;
 import com.exchangeinformant.subscription.util.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
@@ -17,7 +16,7 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Subscription(Tariff tariff, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime startAt, LocalDateTime expiresAt, Status status, Interval interval, int intervalCount, int price, String sendSMS, Long userId) {
+    public Subscription(Tariff tariff, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime startAt, LocalDateTime expiresAt, Status status, Interval interval, int intervalCount, int price, int sendSMS, Long userId) {
         this.tariff = tariff;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -65,7 +64,7 @@ public class Subscription {
     private int price;
 
     @Column(name = "send_sms")
-    private String sendSMS;
+    private int sendSMS;
 
     @Column(name = "user_id")
     private Long userId;
