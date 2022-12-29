@@ -1,5 +1,8 @@
 package com.exchangeinformant.subscription.controllers;
 
+import com.exchangeinformant.subscription.dto.SubscriptionDTO;
+import com.exchangeinformant.subscription.mappers.SubscriptionMapper;
+import com.exchangeinformant.subscription.mappers.Wrapper;
 import com.exchangeinformant.subscription.model.Subscription;
 import com.exchangeinformant.subscription.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +23,16 @@ public class RestSubscriptionsController {
     }
 
     @GetMapping("/subscriptions/{id}")
-    public Subscription getSubscription(@PathVariable Long id) {
-        return subscriptionService.getSubscription(id);
+    public SubscriptionDTO getSubscription(@PathVariable Long id) {
+        Subscription subscription = subscriptionService.getSubscription(id);
+        return SubscriptionMapper.INSTANCE.toDTO(subscription);
     }
 
     @GetMapping("/subscriptions")
-    public Page<Subscription> getSubscriptions(@RequestParam String status, @RequestParam int offset, @RequestParam int limit, Pageable pageable){
-        return subscriptionService.getAllSubscriptionsByStatus(status, offset, limit, pageable);
+    public Page<SubscriptionDTO> getSubscriptions(@RequestParam String status, @RequestParam int offset, @RequestParam int limit, Pageable pageable){
+        Page<Subscription> page = subscriptionService.getAllSubscriptionsByStatus(status, offset, limit, pageable);
+        Wrapper<Page<SubscriptionDTO>> wrapper = SubscriptionMapper.INSTANCE.toPageDTO(page);
+        return wrapper.getValue();
     }
 
     @PostMapping("/subscriptions")

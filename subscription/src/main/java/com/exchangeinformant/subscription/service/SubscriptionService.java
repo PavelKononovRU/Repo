@@ -1,5 +1,6 @@
 package com.exchangeinformant.subscription.service;
 
+import com.exchangeinformant.subscription.dto.SubscriptionDTO;
 import com.exchangeinformant.subscription.model.Subscription;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
