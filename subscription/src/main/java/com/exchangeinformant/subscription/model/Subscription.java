@@ -49,7 +49,7 @@ public class Subscription {
     private int price;
 
     @Column(name = "send_sms")
-    private String sendSMS;
+    private int sendSMS;
 
 //    @Column(name="is_promo")
 //    private Boolean isPromo;

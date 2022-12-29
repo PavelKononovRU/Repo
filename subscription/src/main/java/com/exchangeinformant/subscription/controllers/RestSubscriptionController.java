@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -39,9 +39,10 @@ public class RestSubscriptionController {
     }
 
     @PostMapping("/subscriptions")
-    public ResponseEntity<HttpStatus> createSubscription(@RequestBody Subscription subscription) {
-        subscriptionService.createSubscription(subscription);
-        return ResponseEntity.ok(HttpStatus.OK);
+    @ResponseBody
+    public ResponseEntity<HttpStatus> createSubscription(@Valid @RequestBody Subscription subscription) {
+        this.subscriptionService.createSubscription(subscription);
+        return  ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @PutMapping("/subscriptions")
