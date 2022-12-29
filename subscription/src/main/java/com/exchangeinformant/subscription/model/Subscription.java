@@ -1,14 +1,13 @@
 package com.exchangeinformant.subscription.model;
 
-import com.exchangeinformant.subscription.util.Interval;
-import com.exchangeinformant.subscription.util.Status;
+import com.exchangeinformant.subscription.util.enums.Interval;
+import com.exchangeinformant.subscription.util.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @Entity
 @Table(name = "subscriptions")
 public class Subscription {
@@ -17,6 +16,23 @@ public class Subscription {
     @Column(name = "subscription_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public Subscription(Tariff tariff, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime startAt, LocalDateTime expiresAt, Status status, Interval interval, int intervalCount, int price, String sendSMS, Long userId) {
+        this.tariff = tariff;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.startAt = startAt;
+        this.expiresAt = expiresAt;
+        this.status = status;
+        this.interval = interval;
+        this.intervalCount = intervalCount;
+        this.price = price;
+        this.sendSMS = sendSMS;
+        this.userId = userId;
+    }
+
+    public Subscription() {
+    }
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tariff_id")
@@ -50,5 +66,8 @@ public class Subscription {
 
     @Column(name = "send_sms")
     private String sendSMS;
+
+    @Column(name = "user_id")
+    private Long userId;
 
 }

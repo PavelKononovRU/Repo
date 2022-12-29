@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-column-user_id-in-subscription-table
+      author: Vladislav
+      changes:
+        - addColumn:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false

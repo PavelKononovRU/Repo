@@ -1,5 +1,6 @@
 package com.exchangeinformant.subscription.service;
 
+import com.exchangeinformant.subscription.exception.ResourceNotFoundException;
 import com.exchangeinformant.subscription.model.Subscription;
 import com.exchangeinformant.subscription.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +30,11 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     public Subscription getSubscription(Long id) {
-            return subscriptionRepository.findById(id).orElse(null);
+            return subscriptionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Подписка с id " + id + " не найдена"));
     }
 
     @Override
-    public List<Subscription> getAllSubscriptions() {
-        return subscriptionRepository.findAll();
-    }
-
-    @Override
-    public Page<Subscription> getAllSubscriptionsByStatus(String status, int offset, int limit, Pageable pageable) {
+    public Page<Subscription> getAllSubscriptionsByStatus(String status, int offset, int limit, Pageable pageable){
         List<Subscription> list = subscriptionRepository.findAll();
         list = list.stream()
                 .filter(n -> String.valueOf(n.getStatus()).equals(status))

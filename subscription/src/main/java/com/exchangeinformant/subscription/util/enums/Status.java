@@ -1,4 +1,4 @@
-package com.exchangeinformant.subscription.util;
+package com.exchangeinformant.subscription.util.enums;
 
 public enum Status {
     AWAITING_TRANSACTION,

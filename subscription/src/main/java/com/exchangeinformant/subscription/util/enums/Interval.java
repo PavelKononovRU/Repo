@@ -1,4 +1,4 @@
-package com.exchangeinformant.subscription.util;
+package com.exchangeinformant.subscription.util.enums;
 
 public enum Interval {
     TEST_1,

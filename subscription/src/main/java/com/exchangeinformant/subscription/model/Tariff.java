@@ -6,14 +6,23 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@NoArgsConstructor
 @Table(name = "tariff")
 public class Tariff {
+
     @Id
     @Column(name = "tariff_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public Tariff(String title, String description, String type, Boolean isActive) {
+        this.title = title;
+        this.description = description;
+        this.type = type;
+        this.isActive = isActive;
+    }
+
+    public Tariff() {
+    }
     @Column(name = "title")
     private String title;
 
