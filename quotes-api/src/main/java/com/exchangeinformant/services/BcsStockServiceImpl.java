@@ -52,17 +52,20 @@ public class BcsStockServiceImpl implements StockService {
     }
 
     //TODO CRON
-    public void updateAllStocks() throws IOException {
-        String rt = webClient
-                .get()
-                .uri(bcsConfig.getUrl())
-                .header("partner-token", bcsConfig.getPartnerToken())
-                .header("User-Agent", "Mozilla/4.0 (compatible; MSIE 8.0)")
-                .retrieve()
-                .bodyToMono(String.class)
-                .cache()
-                .log()
-                .block();
-        System.out.println(rt.length());
+    public void updateAllStocks() throws JsonProcessingException {
+        List<Stock> allStocks = stockRepository.findAll();
+        for (Stock stock : allStocks) {
+            String string = webClient
+                    .get()
+                    .uri(bcsConfig.getUrl() + String.format(bcsConfig.getOneStock(), stock.getSecureCode()))
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+            ObjectMapper objectMapper = new ObjectMapper()
+                   .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Stock[] stockArray = objectMapper.readValue(string, Stock[].class);
+            System.err.println(Arrays.stream(stockArray).findFirst().get());
+           // stockRepository.save(stock);
+        }
     }
 }

@@ -17,4 +17,6 @@ public class BcsConfig {
     private String url;
 
     private String partnerToken;
+
+    private String oneStock;
 }

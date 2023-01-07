@@ -7,7 +7,7 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
-                  name: secur-code
+                  name: secure-code
                   type: varchar(5)
                   constraints:
                     primaryKey: true
@@ -15,17 +15,6 @@ databaseChangeLog:
               - column:
                   name: issuer
                   type: varchar(30)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: last-price
-                  type: varchar(4)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated-at
-                  type: timestamp without time zone
-                  defaultValue: now()
                   constraints:
                     nullable: false
               - column:
