@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: stock-1
+      author: e-davidenko
+      changes:
+        - createTable:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  type: varchar(5)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: issuer
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last-price
+                  type: varchar(4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated-at
+                  type: timestamp without time zone
+                  defaultValue: now()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(4)

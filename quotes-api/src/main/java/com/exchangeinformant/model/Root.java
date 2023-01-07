@@ -3,6 +3,9 @@ package com.exchangeinformant.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created in IntelliJ
  * User: e-davidenko
@@ -11,6 +14,10 @@ import lombok.Data;
  */
 @Data
 public class Root {
-    @JsonProperty("Global Quote")
-    public Stock Stock;
+    @JsonProperty("data")
+    public List<Stock> stocks;
+
+    public int lastValue;
+    public int total;
+    public boolean hasMore;
 }

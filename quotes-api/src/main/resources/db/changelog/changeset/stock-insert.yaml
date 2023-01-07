@@ -1,0 +1,486 @@
+databaseChangeLog:
+  - changeSet:
+      id: stock-2
+      author: e-davidenko
+      comment: "Add all available stocks"
+      changes:
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "AAPL"
+              - column:
+                  name: issuer
+                  value: "Apple"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "IBM"
+              - column:
+                  name: issuer
+                  value: "IBM"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "MSFT"
+              - column:
+                  name: issuer
+                  value: "Microsoft"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "TSLA"
+              - column:
+                  name: issuer
+                  value: "Tesla"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "AMZN"
+              - column:
+                  name: issuer
+                  value: "Amazon"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "NFLX"
+              - column:
+                  name: issuer
+                  value: "Netflix"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "NOK"
+              - column:
+                  name: issuer
+                  value: "Nokia"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "WMT"
+              - column:
+                  name: issuer
+                  value: "WalMart"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "GE"
+              - column:
+                  name: issuer
+                  value: "General Electric"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "NVDA"
+              - column:
+                  name: issuer
+                  value: "Nvidia"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "T"
+              - column:
+                  name: issuer
+                  value: "AT&T"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "RRC"
+              - column:
+                  name: issuer
+                  value: "Range Resources"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "TWTR"
+              - column:
+                  name: issuer
+                  value: "Twitter"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "SCG"
+              - column:
+                  name: issuer
+                  value: "Scana"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "NUE"
+              - column:
+                  name: issuer
+                  value: "Nukor Corporation"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "OKE"
+              - column:
+                  name: issuer
+                  value: "ONEOK"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "BKR"
+              - column:
+                  name: issuer
+                  value: "Baker Hughes"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "PAGS"
+              - column:
+                  name: issuer
+                  value: "Pagseguro Digital"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "TSO"
+              - column:
+                  name: issuer
+                  value: "Tesoro Corp"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "SO"
+              - column:
+                  name: issuer
+                  value: "Southern Company"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "DIS"
+              - column:
+                  name: issuer
+                  value: "Walt Disney"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "CVX"
+              - column:
+                  name: issuer
+                  value: "Chevron"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "XOM"
+              - column:
+                  name: issuer
+                  value: "Exxon Mobil"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "DVN"
+              - column:
+                  name: issuer
+                  value: "Devon"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "PYPL"
+              - column:
+                  name: issuer
+                  value: "PayPal"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "IT"
+              - column:
+                  name: issuer
+                  value: "Gartner"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "EA"
+              - column:
+                  name: issuer
+                  value: "Electronic Arts"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "TRIP"
+              - column:
+                  name: issuer
+                  value: "TripAdvisor"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "857"
+              - column:
+                  name: issuer
+                  value: "PetroChina"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "V"
+              - column:
+                  name: issuer
+                  value: "VISA"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "TMUS"
+              - column:
+                  name: issuer
+                  value: "T-Mobile US"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "RACE"
+              - column:
+                  name: issuer
+                  value: "Ferrari"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "VZ"
+              - column:
+                  name: issuer
+                  value: "Verizon"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "META"
+              - column:
+                  name: issuer
+                  value: "Meta Platforms"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "MA"
+              - column:
+                  name: issuer
+                  value: "MasterCard"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "RIG"
+              - column:
+                  name: issuer
+                  value: "Transocean"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "386"
+              - column:
+                  name: issuer
+                  value: "Sinopec"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "ZNH"
+              - column:
+                  name: issuer
+                  value: "China Southern Airlines"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "NTAP"
+              - column:
+                  name: issuer
+                  value: "NetApp"
+              - column:
+                  name: last-price
+                  value: "0"
+        - insert:
+            tableName: stock
+            columns:
+              - column:
+                  name: secur-code
+                  value: "GOOG"
+              - column:
+                  name: issuer
+                  value: "Alphabet Class C"
+              - column:
+                  name: last-price
+                  value: "0"
