@@ -25,6 +25,12 @@ public class StockRestController {
         this.stockService = stockService;
     }
 
+    @GetMapping("/")
+    public String get() {
+        System.err.println(stockService.getStock("AAPL").getInfoList().get(0));
+        return stockService.getStock("AAPL").getInfoList().toString();
+    }
+
     @GetMapping("/update")
     public String update() throws IOException {
         stockService.updateAllStocks();

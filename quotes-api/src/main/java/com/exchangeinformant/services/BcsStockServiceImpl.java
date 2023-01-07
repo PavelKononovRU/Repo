@@ -1,25 +1,21 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.configuration.BcsConfig;
-import com.exchangeinformant.model.Root;
+import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
+import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.util.Logger;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.Random;
 
 /**
  * Created in IntelliJ
@@ -32,12 +28,14 @@ public class BcsStockServiceImpl implements StockService {
 
     private final WebClient webClient;
     private final BcsConfig bcsConfig;
+    private final InfoRepository infoRepository;
 
     private final StockRepository stockRepository;
 
-    public BcsStockServiceImpl(WebClient webClient, BcsConfig bcsConfig, StockRepository stockRepository) {
+    public BcsStockServiceImpl(WebClient webClient, BcsConfig bcsConfig, InfoRepository infoRepository, StockRepository stockRepository) {
         this.webClient = webClient;
         this.bcsConfig = bcsConfig;
+        this.infoRepository = infoRepository;
         this.stockRepository = stockRepository;
     }
 
@@ -63,9 +61,13 @@ public class BcsStockServiceImpl implements StockService {
                     .block();
             ObjectMapper objectMapper = new ObjectMapper()
                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            Stock[] stockArray = objectMapper.readValue(string, Stock[].class);
-            System.err.println(Arrays.stream(stockArray).findFirst().get());
-           // stockRepository.save(stock);
+            stock = Arrays.stream((objectMapper.readValue(string, Stock[].class))).findFirst().get();
+            double price = objectMapper.readTree(string).get(0).get("info").get("close").asDouble();
+            Info info = new Info();
+            info.setUpdatedAt(LocalDateTime.now());
+            info.setLastPrice(price);
+            info.setSecureCode(stock.getSecureCode());
+            infoRepository.save(info);
         }
     }
 }

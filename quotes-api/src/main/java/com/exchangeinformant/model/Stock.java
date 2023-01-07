@@ -1,6 +1,7 @@
 package com.exchangeinformant.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,7 +27,8 @@ public class Stock {
     @JsonSetter("currencyCode")
     private String currency;
 
-    @OneToMany(mappedBy = "secure-code")
+    @JsonIgnore
+    @OneToMany(mappedBy = "secureCode")
     private List<Info> infoList;
 
 }

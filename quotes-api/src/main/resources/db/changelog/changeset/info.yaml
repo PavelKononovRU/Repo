@@ -9,7 +9,7 @@ databaseChangeLog:
               - column:
                   name: id
                   type: bigint
-                  generationType: ALWAYS
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
 
@@ -22,7 +22,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: last-price
-                  type: varchar(4)
+                  type: bigint
                   constraints:
                     nullable: false
               - column:
