@@ -11,7 +11,6 @@ import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
-
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @ConfigurationProperties(prefix = "webclient")
 public class WebClientConfiguration {
-    final int size = 100 * 1024 * 1024;
+    final int size = 10 * 1024 * 1024;
     final ExchangeStrategies strategies = ExchangeStrategies.builder()
             .codecs(codecs -> codecs.defaultCodecs().maxInMemorySize(size))
             .build();
@@ -32,7 +31,14 @@ public class WebClientConfiguration {
     @Bean
     public WebClient webClientWithTimeout() {
         return WebClient.builder()
-                .clientConnector(new ReactorClientHttpConnector(HttpClient.create().followRedirect(true)))
+                .clientConnector(new ReactorClientHttpConnector(HttpClient
+                        .create()
+                        .doOnConnected(connection -> connection
+                                .addHandlerFirst(new ReadTimeoutHandler(5, TimeUnit.SECONDS))
+                                .addHandlerFirst(new WriteTimeoutHandler(5, TimeUnit.SECONDS)))
+                        .responseTimeout(Duration.ofSeconds(5))
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+                        .followRedirect(true)))
                 .exchangeStrategies(strategies)
                 .build();
     }
