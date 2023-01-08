@@ -68,7 +68,7 @@ public class BcsStockServiceImpl implements StockService {
                 infoRepository.save(info);
             } catch (WebClientRequestException e) {
                 //Нужно обработать Caused by: reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
-                System.out.println("Exception");
+                System.err.println("Exception");
             }
         }
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
