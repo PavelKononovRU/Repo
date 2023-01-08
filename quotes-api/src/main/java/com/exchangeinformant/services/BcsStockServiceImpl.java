@@ -49,7 +49,7 @@ public class BcsStockServiceImpl implements StockService {
         return stockRepository.findAll();
     }
 
-    @Scheduled(cron = "0 */5 * * * *")
+    @Scheduled(cron = "0 */1 * * * *")
     public void updateAllStocks() {
 
         List<Stock> allStocks = stockRepository.findAll();
@@ -59,16 +59,14 @@ public class BcsStockServiceImpl implements StockService {
                         .get()
                         .uri(bcsConfig.getUrl() + String.format(bcsConfig.getOneStock(), stock.getSecureCode()))
                         .retrieve()
-                        .bodyToMono(new ParameterizedTypeReference<>() {
-                        });
+                        .bodyToMono(new ParameterizedTypeReference<>() {});
                 StockDTO stockDTO = Objects.requireNonNull(mono.block()).get(0);
                 InfoDTO infoDTO = stockDTO.getInfoList();
                 Info info = convertInfoDTOToInfo(infoDTO);
                 info.setSecureCode(stock.getSecureCode());
                 infoRepository.save(info);
             } catch (WebClientRequestException e) {
-                //Нужно обработать Caused by: reactor.netty.http.client.PrematureCloseException: Connection prematurely closed BEFORE response
-                System.err.println("Exception");
+                e.printStackTrace();
             }
         }
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());

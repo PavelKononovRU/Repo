@@ -31,15 +31,17 @@ public class WebClientConfiguration {
     @Bean
     public WebClient webClientWithTimeout() {
         return WebClient.builder()
-                .clientConnector(new ReactorClientHttpConnector(HttpClient
-                        .create()
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.create()
+                        .compress(true)
                         .doOnConnected(connection -> connection
                                 .addHandlerFirst(new ReadTimeoutHandler(5, TimeUnit.SECONDS))
                                 .addHandlerFirst(new WriteTimeoutHandler(5, TimeUnit.SECONDS)))
                         .responseTimeout(Duration.ofSeconds(5))
+                        .keepAlive(true)
                         .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
                         .followRedirect(true)))
                 .exchangeStrategies(strategies)
                 .build();
     }
+
 }
