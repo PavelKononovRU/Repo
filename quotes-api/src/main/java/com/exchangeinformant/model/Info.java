@@ -4,13 +4,8 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GeneratedColumn;
-import org.springframework.cglib.core.Local;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created in IntelliJ
@@ -39,11 +34,5 @@ public class Info {
     @Column(name = "secure-code")
     private String secureCode;
 
-    public Info(double lastPrice, String secureCode) {
-        this.lastPrice = lastPrice;
-        this.secureCode = secureCode;
-    }
 
-    public Info(double price, LocalDateTime now, String secureCode) {
-    }
 }

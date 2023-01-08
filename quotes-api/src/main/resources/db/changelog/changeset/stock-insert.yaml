@@ -8,6 +8,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "AAPL"
               - column:
@@ -17,6 +20,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "IBM"
               - column:
@@ -25,6 +31,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "MSFT"
@@ -35,6 +44,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "TSLA"
               - column:
@@ -43,6 +55,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "AMZN"
@@ -53,6 +68,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "NFLX"
               - column:
@@ -61,6 +79,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "NOK"
@@ -71,6 +92,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "WMT"
               - column:
@@ -79,6 +103,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "GE"
@@ -89,6 +116,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "NVDA"
               - column:
@@ -97,6 +127,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "T"
@@ -107,6 +140,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "RRC"
               - column:
@@ -115,6 +151,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "TWTR"
@@ -125,6 +164,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "SCG"
               - column:
@@ -133,6 +175,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "NUE"
@@ -143,6 +188,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "OKE"
               - column:
@@ -151,6 +199,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "BKR"
@@ -161,6 +212,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "PAGS"
               - column:
@@ -169,6 +223,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "TSO"
@@ -179,6 +236,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "SO"
               - column:
@@ -187,6 +247,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "DIS"
@@ -197,6 +260,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "CVX"
               - column:
@@ -205,6 +271,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "XOM"
@@ -215,6 +284,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "DVN"
               - column:
@@ -223,6 +295,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "PYPL"
@@ -233,6 +308,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "IT"
               - column:
@@ -241,6 +319,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "EA"
@@ -251,6 +332,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "TRIP"
               - column:
@@ -260,14 +344,8 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
-                  name: secure-code
-                  value: "857"
-              - column:
-                  name: issuer
-                  value: "PetroChina"
-        - insert:
-            tableName: stock
-            columns:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "V"
@@ -278,6 +356,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "TMUS"
               - column:
@@ -286,6 +367,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "RACE"
@@ -296,6 +380,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "VZ"
               - column:
@@ -304,6 +391,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "META"
@@ -314,6 +404,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "MA"
               - column:
@@ -322,6 +415,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "RIG"
@@ -332,14 +428,8 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
-                  name: secure-code
-                  value: "386"
-              - column:
-                  name: issuer
-                  value: "Sinopec"
-        - insert:
-            tableName: stock
-            columns:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "ZNH"
@@ -350,6 +440,9 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                  name: currency
+                  value: USD
+              - column:
                   name: secure-code
                   value: "NTAP"
               - column:
@@ -358,6 +451,9 @@ databaseChangeLog:
         - insert:
             tableName: stock
             columns:
+              - column:
+                  name: currency
+                  value: USD
               - column:
                   name: secure-code
                   value: "GOOG"

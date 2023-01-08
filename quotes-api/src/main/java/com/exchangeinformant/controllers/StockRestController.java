@@ -1,7 +1,6 @@
 package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.services.StockService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +29,7 @@ public class StockRestController {
         System.err.println(stockService.getStock("AAPL").getInfoList().get(0));
         return stockService.getStock("AAPL").getInfoList().toString();
     }
-
+    //ONLY FOR TESTING
     @GetMapping("/update")
     public String update() throws IOException {
         stockService.updateAllStocks();
