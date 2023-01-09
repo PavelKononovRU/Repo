@@ -4,6 +4,8 @@ databaseChangeLog:
   - include:
       file: db/changelog/changeset/create-subscription-table.yaml
   - include:
+      file: db/changelog/changeset/create-promosubscription-table.yaml
+  - include:
       file: db/changelog/changeset/add-column-subscription-table.yaml
   - include:
       file: db/changelog/changeset/add-column-user_id-in-subscription-table.yaml

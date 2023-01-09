@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-columns-promo-subscription-table
+      author: Sergey
+      changes:
+        - addColumns:
+          tableName: subscriptions
+          columns:
+            - column:
+              name: is_promo
+              type: boolean
+              constraints:
+                nullable: false
+            - column:
+              name: promosubscription_id
+              type: bigint
+              constraints:
+                nullable: true
+                foreignKeyName: fk_promosubscription
+                references: promosubscription(promosubscription_id)

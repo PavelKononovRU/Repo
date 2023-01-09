@@ -1,4 +1,6 @@
 package com.exchangeinformant.subscription.controllers;
+import com.exchangeinformant.subscription.dto.TariffDTO;
+
 import com.exchangeinformant.subscription.model.Tariff;
 import com.exchangeinformant.subscription.service.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tariff")
+@RequestMapping("/api")
 public class RestTariffController {
 
     private final TariffService tariffService;
@@ -19,30 +21,30 @@ public class RestTariffController {
         this.tariffService = tariffService;
     }
 
-    @GetMapping("/findOne")
-    public ResponseEntity<Tariff> getTariff(Long id) {
+    @GetMapping("/tariff/{id}")
+    public ResponseEntity<Tariff> getTariff(@PathVariable Long id) {
         return ResponseEntity.ok(tariffService.getTariff(id));
     }
 
-    @GetMapping
+    @GetMapping("/tariff")
     public ResponseEntity<List<Tariff>> getTariffs() {
         return ResponseEntity.ok(tariffService.getAllTariff());
     }
 
-    @PostMapping
+    @PostMapping("/tariff")
     public ResponseEntity<HttpStatus> createTariff(@RequestBody Tariff tariff) {
         tariffService.createTariff(tariff);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/tariff")
     public ResponseEntity<HttpStatus> updateTariff(@RequestBody Tariff tariff) {
         tariffService.updateTariff(tariff);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteTariff(Long id) {
+    @DeleteMapping("/tariff/{id}")
+    public ResponseEntity<HttpStatus> deleteTariff(@PathVariable Long id) {
         tariffService.deleteTariff(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
