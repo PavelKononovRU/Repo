@@ -49,35 +49,20 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
 
 
     @Override
-    public TinkoffStockDTO getStocksByTickers(List<String> tickers) {
-        MarketContext context = openApi.getMarketContext();
-        List<CompletableFuture<MarketInstrumentList>> marketInstrument = new ArrayList<>();
-        tickers.forEach(t->marketInstrument.add(context.searchMarketInstrumentsByTicker(t)));
-
-        List<TinkoffStock> stocks = marketInstrument.stream()
-                .map(CompletableFuture::join)
-                .map(mi->{
-                    if (!mi.getInstruments().isEmpty()) {
-                        return mi.getInstruments().get(0);
-                    }
-                    return null;
-                })
-                .filter(Objects::nonNull)
-                .map(mi -> new TinkoffStock(
-                        mi.getTicker(),
-                        context.getMarketOrderbook(mi.getFigi(),0).join().get().getLastPrice(),
-                        LocalDateTime.now()
-                        ))
-                .collect(Collectors.toList());
-        return new TinkoffStockDTO(stocks);
+    public List<Company> getStocksByCodes(List<String> codes) {
+        List<Company> result = new ArrayList<>();
+        for(String code : codes){
+            result.add(companyRepository.findCompanyBySecureCode(code));
+        }
+        return result;
     }
 
 
 
     @Override
     public void updateAllStocks() {
-        List<Company> allStocks = companyRepository.findAll();
-        for (Company stock : allStocks) {
+        List<Company> companies = companyRepository.findAll();
+        for (Company stock : companies) {
             TinkoffStock updatedStock = getStockByTicker(stock.getSecureCode());
             updatedStock.setCompany(stock);
             tinkoffRepository.save(updatedStock);

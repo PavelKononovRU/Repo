@@ -1,9 +1,6 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.dto.TinkoffStockDTO;
 import com.exchangeinformant.model.Company;
-import com.exchangeinformant.model.Stock;
-import com.exchangeinformant.model.TinkoffStock;
 import com.exchangeinformant.services.TinkoffStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
