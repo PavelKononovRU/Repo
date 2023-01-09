@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: postgres
-    password: root
+    password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
 eureka:
   client:
@@ -12,4 +12,9 @@ eureka:
       lease-renewal-interval-in-seconds: 30
 alpha-vantage:
   api:
+    url: https://www.alphavantage.co/query/?function=%s&symbol=%s&apikey=%s
     key: R5Y1MX285BT0WOJZ
+    global-function: GLOBAL_QUOTE
+    overview-function: OVERVIEW
+webclient:
+  timeout: 10000

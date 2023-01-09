@@ -5,3 +5,4 @@ public enum Interval {
     TEST_2,
     TEST_3
 }
+

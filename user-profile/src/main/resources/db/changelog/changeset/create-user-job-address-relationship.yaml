@@ -63,3 +63,31 @@ databaseChangeLog:
             baseTableName: users_products
             referencedColumnNames: product_id
             referencedTableName: product_table
+  - changeSet:
+      id: user-to-address-and-to-job
+      author: Pavel
+      changes:
+        - addForeignKeyConstraint:
+            - constraintName: fk_userToAddress
+            - baseTableName: users
+            - baseColumnNames: address_id
+            - referencedTableName: address
+            - referencedColumnNames: address_id
+        - addForeignKeyConstraint:
+            - constraintName: fk_AddressToUser
+            - baseTableName: address
+            - baseColumnNames: user_id
+            - referencedTableName: users
+            - referencedColumnNames: user_id
+        - addForeignKeyConstraint:
+            - constraintName: fk_userToJob
+            - baseTableName: users
+            - baseColumnNames: job_id
+            - referencedTableName: jobs
+            - referencedColumnNames: job_id
+        - addForeignKeyConstraint:
+            - constraintName: fk_JobToUser
+            - baseTableName: jobs
+            - baseColumnNames: user_id
+            - referencedTableName: users
+            - referencedColumnNames: user_id

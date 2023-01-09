@@ -1,6 +1,7 @@
 package com.exchangeinformant.subscription.model;
 
 import com.exchangeinformant.subscription.util.Interval;
+import com.exchangeinformant.subscription.util.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
