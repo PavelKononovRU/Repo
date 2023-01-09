@@ -1,9 +1,9 @@
 package com.exchangeinformant.subscription.dto;
 
-import com.exchangeinformant.subscription.model.Subscription;
 import com.exchangeinformant.subscription.model.Tariff;
 import com.exchangeinformant.subscription.util.Interval;
 import java.time.LocalDateTime;
+import com.exchangeinformant.subscription.util.enums.Status;
 import lombok.Data;
 import org.mapstruct.Mapper;
 import javax.validation.constraints.NotNull;
@@ -23,7 +23,7 @@ public class SubscriptionDTO {
     @NotNull(message = "data shouldn't be null")
     private LocalDateTime expiresAt;
     @NotNull(message = "status shouldn't be null")
-    private Subscription.Status status;
+    private Status status;
     @NotNull(message = "interval shouldn't be null")
     private Interval interval;
     @NotNull(message = "interval_count shouldn't be null")
