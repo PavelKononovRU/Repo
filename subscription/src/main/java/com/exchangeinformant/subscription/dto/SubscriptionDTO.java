@@ -1,8 +1,8 @@
 package com.exchangeinformant.subscription.dto;
 
 import com.exchangeinformant.subscription.model.Tariff;
-import com.exchangeinformant.subscription.util.Interval;
 import java.time.LocalDateTime;
+import com.exchangeinformant.subscription.util.enums.Interval;
 import com.exchangeinformant.subscription.util.enums.Status;
 import lombok.Data;
 import org.mapstruct.Mapper;
