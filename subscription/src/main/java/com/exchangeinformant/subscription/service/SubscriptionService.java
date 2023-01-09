@@ -1,10 +1,8 @@
 package com.exchangeinformant.subscription.service;
 
-
 import com.exchangeinformant.subscription.dto.SubscriptionDTO;
-import com.exchangeinformant.subscription.exception.UserNotFoundException;
-import com.exchangeinformant.subscription.model.Subscription;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface SubscriptionService {
@@ -15,7 +13,10 @@ public interface SubscriptionService {
 
     List<SubscriptionDTO> getAllSubscription();
 
+    Page<SubscriptionDTO> getSubscriptionsWithPagination(String status, int offset, int limit, Pageable pageable);
+
     void updateSubscription(SubscriptionDTO subscriptionDTO);
 
     void deleteSubscription(Long id);
+
 }

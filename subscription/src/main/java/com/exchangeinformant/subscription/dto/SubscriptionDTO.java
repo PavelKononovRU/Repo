@@ -31,4 +31,5 @@ public class SubscriptionDTO {
     @NotNull(message = "price shouldn't be null")
     private int price;
     private int sendSMS;
+    private int userId;
 }

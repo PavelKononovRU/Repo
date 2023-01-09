@@ -1,11 +1,12 @@
 package com.exchangeinformant.subscription.service;
 
-import com.exchangeinformant.subscription.exception.ResourceNotFoundException;
-import com.exchangeinformant.subscription.model.Subscription;
 import com.exchangeinformant.subscription.dto.SubscriptionDTO;
 import com.exchangeinformant.subscription.mappers.SubscriptionMapper;
 import com.exchangeinformant.subscription.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -31,7 +32,6 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     public SubscriptionDTO getSubscription(Long id) {
-
         return SubscriptionMapper
                 .INSTANCE
                 .subscriptionToDTO(subscriptionRepository.findById(id).orElse(null));
@@ -39,17 +39,25 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     public List<SubscriptionDTO> getAllSubscription() {
-
         return subscriptionRepository.findAll()
                 .stream()
                 .map(SubscriptionMapper.INSTANCE::subscriptionToDTO)
                 .collect(Collectors.toList());
     }
 
+
+    @Override
+    public Page<SubscriptionDTO> getSubscriptionsWithPagination(String status, int offset, int limit, Pageable pageable) {
+        List<SubscriptionDTO> subscriptionDTOList = subscriptionRepository.findAll()
+                .stream().filter(n -> String.valueOf(n.getStatus()).equals(status))
+                .map(SubscriptionMapper.INSTANCE::subscriptionToDTO)
+                .collect(Collectors.toList());
+        return new PageImpl<>(subscriptionDTOList.subList(offset, limit), pageable, subscriptionDTOList.size());
+    }
+
     @Override
     @Transactional
     public void updateSubscription(SubscriptionDTO subscriptionDTO) {
-
         subscriptionRepository.save(SubscriptionMapper
                 .INSTANCE
                 .subscriptionDTOToModel(subscriptionDTO));
