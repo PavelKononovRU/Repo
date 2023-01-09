@@ -19,3 +19,4 @@ spring:
           uri: lb://user-profile
           predicates:
             - Path=/api/user/**
+      

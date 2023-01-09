@@ -1,7 +1,7 @@
-package com.exchange.payingservice.Service;
+package com.exchange.payingservice.service;
 
-import com.exchange.payingservice.Repository.PaymentRepository;
-import com.exchange.payingservice.model.Payment;
+import com.exchange.payingservice.repository.PaymentRepository;
+import com.exchange.payingservice.entity.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

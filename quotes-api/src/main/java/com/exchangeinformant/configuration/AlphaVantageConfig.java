@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "alpha-vantage.api")
 public class AlphaVantageConfig {
     private String key;
-    private String function;
-
+    private String globalFunction;
+    private String overviewFunction;
     private String url;
 }

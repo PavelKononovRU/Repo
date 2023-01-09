@@ -1,6 +1,6 @@
-package com.exchange.payingservice.Service;
+package com.exchange.payingservice.service;
 
-import com.exchange.payingservice.model.Payment;
+import com.exchange.payingservice.entity.Payment;
 
 import java.util.List;
 

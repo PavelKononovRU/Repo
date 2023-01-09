@@ -1,4 +1,95 @@
 <h2>Модуль микро-сервиса по продажи подписки на сервис для пользователей</h2>
+<h3>Описание работы по задаче 58 "Добавить MapStruct для маппинга ДТО."</h3>
+**Вступление.**
+Поскольку микросервисы и распределенные приложения быстро захватывают мир разработки, целостность и безопасность данных важны как никогда. Безопасный канал связи и ограниченная передача данных между этими слабосвязанными системами имеют первостепенное значение. В большинстве случаев конечному пользователю или службе требуется доступ не ко всем данным модели, а только к некоторым конкретным частям.
+
+_Объекты передачи данных (DTO)_ регулярно применяются в этих приложениях. DTO - это просто объекты, которые содержат запрошенную информацию о другом объекте. Обычно информация ограничена по объему. Поскольку DTO являются отражением исходных объектов, сопоставители между этими классами играют ключевую роль в процессе преобразования.
+
+**MapStruct** - это генератор кода на основе Java с открытым исходным кодом, который создает код для реализации сопоставления.
+
+Он использует обработку аннотаций для создания реализаций классов сопоставления во время компиляции и значительно сокращает объем стандартного кода, который обычно должен быть написан вручную.
+
+Маппер в широком смысле — подсистема для преобразования и передачи данных. В случае с Mapstruct разработчик обычно пишет аннотацию маппера — короткий блок кода.
+Он описывает, какую информацию и в какую сущность нужно передать.
+А библиотека на основе этой аннотации генерирует код, который и занимается непосредственной передачей данных.
+Поэтому Mapstruct часто называют генератором кода, который базируется на аннотациях.
+
+Благодаря Mapstruct маппинг можно автоматизировать: не понадобится вручную писать методы, которые обрабатывают данные и передают их в другую сущность, в другой слой программы.
+
+**Зависимости MapStruct**
+Поскольку в нашем проекте используется Maven, то добавим зависимость:
+ <dependencies> 
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>1.5.3.Final</version>
+        </dependency>
+ </dependencies> 
+
+Эта зависимость импортирует основные аннотации MapStruct.
+Поскольку MapStruct работает во время компиляции и прикреплен к сборщику Maven, нам также придется добавить плагин в <build> :
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>11</source> <!-- depending on your project -->
+                    <target>11</target> <!-- depending on your project -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>1.5.3.Final</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+
+**Основные сопоставления.**
+Начнем с базового картирования. У нас будет модель Subscription SubscriptionDTO. Для нашего удобства их поля будут иметь одинаковые имена.
+Теперь, чтобы создать сопоставитель между моделью и ДТО, мы создадим интерфейс SubscriptionMapper @Mapper. C помощью @Mapper, MapStruct знает, что это сопоставитель между нашими двумя классами:
+
+@Mapper
+public interface SubscriptionMapper {
+SubscriptionMapper INSTANCE = Mappers.getMapper(SubscriptionMapper.class);
+SubscriptionDTO subscriptionToDTO(Subscription subscription);
+
+У нас есть INSTANCE типа SubscriptionMapper.
+Это будет наша «точка входа» в экземпляр после того, как мы сгенерируем реализацию.
+
+Мы определили subscriptionToDTO() в интерфейсе, который принимает Subscription и возвращает экземпляр SubscriptionDTO. Этого достаточно, чтобы MapStruct знал, что мы хотим сопоставить экземпляр Subscription SubscriptionDTO.
+
+После компиляции в папке проекта появляются файлы. Один из них - реализация маппера...
+Класс, которые сгенерировал Mapstruct располагается в generated-sources: ${projectDir}/target/generated-sources/annotations/
+public class SubscriptionMapperImpl implements SubscriptionMapper {
+
+    @Override
+    public SubscriptionDTO subscriptionToDTO(Subscription subscription) {
+        if ( subscription == null ) {
+            return null;
+        }
+
+        SubscriptionDTO subscriptionDTO = new SubscriptionDTO();
+
+        subscriptionDTO.setId( subscription.getId() );
+        subscriptionDTO.setTariff( subscription.getTariff() );
+        subscriptionDTO.setCreatedAt( subscription.getCreatedAt() );
+        subscriptionDTO.setUpdatedAt( subscription.getUpdatedAt() );
+        subscriptionDTO.setStartAt( subscription.getStartAt() );
+        subscriptionDTO.setExpiresAt( subscription.getExpiresAt() );
+        subscriptionDTO.setStatus( subscription.getStatus() );
+        subscriptionDTO.setInterval( subscription.getInterval() );
+        subscriptionDTO.setIntervalCount( subscription.getIntervalCount() );
+        subscriptionDTO.setPrice( subscription.getPrice() );
+        subscriptionDTO.setSendSMS( subscription.getSendSMS() );
+
+        return subscriptionDTO;
+    }
+
+Класс SubscriptionMapperImpl теперь содержит subscriptionToDTO() , который сопоставляет наши поля Subscription SubscriptionDTO.
+
+
+
 <h3>Описание задачи 79 "добавить API создания подписки пользователем"</h3>
 Добавить в подписки возможные статусы
 

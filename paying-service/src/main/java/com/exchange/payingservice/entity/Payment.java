@@ -1,19 +1,13 @@
-package com.exchange.payingservice.model;
+package com.exchange.payingservice.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "payment_table")
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 public class Payment {
 
     @Id
@@ -35,6 +29,7 @@ public class Payment {
     private Long user_id;
 
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     @Column(name = "message")
