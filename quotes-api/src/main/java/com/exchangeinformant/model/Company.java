@@ -12,40 +12,22 @@ import java.util.Set;
 @Entity
 @ToString
 @EqualsAndHashCode
-@Table(name = "companies")
+@Table(name = "stock")
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_id")
-    private Long id;
+    @Column(name = "secure-code")
+    private String secureCode;
 
-    @JsonProperty("Symbol")
-    @Column(name = "symbol")
-    private String symbol;
-
-    @JsonProperty("AssetType")
-    @Column(name = "asset_type")
-    private String assetType;
 
     @JsonProperty("Name")
-    @Column(name = "name")
+    @Column(name = "issuer")
     private String name;
 
     @JsonProperty("Currency")
     @Column(name = "currency")
     private String currency;
 
-    @JsonProperty("Country")
-    @Column(name = "country")
-    private String country;
-
-    @JsonProperty("Sector")
-    @Column(name = "sector")
-    private String sector;
-
-    @JsonProperty("Industry")
-    @Column(name = "industry")
-    private String industry;
 
     @OneToMany(mappedBy = "company")
     @ToString.Exclude

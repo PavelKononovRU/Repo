@@ -4,6 +4,7 @@ import com.exchangeinformant.dto.TinkoffStockDTO;
 import com.exchangeinformant.model.Currency;
 import com.exchangeinformant.model.TinkoffStock;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.loader.LoaderLogging;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.MarketContext;
@@ -45,11 +46,8 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
 
         return new TinkoffStock(
                 item.getTicker(),
-                item.getFigi(),
-                item.getName(),
-                item.getType().getValue(),
-                Currency.valueOf(item.getCurrency().getValue()),
-                lastPrice
+                lastPrice,
+                LocalDateTime.now()
                 );
     }
 
@@ -70,11 +68,8 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
                 .filter(Objects::nonNull)
                 .map(mi -> new TinkoffStock(
                         mi.getTicker(),
-                        mi.getFigi(),
-                        mi.getName(),
-                        mi.getType().getValue(),
-                        Currency.valueOf(mi.getCurrency().getValue()),
-                        context.getMarketOrderbook(mi.getFigi(),0).join().get().getLastPrice()
+                        context.getMarketOrderbook(mi.getFigi(),0).join().get().getLastPrice(),
+                        LocalDateTime.now()
                         ))
                 .collect(Collectors.toList());
         return new TinkoffStockDTO(stocks);

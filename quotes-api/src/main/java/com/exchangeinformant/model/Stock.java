@@ -68,6 +68,6 @@ public class Stock {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "secure-code")
     private Company company;
 }

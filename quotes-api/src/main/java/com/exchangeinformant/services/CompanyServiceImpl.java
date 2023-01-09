@@ -58,7 +58,7 @@ public class CompanyServiceImpl implements CompanyService{
     }
 
     private boolean isCompanyPresent(String stockName) {
-        return getAllCompanies().stream().anyMatch(s->s.getSymbol().equals(stockName));
+        return getAllCompanies().stream().anyMatch(s->s.getSecureCode().equals(stockName));
     }
     private boolean areStocksAvailable(String stockName) {
         return stockRepository.findAll().stream().anyMatch(s->s.getSymbol().equals(stockName));
