@@ -2,14 +2,9 @@ package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.mappers.CardMapper;
-import com.exchange.payingservice.repository.CardRepository;
 import com.exchange.payingservice.util.RestControllerAdvice;
 import com.exchange.payingservice.service.CardService;
 import com.exchange.payingservice.entity.Card;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.Produces;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +35,7 @@ public class CardRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getCard(@PathVariable("id") Long id) {
         Card card = cardService.getCardById(id);
+        System.out.println(card);
         return RestControllerAdvice.generateResponse(CardMapper.INSTANCE.toDTO(card));
     }
 

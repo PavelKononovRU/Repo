@@ -3,12 +3,12 @@ package com.exchange.payingservice.util;
 import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.dto.StatusCards;
 import com.exchange.payingservice.entity.Card;
-import com.exchange.payingservice.mappers.CardMapper;
-import com.exchange.payingservice.repository.CardRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -56,4 +56,8 @@ public class RestControllerAdvice {
         map.put("create_at", LocalDateTime.now());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+
+
+
 }

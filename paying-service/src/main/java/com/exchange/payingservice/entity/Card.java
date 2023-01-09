@@ -2,7 +2,6 @@ package com.exchange.payingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 
@@ -19,7 +18,7 @@ public class Card {
     @Column(name = "card_id")
     private Long id;
 
-    @Column(name = "number")
+    @Column(name = "number", unique = true)
     private String number;
 
     @Column(name = "principal")
