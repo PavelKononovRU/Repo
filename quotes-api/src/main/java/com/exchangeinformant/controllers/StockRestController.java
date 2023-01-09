@@ -39,6 +39,7 @@ public class StockRestController {
         return new ResponseEntity<>(stockService.getAllStocks(), HttpStatus.OK);
     }
 
+    //TODO - только
     @GetMapping("/update")
     public String update() throws IOException {
         stockService.updateAllStocks();

@@ -12,7 +12,6 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-
               - column:
                   name: secure-code
                   type: varchar(5)
@@ -22,7 +21,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: last-price
-                  type: bigint
+                  type: real
                   constraints:
                     nullable: false
               - column:
