@@ -68,8 +68,8 @@ public class StockServiceImpl implements StockService {
             stock.setCreatedAt(LocalDateTime.now());
         }
         stock.setUpdatedAt(LocalDateTime.now());
-        if(companyRepository.findAll().contains(companyRepository.findCompanyBySymbol(stock.getSymbol()))){
-            stock.setCompany(companyRepository.findCompanyBySymbol(stock.getSymbol()));
+        if(companyRepository.findAll().contains(companyRepository.findCompanyBySecureCode(stock.getSymbol()))){
+            stock.setCompany(companyRepository.findCompanyBySecureCode(stock.getSymbol()));
         }
     }
 }

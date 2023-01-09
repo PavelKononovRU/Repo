@@ -1,23 +1,18 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.dto.TinkoffStockDTO;
-import com.exchangeinformant.model.Currency;
+import com.exchangeinformant.model.Company;
 import com.exchangeinformant.model.TinkoffStock;
+import com.exchangeinformant.repository.CompanyRepository;
+import com.exchangeinformant.repository.TinkoffRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.loader.LoaderLogging;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.MarketContext;
 import ru.tinkoff.invest.openapi.OpenApi;
-import ru.tinkoff.invest.openapi.model.rest.CandleResolution;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrumentList;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -28,9 +23,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TinkoffStockServiceImpl implements TinkoffStockService {
     private final OpenApi openApi;
+    private final TinkoffRepository tinkoffRepository;
+    private final CompanyRepository companyRepository;
 
 
-    @Override
     public TinkoffStock getStockByTicker(String ticker) {
 
         MarketContext context = openApi.getMarketContext();
@@ -52,6 +48,7 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
     }
 
 
+    @Override
     public TinkoffStockDTO getStocksByTickers(List<String> tickers) {
         MarketContext context = openApi.getMarketContext();
         List<CompletableFuture<MarketInstrumentList>> marketInstrument = new ArrayList<>();
@@ -73,5 +70,26 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
                         ))
                 .collect(Collectors.toList());
         return new TinkoffStockDTO(stocks);
+    }
+
+
+
+    @Override
+    public void updateAllStocks() {
+        List<Company> allStocks = companyRepository.findAll();
+        for (Company stock : allStocks) {
+            TinkoffStock updatedStock = getStockByTicker(stock.getSecureCode());
+            tinkoffRepository.save(updatedStock);
+        }
+    }
+
+    @Override
+    public List<Company> getAllStocks() {
+        return companyRepository.findAll();
+    }
+
+    @Override
+    public Company getStockByCode(String code) {
+        return companyRepository.findCompanyBySecureCode(code);
     }
 }

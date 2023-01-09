@@ -1,127 +1,51 @@
 databaseChangeLog:
   - changeSet:
-      id: create-stock-from-alpha-advantage
+      id: create-stock-table
       author: Pavel
       changes:
         - createTable:
-            tableName: stocks_alpha
+            tableName: stock
             columns:
               - column:
-                  name: stock_id
-                  type: bigint
-                  autoIncrement: true
+                  name: secure-code
+                  type: varchar(255)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: symbol
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: open
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: high
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: low
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: price
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: volume
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: latest_trading_day
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: previous_close
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: change
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: change_percent
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: created_at
-                  type: datetime
-                  constraints:
-                    nullable: false
-              - column:
-                  name: updated_at
-                  type: datetime
-                  constraints:
-                    nullable: false
-              - column:
-                  name: company_id
-                  type: bigint
-  - changeSet:
-      id: create-company-from-alpha-advantage
-      author: Pavel
-      changes:
-        - createTable:
-            tableName: companies
-            columns:
-              - column:
-                  name: company_id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: symbol
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: asset_type
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: name
+                  name: issuer
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
                   name: currency
                   type: varchar(255)
+  - changeSet:
+      id: create-info-table
+      author: Pavel
+      changes:
+        - createTable:
+            tableName: info
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
                   constraints:
+                    primaryKey: true
                     nullable: false
               - column:
-                  name: country
+                  name: secure-code
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: sector
+                  name: last-price
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: industry
+                  name: updated-at
                   type: varchar(255)
                   constraints:
                     nullable: false

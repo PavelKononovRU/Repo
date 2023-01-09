@@ -39,7 +39,7 @@ public class CompanyServiceImpl implements CompanyService{
     @Override
     public Company getCompanyInfo(String stockName) {
         if(isCompanyPresent(stockName)){
-            Company foundCompany = companyRepository.findCompanyBySymbol(stockName);
+            Company foundCompany = companyRepository.findCompanyBySecureCode(stockName);
             if(areStocksAvailable(stockName)){
                 foundCompany.setStocks(stockRepository.findAllBySymbol(stockName));
             }
