@@ -49,9 +49,8 @@ public class BcsStockServiceImpl implements StockService {
         return stockRepository.findAll();
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
+    @Scheduled(cron = "0 */10 * * * *")
     public void updateAllStocks() {
-
         List<Stock> allStocks = stockRepository.findAll();
         for (Stock stock : allStocks) {
             try {

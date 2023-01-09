@@ -34,5 +34,4 @@ public class Info {
     @Column(name = "secure-code")
     private String secureCode;
 
-
 }
