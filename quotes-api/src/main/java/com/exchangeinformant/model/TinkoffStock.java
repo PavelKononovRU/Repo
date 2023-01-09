@@ -28,7 +28,7 @@ public class TinkoffStock {
 
    @JsonIgnore
    @ManyToOne
-   @JoinColumn(name = "secure-code")
+   @JoinColumn(name = "company_id")
    private Company company;
 
    public TinkoffStock(String ticker, BigDecimal lastPrice, LocalDateTime updatedAt) {

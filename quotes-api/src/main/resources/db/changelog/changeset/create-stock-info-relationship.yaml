@@ -6,6 +6,6 @@ databaseChangeLog:
         - addForeignKeyConstraint:
            constraintName: fk_stockToInfo
            baseTableName: info
-           baseColumnNames: secure-code
+           baseColumnNames: company_id
            referencedTableName: stock
-           referencedColumnNames: secure-code
+           referencedColumnNames: company_id

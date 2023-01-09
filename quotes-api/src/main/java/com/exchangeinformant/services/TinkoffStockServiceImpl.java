@@ -79,6 +79,7 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
         List<Company> allStocks = companyRepository.findAll();
         for (Company stock : allStocks) {
             TinkoffStock updatedStock = getStockByTicker(stock.getSecureCode());
+            updatedStock.setCompany(stock);
             tinkoffRepository.save(updatedStock);
         }
     }

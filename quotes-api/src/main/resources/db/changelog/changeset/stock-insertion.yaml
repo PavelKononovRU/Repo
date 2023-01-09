@@ -126,15 +126,6 @@ databaseChangeLog:
             columns:
               - column:
                   name: secure-code
-                  value: "SCG"
-              - column:
-                  name: issuer
-                  value: "Scana"
-        - insert:
-            tableName: stock
-            columns:
-              - column:
-                  name: secure-code
                   value: "NUE"
               - column:
                   name: issuer
@@ -166,15 +157,6 @@ databaseChangeLog:
               - column:
                   name: issuer
                   value: "Pagseguro Digital"
-        - insert:
-            tableName: stock
-            columns:
-              - column:
-                  name: secure-code
-                  value: "TSO"
-              - column:
-                  name: issuer
-                  value: "Tesoro Corp"
         - insert:
             tableName: stock
             columns:

@@ -16,6 +16,9 @@ import java.util.Set;
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "company_id")
+    private Long company_id;
+
     @Column(name = "secure-code")
     private String secureCode;
 
@@ -32,5 +35,5 @@ public class Company {
     @OneToMany(mappedBy = "company")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private Set<Stock> stocks;
+    private Set<TinkoffStock> stocks;
 }

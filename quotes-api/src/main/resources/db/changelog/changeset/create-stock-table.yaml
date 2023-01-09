@@ -7,10 +7,16 @@ databaseChangeLog:
             tableName: stock
             columns:
               - column:
+                    name: company_id
+                    type: bigint
+                    autoIncrement: true
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+              - column:
                   name: secure-code
                   type: varchar(255)
                   constraints:
-                    primaryKey: true
                     nullable: false
               - column:
                   name: issuer
@@ -49,3 +55,6 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: company_id
+                  type: bigint
