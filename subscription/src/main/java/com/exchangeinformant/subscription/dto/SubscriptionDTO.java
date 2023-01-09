@@ -6,7 +6,6 @@ import com.exchangeinformant.subscription.util.Interval;
 import java.time.LocalDateTime;
 import lombok.Data;
 import org.mapstruct.Mapper;
-
 import javax.validation.constraints.NotNull;
 
 @Data

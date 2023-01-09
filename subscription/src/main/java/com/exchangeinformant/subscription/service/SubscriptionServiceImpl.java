@@ -1,12 +1,13 @@
 package com.exchangeinformant.subscription.service;
 
-import com.exchangeinformant.subscription.model.Subscription;
+import com.exchangeinformant.subscription.dto.SubscriptionDTO;
+import com.exchangeinformant.subscription.mappers.SubscriptionMapper;
 import com.exchangeinformant.subscription.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService{
@@ -20,25 +21,36 @@ public class SubscriptionServiceImpl implements SubscriptionService{
 
     @Override
     @Transactional
-    public void createSubscription(Subscription subscription) {
-        subscriptionRepository.save(subscription);
+    public void createSubscription(SubscriptionDTO subscriptionDTO) {
+        subscriptionRepository.save(SubscriptionMapper
+                .INSTANCE
+                .subscriptionDTOToModel(subscriptionDTO));
     }
 
     @Override
-    public Subscription getSubscription(Long id) {
-        return subscriptionRepository.findById(id).orElse(null);
+    public SubscriptionDTO getSubscription(Long id) {
+
+        return SubscriptionMapper
+                .INSTANCE
+                .subscriptionToDTO(subscriptionRepository.findById(id).orElse(null));
     }
 
-
     @Override
-    public List<Subscription> getAllSubscription() {
-        return subscriptionRepository.findAll();
+    public List<SubscriptionDTO> getAllSubscription() {
+
+        return subscriptionRepository.findAll()
+                .stream()
+                .map(SubscriptionMapper.INSTANCE::subscriptionToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public void updateSubscription(Subscription subscription) {
-        subscriptionRepository.save(subscription);
+    public void updateSubscription(SubscriptionDTO subscriptionDTO) {
+
+        subscriptionRepository.save(SubscriptionMapper
+                .INSTANCE
+                .subscriptionDTOToModel(subscriptionDTO));
     }
 
     @Override
@@ -46,4 +58,5 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     public void deleteSubscription(Long id) {
         subscriptionRepository.deleteById(id);
     }
+
 }

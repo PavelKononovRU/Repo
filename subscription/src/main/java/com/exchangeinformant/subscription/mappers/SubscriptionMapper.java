@@ -8,5 +8,8 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface SubscriptionMapper {
     SubscriptionMapper INSTANCE = Mappers.getMapper(SubscriptionMapper.class);
-    SubscriptionDTO toDTO(Subscription subscription);
+    SubscriptionDTO subscriptionToDTO(Subscription subscription);
+
+    Subscription subscriptionDTOToModel(SubscriptionDTO subscriptionDTO);
+
 }
