@@ -1,11 +1,14 @@
 package com.exchange.payingservice.controllers;
 
+import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.entity.Payment;
+import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -20,8 +23,9 @@ public class PaymentRestController {
     }
 
     @GetMapping(("/{id}"))
-    public ResponseEntity<Payment> getPayment(@PathVariable Long id) {
-        return ResponseEntity.ok(paymentService.getPaymentById(id));
+    public ResponseEntity<PaymentDTO> getPayment(@PathVariable Long id) {
+        PaymentDTO paymentDTO = PaymentsMapper.INSTANCE.toDTO(paymentService.getPaymentById(id));
+        return ResponseEntity.ok(paymentDTO);
     }
 
     @GetMapping
@@ -29,15 +33,16 @@ public class PaymentRestController {
         return ResponseEntity.ok(paymentService.getAllPayment());
     }
 
-    @PostMapping
-    public ResponseEntity<HttpStatus> createPayment(@RequestBody Payment payment) {
-        paymentService.createPayment(payment);
-        return ResponseEntity.ok(HttpStatus.CREATED);
-    }
+//    Старый стандартный POST
+//    @PostMapping
+//    public ResponseEntity<HttpStatus> createPayment(@RequestBody Payment payment) {
+//        paymentService.createPayment(payment);
+//        return ResponseEntity.ok(HttpStatus.CREATED);
+//    }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> updatePayment(@RequestBody Payment payment) {
-        paymentService.updatePayment(payment);
+    public ResponseEntity<HttpStatus> updatePayment(@PathVariable("id") Long id, @RequestBody PaymentDTO paymentDTO) {
+        paymentService.updatePayment(id, paymentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
@@ -46,4 +51,20 @@ public class PaymentRestController {
         paymentService.deletePaymentById(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    // Имитирует тело для stud-payment POST
+    @GetMapping("/test/v1")
+    public ResponseEntity<Object> testV1Method() {
+        RestTemplate restTemplate = new RestTemplate();
+        StudPaymentDTO studPayment = paymentService.testMethodPostToStudPayment();
+        ResponseEntity<Object> responseEntity =
+                restTemplate.postForEntity("http://localhost:8081/api/payments", studPayment, Object.class);
+        return responseEntity;
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> postToStudPayment(@RequestBody StudPaymentDTO studPayment) {
+        return paymentService.methodGetBodyToStudPayment(studPayment);
+    }
+
 }
