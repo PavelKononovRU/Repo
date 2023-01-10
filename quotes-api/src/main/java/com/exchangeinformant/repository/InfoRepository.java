@@ -2,9 +2,13 @@ package com.exchangeinformant.repository;
 
 import com.exchangeinformant.model.Info;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface InfoRepository extends JpaRepository<Info,Long> {
-    Info findCompanyBySecureCode(String secureCode);
+/**
+ * Created in IntelliJ
+ * User: e-davidenko
+ * Date: 07.01.2023
+ * Time: 20:21
+ */
+
+public interface InfoRepository extends JpaRepository<Info, Long> {
 }

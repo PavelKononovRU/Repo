@@ -1,5 +1,6 @@
 package com.exchange.payingservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +10,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Card {
 
     @Id
@@ -16,7 +18,7 @@ public class Card {
     @Column(name = "card_id")
     private Long id;
 
-    @Column(name = "number")
+    @Column(name = "number", unique = true)
     private String number;
 
     @Column(name = "principal")

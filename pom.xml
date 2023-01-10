@@ -23,6 +23,7 @@
         <module>quotes-api</module>
         <module>paying-service</module>
         <module>gateway-service</module>
+        <module>sub-payment</module>
     </modules>
     <properties>
         <java.version>11</java.version>

@@ -1,31 +1,37 @@
 package com.exchangeinformant.model;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
-import java.util.Set;
-
-@Getter
-@Setter
-@RequiredArgsConstructor
+/**
+ * Created in IntelliJ
+ * User: e-davidenko
+ * Date: 07.01.2023
+ * Time: 16:18
+ */
+@Table(name = "info")
 @Entity
-@ToString
-@EqualsAndHashCode
-@Table(name = "stock")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Info {
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_id")
-    private Long company_id;
+    private long id;
+
+    @Column(name = "last-price")
+    @JsonSetter("close")
+    private double lastPrice;
+
+    @Column(name = "updated-at")
+    private LocalDateTime updatedAt;
+
     @Column(name = "secure-code")
     private String secureCode;
-    @Column(name = "issuer")
-    private String name;
-    @Column(name = "currency")
-    private String currency;
 
-    @OneToMany(mappedBy = "info")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private Set<TinkoffStock> stocks;
 }

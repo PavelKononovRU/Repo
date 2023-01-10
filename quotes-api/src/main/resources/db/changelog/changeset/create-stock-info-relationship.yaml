@@ -1,3 +1,4 @@
+
 databaseChangeLog:
   - changeSet:
       id: create-stock-to-info-relationship

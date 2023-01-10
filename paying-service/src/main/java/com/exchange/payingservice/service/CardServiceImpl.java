@@ -1,6 +1,7 @@
 package com.exchange.payingservice.service;
 
-import com.exchange.payingservice.util.StatusCards;
+import com.exchange.payingservice.dto.CardDTO;
+import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.repository.CardRepository;
 import com.exchange.payingservice.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +15,28 @@ public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
 
+    private final CardMapper cardMapper;
+
     @Autowired
-    public CardServiceImpl(CardRepository cardRepository) {
+    public CardServiceImpl(CardRepository cardRepository, CardMapper cardMapper) {
         this.cardRepository = cardRepository;
+        this.cardMapper = cardMapper;
     }
 
     @Override
     @Transactional
-    public StatusCards createCard(Card card) {
+    public CardDTO createCard(Card card) {
+        System.out.println(card);
         cardRepository.saveAndFlush(card);
-        return new StatusCards("Карта сохранена",
-                "Управляйте картами в платежной информации",
-                cardRepository.getCardByNumber(card.getNumber()).getId());
+        return CardMapper.INSTANCE.toDTO(cardRepository.getCardByNumber(card.getNumber()));
     }
 
     @Override
     @Transactional
-    public void updateCard(Card card) {
-        cardRepository.save(card);
+    public void updateCard(Long id, CardDTO cardDTO) {
+        Card cardUp = cardRepository.getReferenceById(id);
+        cardMapper.updateCardFromDto(cardDTO, cardUp);
+        cardRepository.save(cardUp);
     }
 
     @Override

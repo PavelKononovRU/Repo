@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-promosubscription
+      author: Sergey
+      changes:
+        - createTable:
+            tableName: promosubscription
+            columns:
+              - column:
+                  name: promosubscription_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: promocode
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
