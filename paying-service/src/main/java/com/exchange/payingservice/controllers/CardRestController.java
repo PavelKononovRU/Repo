@@ -27,7 +27,7 @@ public class CardRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> saveCard(@RequestBody Card card) {
+    public ResponseEntity<Object> saveCard(@RequestBody CardDTO card) {
         cardService.createCard(card);
         return RestControllerAdvice.generateResponsePost(card);
     }

@@ -1,6 +1,7 @@
 package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.CardDTO;
+import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.repository.CardRepository;
 import com.exchange.payingservice.entity.Card;
@@ -25,10 +26,15 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional
-    public CardDTO createCard(Card card) {
+    public CardDTO createCard(CardDTO card) {
+        for (Card crd : getAllCard()) {
+            if (crd.getNumber().equals(card.getNumber())) {
+                throw new PaymentException("Данный номер карты уже существует");
+            }
+        }
         System.out.println(card);
-        cardRepository.saveAndFlush(card);
-        return CardMapper.INSTANCE.toDTO(cardRepository.getCardByNumber(card.getNumber()));
+        cardRepository.saveAndFlush(CardMapper.INSTANCE.toEntity(card));
+        return card;
     }
 
     @Override

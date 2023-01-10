@@ -25,12 +25,12 @@ public class Card {
     private String principal;
 
     @Column(name = "csv")
-    private Long CSV;
+    private String CSV;
 
     @Column(name = "user_id")
     private Long user_id;
 
-    public Card(String number, String principal, Long CSV, Long user_id) {
+    public Card(String number, String principal, String CSV, Long user_id) {
         this.number = number;
         this.principal = principal;
         this.CSV = CSV;

@@ -47,8 +47,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public void createPayment(Payment payment) {
-        paymentRepository.save(payment);
+    public void createPayment(PaymentDTO payment) {
+        paymentRepository.save(paymentsMapper.toEntity(payment));
     }
 
     @Override

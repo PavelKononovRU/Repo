@@ -17,7 +17,7 @@ import java.util.Map;
 @ControllerAdvice
 public class RestControllerAdvice {
 
-    public static ResponseEntity<Object> generateResponsePost(Card card) {
+    public static ResponseEntity<Object> generateResponsePost(CardDTO card) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("date", new StatusCards("Карта сохранена",
                 "Управляйте картами в платежной информации"));
