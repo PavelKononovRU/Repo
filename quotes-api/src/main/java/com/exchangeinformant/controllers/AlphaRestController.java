@@ -1,13 +1,9 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.model.Company;
+import com.exchangeinformant.model.Info;
 import com.exchangeinformant.services.AlphaStockService;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,13 +29,18 @@ public class AlphaRestController {
     }
 
     @GetMapping("/getStocks")
-    public List<Company> getStocks() {
+    public List<Info> getStocks() {
         return alphaStockService.getAllStocks();
     }
 
     @GetMapping("/{code}")
-    public Company getStock(@PathVariable("code") String code) {
+    public Info getStock(@PathVariable("code") String code) {
         return alphaStockService.getStockByCode(code);
+    }
+
+    @PostMapping("/getSomeStocks")
+    public List<Info> getSomeStocks(@RequestBody List<String> codes) {
+        return alphaStockService.getStocksByCodes(codes);
     }
 
 }

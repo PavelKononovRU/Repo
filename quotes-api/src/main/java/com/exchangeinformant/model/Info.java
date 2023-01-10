@@ -1,6 +1,5 @@
 package com.exchangeinformant.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +12,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode
 @Table(name = "stock")
-public class Company {
+public class Info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "company_id")
@@ -25,7 +24,7 @@ public class Company {
     @Column(name = "currency")
     private String currency;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "info")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<TinkoffStock> stocks;

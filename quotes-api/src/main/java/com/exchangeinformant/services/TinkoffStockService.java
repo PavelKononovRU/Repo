@@ -1,15 +1,14 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.dto.TinkoffStockDTO;
-import com.exchangeinformant.model.Company;
+import com.exchangeinformant.model.Info;
 
 import java.util.List;
 
 public interface TinkoffStockService {
-    List<Company> getStocksByCodes(List<String> codes);
+    List<Info> getStocksByCodes(List<String> codes);
 
     void updateAllStocks();
 
-    List<Company> getAllStocks();
-    Company getStockByCode(String code);
+    List<Info> getAllStocks();
+    Info getStockByCode(String code);
 }

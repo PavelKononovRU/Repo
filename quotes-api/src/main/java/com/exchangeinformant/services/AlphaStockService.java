@@ -1,8 +1,6 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.dto.TinkoffStockDTO;
-import com.exchangeinformant.model.AlphaStock;
-import com.exchangeinformant.model.Company;
+import com.exchangeinformant.model.Info;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +13,9 @@ import java.util.List;
  */
 @Service
 public interface AlphaStockService {
-    List<Company> getAllStocks();
+    List<Info> getAllStocks();
     void updateAllStocks();
-    Company getStockByCode(String code);
-    List<Company> getStocksByCodes(List<String> codes);
+    Info getStockByCode(String code);
+    List<Info> getStocksByCodes(List<String> codes);
 
 }

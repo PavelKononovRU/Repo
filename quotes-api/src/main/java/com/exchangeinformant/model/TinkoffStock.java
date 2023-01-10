@@ -29,7 +29,7 @@ public class TinkoffStock {
    @JsonIgnore
    @ManyToOne
    @JoinColumn(name = "company_id")
-   private Company company;
+   private Info info;
 
    public TinkoffStock(String ticker, BigDecimal lastPrice, LocalDateTime updatedAt) {
       this.ticker = ticker;

@@ -1,30 +1,25 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.dto.TinkoffStockDTO;
-import com.exchangeinformant.model.Company;
+import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.TinkoffStock;
-import com.exchangeinformant.repository.CompanyRepository;
+import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.TinkoffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.MarketContext;
 import ru.tinkoff.invest.openapi.OpenApi;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
-import ru.tinkoff.invest.openapi.model.rest.MarketInstrumentList;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TinkoffStockServiceImpl implements TinkoffStockService {
     private final OpenApi openApi;
     private final TinkoffRepository tinkoffRepository;
-    private final CompanyRepository companyRepository;
+    private final InfoRepository infoRepository;
 
 
     public TinkoffStock getStockByTicker(String ticker) {
@@ -49,10 +44,10 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
 
 
     @Override
-    public List<Company> getStocksByCodes(List<String> codes) {
-        List<Company> result = new ArrayList<>();
+    public List<Info> getStocksByCodes(List<String> codes) {
+        List<Info> result = new ArrayList<>();
         for(String code : codes){
-            result.add(companyRepository.findCompanyBySecureCode(code));
+            result.add(infoRepository.findCompanyBySecureCode(code));
         }
         return result;
     }
@@ -61,21 +56,21 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
 
     @Override
     public void updateAllStocks() {
-        List<Company> companies = companyRepository.findAll();
-        for (Company stock : companies) {
+        List<Info> companies = infoRepository.findAll();
+        for (Info stock : companies) {
             TinkoffStock updatedStock = getStockByTicker(stock.getSecureCode());
-            updatedStock.setCompany(stock);
+            updatedStock.setInfo(stock);
             tinkoffRepository.save(updatedStock);
         }
     }
 
     @Override
-    public List<Company> getAllStocks() {
-        return companyRepository.findAll();
+    public List<Info> getAllStocks() {
+        return infoRepository.findAll();
     }
 
     @Override
-    public Company getStockByCode(String code) {
-        return companyRepository.findCompanyBySecureCode(code);
+    public Info getStockByCode(String code) {
+        return infoRepository.findCompanyBySecureCode(code);
     }
 }
