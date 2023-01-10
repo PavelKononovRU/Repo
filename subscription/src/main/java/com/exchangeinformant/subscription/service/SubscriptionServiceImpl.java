@@ -1,6 +1,7 @@
 package com.exchangeinformant.subscription.service;
 
 import com.exchangeinformant.subscription.dto.SubscriptionDTO;
+import com.exchangeinformant.subscription.exception.ResourceNotFoundException;
 import com.exchangeinformant.subscription.mappers.SubscriptionMapper;
 import com.exchangeinformant.subscription.repository.SubscriptionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     public SubscriptionDTO getSubscription(Long id) {
         return SubscriptionMapper
                 .INSTANCE
-                .subscriptionToDTO(subscriptionRepository.findById(id).orElse(null));
+                .subscriptionToDTO(subscriptionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Подписка с id '" + id + "' не найдена")));
     }
 
     @Override
@@ -66,6 +67,10 @@ public class SubscriptionServiceImpl implements SubscriptionService{
     @Override
     @Transactional
     public void deleteSubscription(Long id) {
-        subscriptionRepository.deleteById(id);
+        try {
+            subscriptionRepository.deleteById(id);
+        } catch (Exception e){
+            throw new ResourceNotFoundException("Невозможно удалить подписку с id '" + id + "': " + e.getMessage());
+        }
     }
 }

@@ -10,6 +10,12 @@ public class SubscriptionError{
     public SubscriptionError () {
     }
 
+    public SubscriptionError (String title, String message, String requestId) {
+        this.message = message;
+        this.title = title;
+        this.requestId = requestId;
+    }
+
     public SubscriptionError (String title, int statusCode, String message, String requestId) {
         this.statusCode = statusCode;
         this.message = message;
