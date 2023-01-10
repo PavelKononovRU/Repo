@@ -11,4 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface InfoRepository extends JpaRepository<Info, Long> {
+    Info findBySecureCode(String code);
 }

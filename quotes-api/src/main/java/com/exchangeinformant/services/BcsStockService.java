@@ -1,7 +1,6 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.model.Stock;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,7 +13,7 @@ import java.util.List;
  * Time: 13:50
  */
 @Service
-public interface StockService {
+public interface BcsStockService {
 
     Stock getStock(String stockName);
 

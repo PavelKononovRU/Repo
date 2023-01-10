@@ -6,38 +6,29 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-/**
- * Created in IntelliJ
- * User: e-davidenko
- * Date: 07.01.2023
- * Time: 16:18
- */
 @Table(name = "info")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Info {
+public class AlphaInfo {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "last-price")
-    @JsonSetter("close")
+    @JsonProperty("05. price")
     private double lastPrice;
 
     @Column(name = "updated-at")
     private LocalDateTime updatedAt;
 
     @Column(name = "secure-code")
+    @JsonProperty("01. symbol")
     private String secureCode;
 
-    public Info(double lastPrice, LocalDateTime updatedAt, String secureCode) {
-        this.lastPrice = lastPrice;
-        this.updatedAt = updatedAt;
-        this.secureCode = secureCode;
-    }
 }

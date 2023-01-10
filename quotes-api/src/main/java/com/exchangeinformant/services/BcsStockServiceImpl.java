@@ -24,7 +24,7 @@ import java.util.*;
  * Time: 17:27
  */
 @Service
-public class BcsStockServiceImpl implements StockService {
+public class BcsStockServiceImpl implements BcsStockService {
 
     private final WebClient webClient;
     private final BcsConfig bcsConfig;
