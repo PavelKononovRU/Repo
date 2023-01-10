@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Data
 @ConfigurationProperties(prefix = "tinkoff.api")
 @Component
-public class ApiConfig {
+public class TinkoffData {
     private String sandbox;
     private Boolean isSandboxMode;
 }

@@ -8,13 +8,14 @@ import ru.tinkoff.invest.openapi.OpenApi;
 import ru.tinkoff.invest.openapi.okhttp.OkHttpOpenApi;
 
 @Configuration
-@EnableConfigurationProperties(ApiConfig.class)
+@EnableConfigurationProperties(TinkoffData.class)
 @RequiredArgsConstructor
 public class TinkoffConfig {
-    private final ApiConfig apiConfig;
+
+    private final TinkoffData tinkoffData;
 
     @Bean
     public OpenApi openApi() {
-        return new OkHttpOpenApi(apiConfig.getSandbox(), apiConfig.getIsSandboxMode());
+        return new OkHttpOpenApi(tinkoffData.getSandbox(), tinkoffData.getIsSandboxMode());
     }
 }
