@@ -1,9 +1,9 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.model.Info;
-import com.exchangeinformant.model.TinkoffStock;
+import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
-import com.exchangeinformant.repository.TinkoffRepository;
+import com.exchangeinformant.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.MarketContext;
@@ -18,11 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TinkoffStockServiceImpl implements TinkoffStockService {
     private final OpenApi openApi;
-    private final TinkoffRepository tinkoffRepository;
+    private final StockRepository stockRepository;
     private final InfoRepository infoRepository;
 
 
-    public TinkoffStock getStockByTicker(String ticker) {
+    public Info getStockByTicker(String ticker) {
 
         MarketContext context = openApi.getMarketContext();
         var list = context.searchMarketInstrumentsByTicker(ticker);
@@ -34,20 +34,19 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
 
         var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().get().getLastPrice();
 
-
-        return new TinkoffStock(
-                item.getTicker(),
-                lastPrice,
-                LocalDateTime.now()
+        return new Info(
+                lastPrice.doubleValue(),
+                LocalDateTime.now(),
+                item.getTicker()
                 );
     }
 
 
     @Override
-    public List<Info> getStocksByCodes(List<String> codes) {
-        List<Info> result = new ArrayList<>();
+    public List<Stock> getStocksByCodes(List<String> codes) {
+        List<Stock> result = new ArrayList<>();
         for(String code : codes){
-            result.add(infoRepository.findCompanyBySecureCode(code));
+            result.add(stockRepository.findBySecureCode(code));
         }
         return result;
     }
@@ -56,21 +55,20 @@ public class TinkoffStockServiceImpl implements TinkoffStockService {
 
     @Override
     public void updateAllStocks() {
-        List<Info> companies = infoRepository.findAll();
-        for (Info stock : companies) {
-            TinkoffStock updatedStock = getStockByTicker(stock.getSecureCode());
-            updatedStock.setInfo(stock);
-            tinkoffRepository.save(updatedStock);
+        List<Stock> companies = stockRepository.findAll();
+        for (Stock stock : companies) {
+            Info updatedStock = getStockByTicker(stock.getSecureCode());
+            infoRepository.save(updatedStock);
         }
     }
 
     @Override
-    public List<Info> getAllStocks() {
-        return infoRepository.findAll();
+    public List<Stock> getAllStocks() {
+        return stockRepository.findAll();
     }
 
     @Override
-    public Info getStockByCode(String code) {
-        return infoRepository.findCompanyBySecureCode(code);
+    public Stock getStockByCode(String code) {
+        return stockRepository.findBySecureCode(code);
     }
 }

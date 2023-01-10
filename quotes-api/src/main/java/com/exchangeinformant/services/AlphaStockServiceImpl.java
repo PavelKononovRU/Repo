@@ -3,11 +3,10 @@ package com.exchangeinformant.services;
 import com.exchangeinformant.configuration.AlphaVantageConfig;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Root;
-import com.exchangeinformant.model.AlphaStock;
+import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
-import com.exchangeinformant.repository.AlphaStockRepository;
+import com.exchangeinformant.repository.StockRepository;
 import org.springframework.http.MediaType;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -28,11 +27,11 @@ public class AlphaStockServiceImpl implements AlphaStockService {
 
     private final AlphaVantageConfig properties;
     private final WebClient webClient;
-    private final AlphaStockRepository stockRepository;
+    private final StockRepository stockRepository;
     private final InfoRepository infoRepository;
 
 
-    public AlphaStockServiceImpl(AlphaVantageConfig properties, WebClient webClient, AlphaStockRepository stockRepository, InfoRepository infoRepository) {
+    public AlphaStockServiceImpl(AlphaVantageConfig properties, WebClient webClient, StockRepository stockRepository, InfoRepository infoRepository) {
         this.properties = properties;
         this.webClient = webClient;
         this.stockRepository = stockRepository;
@@ -40,7 +39,7 @@ public class AlphaStockServiceImpl implements AlphaStockService {
     }
 
 
-    public AlphaStock getStockPrice(String stockName)  {
+    public Info getStockPrice(String stockName)  {
         return Objects.requireNonNull(webClient
                         .get()
                         .uri(String.format(properties.getUrl(), properties.getGlobalFunction(), stockName, properties.getKey()))
@@ -48,36 +47,35 @@ public class AlphaStockServiceImpl implements AlphaStockService {
                         .retrieve()
                         .bodyToMono(Root.class)
                         .block())
-                .getAlphaStock();
+                .getAlphaInfo();
     }
 
     @Override
-    public List<Info> getAllStocks() {
-        return infoRepository.findAll();
+    public List<Stock> getAllStocks() {
+        return stockRepository.findAll();
     }
 
 
     @Override
     public void updateAllStocks() {
-        List<Info> allCompanies = infoRepository.findAll();
-        for(Info info : allCompanies){
-            AlphaStock updatedStock = getStockPrice(info.getSecureCode());
+        List<Stock> allCompanies = stockRepository.findAll();
+        for(Stock info : allCompanies){
+            Info updatedStock = getStockPrice(info.getSecureCode());
             updatedStock.setUpdatedAt(LocalDateTime.now());
-            updatedStock.setInfo(info);
-            stockRepository.save(updatedStock);
+            infoRepository.save(updatedStock);
         }
     }
 
     @Override
-    public Info getStockByCode(String code) {
-        return infoRepository.findCompanyBySecureCode(code);
+    public Stock getStockByCode(String code) {
+        return stockRepository.findBySecureCode(code);
     }
 
     @Override
-    public List<Info> getStocksByCodes(List<String> codes) {
-        List<Info> result = new ArrayList<>();
+    public List<Stock> getStocksByCodes(List<String> codes) {
+        List<Stock> result = new ArrayList<>();
         for (String code : codes) {
-            result.add(infoRepository.findCompanyBySecureCode(code));
+            result.add(stockRepository.findBySecureCode(code));
         }
         return result;
     }

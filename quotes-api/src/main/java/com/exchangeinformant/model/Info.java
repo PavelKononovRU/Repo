@@ -1,5 +1,6 @@
 package com.exchangeinformant.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,4 +35,9 @@ public class Info {
     @Column(name = "secure-code")
     private String secureCode;
 
+    public Info(double lastPrice, LocalDateTime updatedAt, String secureCode) {
+        this.lastPrice = lastPrice;
+        this.updatedAt = updatedAt;
+        this.secureCode = secureCode;
+    }
 }

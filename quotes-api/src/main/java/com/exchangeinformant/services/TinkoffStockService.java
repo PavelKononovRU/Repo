@@ -1,14 +1,15 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.model.Info;
+import com.exchangeinformant.model.Stock;
 
 import java.util.List;
 
 public interface TinkoffStockService {
-    List<Info> getStocksByCodes(List<String> codes);
+    List<Stock> getStocksByCodes(List<String> codes);
 
     void updateAllStocks();
 
-    List<Info> getAllStocks();
-    Info getStockByCode(String code);
+    List<Stock> getAllStocks();
+    Stock getStockByCode(String code);
 }

@@ -1,6 +1,7 @@
 package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.model.Info;
+import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.TinkoffStockService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +22,17 @@ public class TinkoffRestController {
     }
 
     @GetMapping("/getStocks")
-    public List<Info> getStocks() {
+    public List<Stock> getStocks() {
        return tinkoffStockService.getAllStocks();
     }
 
     @GetMapping("/{code}")
-    public Info getStock(@PathVariable("code") String code) {
+    public Stock getStock(@PathVariable("code") String code) {
         return tinkoffStockService.getStockByCode(code);
     }
 
     @PostMapping("/getSomeStocks")
-    public List<Info> getSomeStocks(@RequestBody List<String> codes) {
+    public List<Stock> getSomeStocks(@RequestBody List<String> codes) {
         return tinkoffStockService.getStocksByCodes(codes);
     }
 }
