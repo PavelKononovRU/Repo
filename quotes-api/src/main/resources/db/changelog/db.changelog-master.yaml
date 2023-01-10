@@ -1,5 +1,7 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/changeset/create-stock-table.yaml
+      file: db/changelog/changeset/stock.yaml
   - include:
-      file: db/changelog/changeset/create-stock-info-relationship.yaml
+      file: db/changelog/changeset/info.yaml
+  - include:
+      file: db/changelog/changeset/stock-insert.yaml

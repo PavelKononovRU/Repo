@@ -1,11 +1,10 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.model.Stock;
-import com.exchangeinformant.model.Company;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -16,6 +15,10 @@ import java.util.List;
  */
 @Service
 public interface StockService {
-    Stock getStockPrice(String stockName);
+
+    Stock getStock(String stockName);
+
     List<Stock> getAllStocks();
+
+    void updateAllStocks() throws IOException;
 }

@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: info-1
+      author: e-davidenko
+      changes:
+        - createTable:
+            tableName: info
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: secure-code
+                  type: varchar(5)
+                  constraints:
+                    foreignKeyName: secure-code
+                    references: stock
+                    nullable: false
+              - column:
+                  name: last-price
+                  type: real
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated-at
+                  type: timestamp without time zone
+                  defaultValue: now()

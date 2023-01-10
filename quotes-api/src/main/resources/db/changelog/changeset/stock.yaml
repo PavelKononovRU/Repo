@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: stock-1
+      author: e-davidenko
+      changes:
+        - createTable:
+            tableName: stock
+            columns:
+              - column:
+                  name: secure-code
+                  type: varchar(5)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: issuer
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(4)

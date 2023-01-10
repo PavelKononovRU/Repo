@@ -1,9 +1,6 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.dto.StockDTO;
 import com.exchangeinformant.model.Stock;
-import com.exchangeinformant.model.Company;
-import com.exchangeinformant.services.CompanyService;
 import com.exchangeinformant.services.StockService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -26,20 +22,28 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api",produces = MediaType.APPLICATION_JSON_VALUE)
 public class StockRestController {
+
     private final StockService stockService;
 
     public StockRestController(StockService stockService) {
         this.stockService = stockService;
     }
 
-    @GetMapping(value = "/{stock}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<StockDTO> getStockPrice(@PathVariable("stock") String stock)  {
-        Stock stockObject = stockService.getStockPrice(stock);
-        return new ResponseEntity<>(new StockDTO(stockObject.getSymbol(),stockObject.getPrice()), HttpStatus.OK);
+    @GetMapping("/get/{stock}")
+    public ResponseEntity<Stock> get(@PathVariable(name = "stock") String stock) {
+        return new ResponseEntity<>(stockService.getStock(stock), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Stock>> getAllStockPrices() {
-        return new ResponseEntity<>(stockService.getAllStocks(),HttpStatus.OK);
+    @GetMapping("/get/all")
+    public ResponseEntity<List<Stock>> getAll() {
+        return new ResponseEntity<>(stockService.getAllStocks(), HttpStatus.OK);
     }
+
+    //TODO - только
+    @GetMapping("/update")
+    public String update() throws IOException {
+        stockService.updateAllStocks();
+        return "OK";
+    }
+
 }

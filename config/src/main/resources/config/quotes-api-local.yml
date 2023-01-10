@@ -8,13 +8,17 @@ eureka:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
-      preferIpAddress: true
-      lease-renewal-interval-in-seconds: 30
+    preferIpAddress: true
+    lease-renewal-interval-in-seconds: 30
 alpha-vantage:
   api:
     url: https://www.alphavantage.co/query/?function=%s&symbol=%s&apikey=%s
     key: R5Y1MX285BT0WOJZ
     global-function: GLOBAL_QUOTE
     overview-function: OVERVIEW
-webclient:
-  timeout: 10000
+bcs:
+  api:
+    url: https://api.bcs.ru
+    all-stocks: /partner/quotations?portfolio_ids%5B0%5D=115&limit=500000
+    partner-token: A5264D52-1510-4E42-8E90-E729FF405646
+    one-stock: /udfdatafeed/v1/info?instruments=SPBXM|%s&inOrderArray=true
