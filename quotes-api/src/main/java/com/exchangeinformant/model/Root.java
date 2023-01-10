@@ -12,5 +12,5 @@ import lombok.Data;
 @Data
 public class Root {
     @JsonProperty("Global Quote")
-    public Info alphaInfo;
+    public AlphaInfo alphaInfo;
 }

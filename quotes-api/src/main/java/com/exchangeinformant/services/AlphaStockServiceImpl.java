@@ -1,6 +1,7 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.configuration.AlphaVantageConfig;
+import com.exchangeinformant.model.AlphaInfo;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Root;
 import com.exchangeinformant.model.Stock;
@@ -39,7 +40,7 @@ public class AlphaStockServiceImpl implements AlphaStockService {
     }
 
 
-    public Info getStockPrice(String stockName)  {
+    public AlphaInfo getStockPrice(String stockName)  {
         return Objects.requireNonNull(webClient
                         .get()
                         .uri(String.format(properties.getUrl(), properties.getGlobalFunction(), stockName, properties.getKey()))
@@ -60,9 +61,8 @@ public class AlphaStockServiceImpl implements AlphaStockService {
     public void updateAllStocks() {
         List<Stock> allCompanies = stockRepository.findAll();
         for(Stock info : allCompanies){
-            Info updatedStock = getStockPrice(info.getSecureCode());
-            updatedStock.setUpdatedAt(LocalDateTime.now());
-            infoRepository.save(updatedStock);
+            AlphaInfo updatedStock = getStockPrice(info.getSecureCode());
+            infoRepository.save(new Info(updatedStock.getLastPrice(), LocalDateTime.now(), updatedStock.getSecureCode()));
         }
     }
 
