@@ -29,4 +29,9 @@ public class TinkoffRestController {
     public Company getStock(@PathVariable("code") String code) {
         return tinkoffStockService.getStockByCode(code);
     }
+
+    @PostMapping("/getSomeStocks")
+    public List<Company> getSomeStocks(@RequestBody List<String> codes) {
+        return tinkoffStockService.getStocksByCodes(codes);
+    }
 }

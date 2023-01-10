@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +38,7 @@ public class AlphaStockServiceImpl implements AlphaStockService {
         this.companyRepository = companyRepository;
     }
 
+
     public AlphaStock getStockPrice(String stockName)  {
         return Objects.requireNonNull(webClient
                         .get()
@@ -58,6 +60,7 @@ public class AlphaStockServiceImpl implements AlphaStockService {
         List<Company> allCompanies = companyRepository.findAll();
         for(Company company : allCompanies){
             AlphaStock updatedStock = getStockPrice(company.getSecureCode());
+            updatedStock.setUpdatedAt(LocalDateTime.now());
             updatedStock.setCompany(company);
             stockRepository.save(updatedStock);
         }

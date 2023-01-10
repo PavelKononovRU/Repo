@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class AlphaStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "stock_id")
+    @Column(name = "id")
     private Long id;
 
     @JsonProperty("01. symbol")
