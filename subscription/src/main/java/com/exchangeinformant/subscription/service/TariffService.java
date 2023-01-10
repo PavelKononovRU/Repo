@@ -1,6 +1,7 @@
 package com.exchangeinformant.subscription.service;
 
 import com.exchangeinformant.subscription.model.Tariff;
+
 import java.util.List;
 
 public interface TariffService {

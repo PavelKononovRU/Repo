@@ -5,6 +5,7 @@ import com.exchangeinformant.subscription.util.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -49,6 +50,23 @@ public class Subscription {
     private int price;
 
     @Column(name = "send_sms")
-    private String sendSMS;
+    private int sendSMS;
 
+//    @Column(name="is_promo")
+//    private Boolean isPromo;
+//
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "promosubscription_id")
+//    private PromoSubscription promoSubscription;
+//
+    public enum Status {
+        AWAITING_TRANSACTION,
+        ACTIVE,
+        INACTIVE,
+        PAYMENT_ERROR,
+        AWAITING_DEACTIVATION,
+        DEACTIVATION_ERROR,
+        AWAITING_START_DATE,
+        ARCHIVED
+    }
 }
