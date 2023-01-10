@@ -37,7 +37,7 @@ public class PaymentServiceImpl implements PaymentsService {
             studPaymentRepository.save(payment);
             return new PaymentStatus(Status.SUCCESSFULLY, "Ваш платеж успешно принят");
         } else {
-            return new PaymentStatus(Status.ERROR, "Ваш платеж не принят");
+            return new PaymentStatus(Status.ERROR,"Ваш платеж не принят");
         }
     }
 

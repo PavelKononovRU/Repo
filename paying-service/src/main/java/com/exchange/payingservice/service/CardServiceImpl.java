@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -27,11 +28,8 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public CardDTO createCard(CardDTO card) {
-        for (Card crd : getAllCard()) {
-            if (crd.getNumber().equals(card.getNumber())) {
-                throw new PaymentException("Данный номер карты уже существует");
-            }
-        }
+        String number = getAllCard().stream().map(Card::getNumber).filter(x -> x.equals(card.getNumber())).collect(Collectors.joining());
+        if (number.length() != 0) throw new PaymentException("Данный номер карты уже существует");
         System.out.println(card);
         cardRepository.saveAndFlush(CardMapper.INSTANCE.toEntity(card));
         return card;
