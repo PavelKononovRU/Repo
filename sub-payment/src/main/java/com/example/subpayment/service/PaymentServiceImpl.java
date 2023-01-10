@@ -32,10 +32,12 @@ public class PaymentServiceImpl implements PaymentsService {
     public PaymentStatus createPayment(Payment payment) throws TestPaymentException {
         int res = (int) ((Math.random() * 2));
         if (res >= 1) {
+            payment.setCreateAt(new Date());
+            payment.setStatus(Status.SUCCESSFULLY);
             studPaymentRepository.save(payment);
             return new PaymentStatus(Status.SUCCESSFULLY, "Ваш платеж успешно принят");
         } else {
-            throw new TestPaymentException("Платеж не принят");
+            return new PaymentStatus(Status.ERROR, "Ваш платеж не принят");
         }
     }
 
