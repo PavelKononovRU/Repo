@@ -9,18 +9,19 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
 public class SubPaymentControllerAdvice {
 
     @ResponseBody
-    @ExceptionHandler(TestPaymentException.class)
+    @ExceptionHandler(HttpClientErrorException.UnprocessableEntity.class)
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    public ResponseEntity<PaymentStatus> catchPaymentException(Exception e, WebRequest webRequest) {
+    public PaymentStatus catchPaymentException(HttpClientErrorException.UnprocessableEntity e, WebRequest webRequest) {
         PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR,
-                            "Платеж не прошел, пожалуйста повторите позже");
-        return new ResponseEntity<>(paymentStatus, HttpStatus.UNPROCESSABLE_ENTITY);
+                            e.getMessage());
+        return paymentStatus;
     }
 
 

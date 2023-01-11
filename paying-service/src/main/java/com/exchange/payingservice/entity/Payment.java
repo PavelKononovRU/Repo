@@ -38,7 +38,8 @@ public class Payment {
     public enum Status{
         OK,
         DENIED,
-        ERROR
+        ERROR,
+        WAITING
     }
 }
 

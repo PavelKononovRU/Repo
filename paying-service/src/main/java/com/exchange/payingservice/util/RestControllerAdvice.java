@@ -1,6 +1,7 @@
 package com.exchange.payingservice.util;
 
 import com.exchange.payingservice.dto.CardDTO;
+import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StatusCards;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.exceptions.PaymentException;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -75,6 +78,15 @@ public class RestControllerAdvice {
                 .collect(Collectors.toList());
 
         return new ValidationErrorResponse(violations);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(HttpClientErrorException.UnprocessableEntity.class)
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    public PaymentStatus catchPaymentException(HttpClientErrorException.UnprocessableEntity e, WebRequest webRequest) {
+        PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR,"Платеж не прошел,пожалуйста,повторите позже.");
+        System.out.println(e.toString());
+        return paymentStatus;
     }
 
 

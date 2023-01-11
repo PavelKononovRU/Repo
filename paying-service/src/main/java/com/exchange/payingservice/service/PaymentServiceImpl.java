@@ -2,6 +2,7 @@ package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
 import com.exchange.payingservice.entity.Payment;
@@ -16,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +28,14 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
 
     private final PaymentsMapper paymentsMapper;
-
+    private final CardService cardService;
     private static int flag;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper,CardService cardService) {
         this.paymentRepository = paymentRepository;
         this.paymentsMapper = paymentsMapper;
+        this.cardService = cardService;
     }
 
     @Override
@@ -47,8 +50,16 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public void createPayment(PaymentDTO payment) {
-        paymentRepository.save(paymentsMapper.toEntity(payment));
+    public void createPayment(StudPaymentDTO payment) {
+        PaymentDTO created = new PaymentDTO();
+        created.setCard(CardMapper.INSTANCE.toDTO(cardService.getCardById(payment.getCard_id())));
+        created.setCreateAt(new Date());
+        created.setUpdateAt(new Date());
+        created.setStatus(Payment.Status.WAITING);
+        created.setMessage("MESSAGE");
+        created.setUser_id(666L);
+        System.out.println(created);
+        paymentRepository.save(paymentsMapper.toEntity(created));
     }
 
     @Override
@@ -85,7 +96,6 @@ public class PaymentServiceImpl implements PaymentService {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("1-");
         stringBuilder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")).toString() + "-" + ++flag);
-
         Map<String, String> testMap = studPayment.getItems();
         testMap.put("ext_id", stringBuilder.toString());
         testMap.put("status", "SUCCESSFULLY");

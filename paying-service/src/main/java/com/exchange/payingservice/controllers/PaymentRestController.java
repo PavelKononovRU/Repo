@@ -35,11 +35,11 @@ public class PaymentRestController {
     }
 
 //    Старый стандартный POST
-    @PostMapping("/create")
+/*    @PostMapping("/create")
     public ResponseEntity<HttpStatus> createPayment(@Valid @RequestBody PaymentDTO payment) {
         paymentService.createPayment(payment);
         return ResponseEntity.ok(HttpStatus.CREATED);
-    }
+    }*/
 
     @PutMapping
     public ResponseEntity<HttpStatus> updatePayment(@PathVariable("id") Long id,@Valid @RequestBody PaymentDTO paymentDTO) {
@@ -65,6 +65,7 @@ public class PaymentRestController {
 
     @PostMapping
     public ResponseEntity<Object> postToStudPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
+        paymentService.createPayment(studPayment);
         return paymentService.methodGetBodyToStudPayment(studPayment);
     }
 

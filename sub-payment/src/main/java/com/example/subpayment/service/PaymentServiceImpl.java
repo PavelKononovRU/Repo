@@ -34,14 +34,16 @@ public class PaymentServiceImpl implements PaymentsService {
     @Transactional
     public PaymentStatus createPayment(PaymentDTO paymentDTO) throws TestPaymentException {
         int res = (int) ((Math.random() * 2));
+        Payment payment = StubPaymentMapper.INSTANCE.toEntity(paymentDTO);
+        payment.setCreateAt(new Date());
         if (res >= 1) {
-            Payment payment = StubPaymentMapper.INSTANCE.toEntity(paymentDTO);
-            payment.setCreateAt(new Date());
             payment.setStatus(Status.SUCCESSFULLY);
             studPaymentRepository.save(payment);
             return new PaymentStatus(Status.SUCCESSFULLY, "Ваш платеж успешно принят");
         } else {
-            return new PaymentStatus(Status.ERROR,"Ваш платеж не принят");
+            payment.setStatus(Status.ERROR);
+            studPaymentRepository.save(payment);
+            throw new TestPaymentException("Ваш платеж не принят");
         }
     }
 
