@@ -6,12 +6,11 @@ import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-@Validated
 public interface CardService {
 
-    CardDTO createCard(@Valid CardDTO card);
+    CardDTO createCard(CardDTO card);
 
-    void updateCard(Long id,@Valid CardDTO cardDTO);
+    void updateCard(Long id,CardDTO cardDTO);
 
     void deleteCard(Long id);
 

@@ -1,10 +1,13 @@
 package com.example.subpayment.service;
 
+import com.example.subpayment.dto.PaymentDTO;
 import com.example.subpayment.entity.Payment;
+import com.example.subpayment.mappers.StubPaymentMapper;
 import com.example.subpayment.repository.StudPaymentRepository;
 import com.example.subpayment.util.PaymentStatus;
 import com.example.subpayment.util.TestPaymentException;
 import com.example.subpayment.util.enums.Status;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +20,7 @@ import java.util.Date;
 public class PaymentServiceImpl implements PaymentsService {
 
     private final StudPaymentRepository studPaymentRepository;
-
+    @Autowired
     public PaymentServiceImpl(StudPaymentRepository studPaymentRepository) {
         this.studPaymentRepository = studPaymentRepository;
     }
@@ -29,9 +32,10 @@ public class PaymentServiceImpl implements PaymentsService {
 
     @Override
     @Transactional
-    public PaymentStatus createPayment(Payment payment) throws TestPaymentException {
+    public PaymentStatus createPayment(PaymentDTO paymentDTO) throws TestPaymentException {
         int res = (int) ((Math.random() * 2));
         if (res >= 1) {
+            Payment payment = StubPaymentMapper.INSTANCE.toEntity(paymentDTO);
             payment.setCreateAt(new Date());
             payment.setStatus(Status.SUCCESSFULLY);
             studPaymentRepository.save(payment);

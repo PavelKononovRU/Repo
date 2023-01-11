@@ -24,9 +24,8 @@ public class SubPaymentController {
     @SneakyThrows
     @PostMapping("/v1")
     public ResponseEntity<PaymentStatus> testV22Method(@RequestBody PaymentDTO paymentDTO) {
-        Payment payment = new Payment();
-        payment.setExt_id(paymentDTO.getExt_id());
-        PaymentStatus paymentStatus = paymentsService.createPayment(payment);
+
+        PaymentStatus paymentStatus = paymentsService.createPayment(paymentDTO);
         return new ResponseEntity<>(paymentStatus, HttpStatus.OK);
     }
 

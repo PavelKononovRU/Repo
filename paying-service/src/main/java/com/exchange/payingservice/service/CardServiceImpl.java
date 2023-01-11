@@ -28,8 +28,8 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public CardDTO createCard(CardDTO card) {
-        String number = getAllCard().stream().map(Card::getNumber).filter(x -> x.equals(card.getNumber())).collect(Collectors.joining());
-        if (number.length() != 0) throw new PaymentException("Данный номер карты уже существует");
+        boolean number = getAllCard().stream().map(Card::getNumber).noneMatch(s->s.equals(card.getNumber()));
+        if (!number) throw new PaymentException("Данный номер карты уже существует");
         System.out.println(card);
         cardRepository.saveAndFlush(CardMapper.INSTANCE.toEntity(card));
         return card;

@@ -8,16 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-@Validated
+
 public interface PaymentService {
 
     Payment getPaymentById(Long id);
 
     List<Payment> getAllPayment();
 
-    void createPayment(@Valid PaymentDTO payment);
+    void createPayment(PaymentDTO payment);
 
-    void updatePayment(Long id, @Valid PaymentDTO paymentDTO);
+    void updatePayment(Long id, PaymentDTO paymentDTO);
 
     void deletePaymentById(Long id);
 

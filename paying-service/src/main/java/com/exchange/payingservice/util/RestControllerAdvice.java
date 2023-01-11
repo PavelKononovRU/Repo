@@ -3,16 +3,19 @@ package com.exchange.payingservice.util;
 import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.dto.StatusCards;
 import com.exchange.payingservice.entity.Card;
+import com.exchange.payingservice.exceptions.PaymentException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestControllerAdvice {
@@ -56,7 +59,23 @@ public class RestControllerAdvice {
         map.put("create_at", LocalDateTime.now());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+    //Перехватывает исключения валидации
+    @ExceptionHandler({MethodArgumentNotValidException.class, PaymentException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ValidationErrorResponse onConstraintValidationException(MethodArgumentNotValidException e
+    ) {
+        final List<StatusCards> violations = e.getAllErrors().stream()
+                .map(
+                        status -> new StatusCards(
+                                status.getObjectName().toString(),
+                                status.getDefaultMessage()
+                        )
+                )
+                .collect(Collectors.toList());
 
+        return new ValidationErrorResponse(violations);
+    }
 
 
 
