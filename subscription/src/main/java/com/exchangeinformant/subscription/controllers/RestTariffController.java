@@ -1,6 +1,4 @@
 package com.exchangeinformant.subscription.controllers;
-import com.exchangeinformant.subscription.dto.TariffDTO;
-
 import com.exchangeinformant.subscription.model.Tariff;
 import com.exchangeinformant.subscription.service.TariffService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,7 @@
 package com.exchangeinformant.subscription.controllers;
 
 import com.exchangeinformant.subscription.dto.SubscriptionDTO;
+import com.exchangeinformant.subscription.repository.SubscriptionRepository;
 import com.exchangeinformant.subscription.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,10 +16,13 @@ import java.util.List;
 @RequestMapping("/api")
 public class RestSubscriptionController {
     private final SubscriptionService subscriptionService;
+    private final SubscriptionRepository subscriptionRepository;
 
     @Autowired
-    public RestSubscriptionController(SubscriptionService subscriptionService) {
+    public RestSubscriptionController(SubscriptionService subscriptionService,
+                                      SubscriptionRepository subscriptionRepository) {
         this.subscriptionService = subscriptionService;
+        this.subscriptionRepository = subscriptionRepository;
     }
 
     @GetMapping("/subscriptions")
@@ -40,7 +44,7 @@ public class RestSubscriptionController {
     @ResponseBody
     public ResponseEntity<?> createSubscription(@Valid @RequestBody SubscriptionDTO subscriptionDTO) {
         subscriptionService.createSubscription(subscriptionDTO);
-        return  ResponseEntity.ok(subscriptionDTO);
+        return ResponseEntity.ok(subscriptionDTO);
     }
 
     @PutMapping("/subscriptions")
