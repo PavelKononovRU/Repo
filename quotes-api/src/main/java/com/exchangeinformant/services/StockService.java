@@ -13,11 +13,13 @@ import java.util.List;
  * Time: 13:50
  */
 @Service
-public interface BcsStockService {
+public interface StockService {
 
     Stock getStock(String stockName);
 
     List<Stock> getAllStocks();
 
-    void updateAllStocks() throws IOException;
+    void updateAllStocksByBcs() throws IOException;
+    void updateAllStocksByTinkoff() throws IOException;
+    List<Stock> getStocksByCodes(List<String> codes);
 }
