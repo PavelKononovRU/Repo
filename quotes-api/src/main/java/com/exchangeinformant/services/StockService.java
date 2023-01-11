@@ -19,7 +19,6 @@ public interface StockService {
 
     List<Stock> getAllStocks();
 
-    void updateAllStocksByBcs() throws IOException;
-    void updateAllStocksByTinkoff() throws IOException;
+    void updateAllStocks() throws IOException;
     List<Stock> getStocksByCodes(List<String> codes);
 }

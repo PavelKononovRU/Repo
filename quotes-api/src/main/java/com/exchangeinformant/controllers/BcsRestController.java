@@ -42,7 +42,7 @@ public class BcsRestController {
     //TODO - только
     @GetMapping("/update")
     public String update() throws IOException {
-        stockService.updateAllStocksByBcs();
+        stockService.updateAllStocks();
         return "OK";
     }
 

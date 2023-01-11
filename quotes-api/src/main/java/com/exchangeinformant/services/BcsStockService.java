@@ -13,11 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import reactor.core.publisher.Mono;
-import ru.tinkoff.invest.openapi.MarketContext;
-import ru.tinkoff.invest.openapi.OpenApi;
-import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -28,22 +24,20 @@ import java.util.*;
  * Time: 17:27
  */
 @Service
-public class StockServiceImpl implements StockService {
+public class BcsStockService implements StockService {
 
     private final WebClient webClient;
     private final BcsConfig bcsConfig;
     private final InfoRepository infoRepository;
 
     private final StockRepository stockRepository;
-    private final OpenApi openApi;
 
 
-    public StockServiceImpl(WebClient webClient, BcsConfig bcsConfig, InfoRepository infoRepository, StockRepository stockRepository, OpenApi openApi) {
+    public BcsStockService(WebClient webClient, BcsConfig bcsConfig, InfoRepository infoRepository, StockRepository stockRepository) {
         this.webClient = webClient;
         this.bcsConfig = bcsConfig;
         this.infoRepository = infoRepository;
         this.stockRepository = stockRepository;
-        this.openApi = openApi;
     }
 
     @Override
@@ -58,7 +52,7 @@ public class StockServiceImpl implements StockService {
 
     @Scheduled(cron = "0 */10 * * * *")
     @Override
-    public void updateAllStocksByBcs() {
+    public void updateAllStocks() {
         List<Stock> allStocks = stockRepository.findAll();
         for (Stock stock : allStocks) {
             try {
@@ -79,14 +73,6 @@ public class StockServiceImpl implements StockService {
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
-    @Override
-    public void updateAllStocksByTinkoff() throws IOException {
-        List<Stock> companies = stockRepository.findAll();
-        for (Stock stock : companies) {
-            Info updatedStock = getStockByTicker(stock.getSecureCode());
-            infoRepository.save(updatedStock);
-        }
-    }
 
     @Override
     public List<Stock> getStocksByCodes(List<String> codes) {
@@ -103,22 +89,5 @@ public class StockServiceImpl implements StockService {
         info.setLastPrice(infoDTO.getLastPrice());
         return info;
     }
-    private Info getStockByTicker(String ticker) {
 
-        MarketContext context = openApi.getMarketContext();
-        var list = context.searchMarketInstrumentsByTicker(ticker);
-        List<MarketInstrument> miList =list.join().getInstruments();
-        if (miList.isEmpty()) {
-            throw new RuntimeException("Stock not found");
-        }
-        MarketInstrument item = miList.get(0);
-
-        var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().get().getLastPrice();
-
-        return new Info(
-                lastPrice.doubleValue(),
-                LocalDateTime.now(),
-                item.getTicker()
-        );
-    }
 }

@@ -18,7 +18,7 @@ public class TinkoffRestController {
     @GetMapping("/update")
     public ResponseEntity<String> updateStockPrices() {
         try {
-            stockService.updateAllStocksByTinkoff();
+            stockService.updateAllStocks();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
