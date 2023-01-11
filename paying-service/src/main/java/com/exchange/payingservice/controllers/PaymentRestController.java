@@ -5,6 +5,7 @@ import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.dto.StudPaymentDTO;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.service.PaymentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -34,14 +35,14 @@ public class PaymentRestController {
     }
 
 //    Старый стандартный POST
-//    @PostMapping
-//    public ResponseEntity<HttpStatus> createPayment(@RequestBody Payment payment) {
-//        paymentService.createPayment(payment);
-//        return ResponseEntity.ok(HttpStatus.CREATED);
-//    }
+    @PostMapping("/create")
+    public ResponseEntity<HttpStatus> createPayment(@Valid @RequestBody PaymentDTO payment) {
+        paymentService.createPayment(payment);
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
 
     @PutMapping
-    public ResponseEntity<HttpStatus> updatePayment(@PathVariable("id") Long id, @RequestBody PaymentDTO paymentDTO) {
+    public ResponseEntity<HttpStatus> updatePayment(@PathVariable("id") Long id,@Valid @RequestBody PaymentDTO paymentDTO) {
         paymentService.updatePayment(id, paymentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -63,7 +64,7 @@ public class PaymentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> postToStudPayment(@RequestBody StudPaymentDTO studPayment) {
+    public ResponseEntity<Object> postToStudPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
         return paymentService.methodGetBodyToStudPayment(studPayment);
     }
 

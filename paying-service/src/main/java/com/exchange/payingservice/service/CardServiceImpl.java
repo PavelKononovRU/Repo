@@ -1,6 +1,7 @@
 package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.CardDTO;
+import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.repository.CardRepository;
 import com.exchange.payingservice.entity.Card;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -25,10 +27,12 @@ public class CardServiceImpl implements CardService {
 
     @Override
     @Transactional
-    public CardDTO createCard(Card card) {
+    public CardDTO createCard(CardDTO card) {
+        boolean number = getAllCard().stream().map(Card::getNumber).noneMatch(s->s.equals(card.getNumber()));
+        if (!number) throw new PaymentException("Данный номер карты уже существует");
         System.out.println(card);
-        cardRepository.saveAndFlush(card);
-        return CardMapper.INSTANCE.toDTO(cardRepository.getCardByNumber(card.getNumber()));
+        cardRepository.saveAndFlush(CardMapper.INSTANCE.toEntity(card));
+        return card;
     }
 
     @Override
