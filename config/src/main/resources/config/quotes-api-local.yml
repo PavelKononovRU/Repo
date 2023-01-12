@@ -29,3 +29,9 @@ tinkoff:
     token: t.qkfYsq60_C584svox3zRIqfXVMp7emIdZLYMTJIc2dHfr7Jtssh9pJ-WjJiO98IUPJTYWThbIUWb37SrGTMiNg
     sandbox: t.OlKXgNUlgSJ9X1JGcJ8J_ABQcVhJJ6wdMYTZB6Owyx0zqA5i1MoWPcm-3b1ma_XrZtj5OooL7AI2GEQXZgZeMg
     is-sandbox-mode: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
