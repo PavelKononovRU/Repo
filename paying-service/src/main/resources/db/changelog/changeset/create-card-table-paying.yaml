@@ -25,7 +25,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: csv
-                  type: bigint
+                  type: varchar(5)
                   constraints:
                     nullable: false
               - column:

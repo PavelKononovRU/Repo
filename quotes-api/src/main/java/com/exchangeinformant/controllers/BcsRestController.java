@@ -1,7 +1,7 @@
 package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.model.Stock;
-import com.exchangeinformant.services.BcsStockService;
+import com.exchangeinformant.services.StockService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,29 +20,29 @@ import java.util.List;
  * Time: 10:21
  */
 @RestController
-@RequestMapping(value = "/api",produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/bcs",produces = MediaType.APPLICATION_JSON_VALUE)
 public class BcsRestController {
 
-    private final BcsStockService bcsStockService;
+    private final StockService stockService;
 
-    public BcsRestController(BcsStockService bcsStockService) {
-        this.bcsStockService = bcsStockService;
+    public BcsRestController(StockService stockService) {
+        this.stockService = stockService;
     }
 
     @GetMapping("/get/{stock}")
     public ResponseEntity<Stock> get(@PathVariable(name = "stock") String stock) {
-        return new ResponseEntity<>(bcsStockService.getStock(stock), HttpStatus.OK);
+        return new ResponseEntity<>(stockService.getStock(stock), HttpStatus.OK);
     }
 
     @GetMapping("/get/all")
     public ResponseEntity<List<Stock>> getAll() {
-        return new ResponseEntity<>(bcsStockService.getAllStocks(), HttpStatus.OK);
+        return new ResponseEntity<>(stockService.getAllStocks(), HttpStatus.OK);
     }
 
     //TODO - только
     @GetMapping("/update")
     public String update() throws IOException {
-        bcsStockService.updateAllStocks();
+        stockService.updateAllStocks();
         return "OK";
     }
 

@@ -1,9 +1,9 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,10 +13,12 @@ import java.util.List;
  * Time: 13:50
  */
 @Service
-public interface AlphaStockService {
-    List<Stock> getAllStocks();
-    void updateAllStocks();
-    Stock getStockByCode(String code);
-    List<Stock> getStocksByCodes(List<String> codes);
+public interface StockService {
 
+    Stock getStock(String stockName);
+
+    List<Stock> getAllStocks();
+
+    void updateAllStocks() throws IOException;
+    List<Stock> getStocksByCodes(List<String> codes);
 }
