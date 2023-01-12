@@ -15,7 +15,7 @@ public interface PaymentService {
 
     List<Payment> getAllPayment();
 
-    void createPayment(StudPaymentDTO payment);
+    StudPaymentDTO createPayment(StudPaymentDTO payment,Payment.Status status);
 
     void updatePayment(Long id, PaymentDTO paymentDTO);
 

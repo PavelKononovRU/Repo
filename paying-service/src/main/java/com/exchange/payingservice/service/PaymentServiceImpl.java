@@ -30,9 +30,10 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentsMapper paymentsMapper;
     private final CardService cardService;
     private static int flag;
+    private ResponseEntity<Object> response;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper,CardService cardService) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService) {
         this.paymentRepository = paymentRepository;
         this.paymentsMapper = paymentsMapper;
         this.cardService = cardService;
@@ -50,16 +51,17 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public void createPayment(StudPaymentDTO payment) {
+    public StudPaymentDTO createPayment(StudPaymentDTO payment, Payment.Status status) {
         PaymentDTO created = new PaymentDTO();
-        created.setCard(CardMapper.INSTANCE.toDTO(cardService.getCardById(payment.getCard_id())));
+        created.setCard((cardService.getCardById(payment.getCard_id())));
         created.setCreateAt(new Date());
         created.setUpdateAt(new Date());
-        created.setStatus(Payment.Status.WAITING);
+        created.setStatus(status);
         created.setMessage("MESSAGE");
         created.setUser_id(666L);
-        System.out.println(created);
+        System.out.println(payment);
         paymentRepository.save(paymentsMapper.toEntity(created));
+        return payment;
     }
 
     @Override
@@ -93,18 +95,17 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public ResponseEntity<Object> methodGetBodyToStudPayment(StudPaymentDTO studPayment) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("1-");
-        stringBuilder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")).toString() + "-" + ++flag);
+        String stringBuilder = "1-" +
+                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + ++flag;
         Map<String, String> testMap = studPayment.getItems();
-        testMap.put("ext_id", stringBuilder.toString());
+        testMap.put("ext_id", stringBuilder);
         testMap.put("status", "SUCCESSFULLY");
         testMap.put("createAt", LocalDateTime.now().toString());
 
         RestTemplate restTemplateStudPayment = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        ResponseEntity<Object> response = restTemplateStudPayment.postForEntity(
+        response = restTemplateStudPayment.postForEntity(
                 "http://localhost:8082/stud/payment/v1", testMap, Object.class);
         return response;
     }

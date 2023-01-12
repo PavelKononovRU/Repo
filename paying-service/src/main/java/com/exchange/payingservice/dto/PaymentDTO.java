@@ -16,7 +16,7 @@ public class PaymentDTO {
 
     private Long id;
     @Valid
-    private CardDTO card;
+    private Card card;
     @PastOrPresent
     private Date createAt;
     @PastOrPresent

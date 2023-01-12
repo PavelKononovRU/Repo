@@ -65,7 +65,11 @@ public class PaymentRestController {
 
     @PostMapping
     public ResponseEntity<Object> postToStudPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
-        paymentService.createPayment(studPayment);
+        ResponseEntity<Object> response = paymentService.methodGetBodyToStudPayment(studPayment);
+        System.out.println(response.getStatusCode());
+        if (response.getStatusCode().is2xxSuccessful()) {
+            paymentService.createPayment(studPayment,Payment.Status.OK);
+        }
         return paymentService.methodGetBodyToStudPayment(studPayment);
     }
 
