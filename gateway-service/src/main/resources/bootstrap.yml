@@ -32,3 +32,8 @@ spring:
             client-secret: PX6A34wWxDNYQcHa0pdPdOk3f42Jo0aA
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/keycloak
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
