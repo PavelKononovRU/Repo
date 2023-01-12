@@ -40,7 +40,7 @@ public class SubscriptionServiceImpl implements SubscriptionService{
             throw new UnprocessableEntityException("Подписка с тарифом " + tariffId + " уже существует и ожидает оплаты");
         }
         List<SubscriptionDTO> subscriptionListDTOWithStatusActive = subscriptionList.stream()
-                .filter(x -> !x.getStatus().name().equals("AWAITING_TRANSACTION") && x.getTariff().getId() == subscriptionDTO.getTariff().getId())
+                .filter(x -> !x.getStatus().name().equals("AWAITING_TRANSACTION"))
                 .map(SubscriptionMapper.INSTANCE::subscriptionToDTO)
                 .collect(Collectors.toList());
         if(!subscriptionListDTOWithStatusActive.isEmpty()){

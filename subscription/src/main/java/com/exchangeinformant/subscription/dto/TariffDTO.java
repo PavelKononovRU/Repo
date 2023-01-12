@@ -2,9 +2,7 @@ package com.exchangeinformant.subscription.dto;
 
 import lombok.Data;
 import org.mapstruct.Mapper;
-
 import javax.validation.constraints.NotNull;
-
 
 @Data
 @Mapper
