@@ -30,3 +30,8 @@ build/
 
 ### VS Code ###
 .vscode/
+!/src/main/resources/config/paying-service.yml
+!/src/main/resources/config/quotes-api-local.yml
+!/src/main/resources/config/sub-payment.yml
+!/src/main/resources/config/subscription-local.yaml
+!/src/main/resources/config/user-profile-local.yml
