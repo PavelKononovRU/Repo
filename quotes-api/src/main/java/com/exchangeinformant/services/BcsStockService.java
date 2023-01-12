@@ -7,6 +7,7 @@ import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.util.*;
  * Time: 17:27
  */
 @Service
+@Primary
 public class BcsStockService implements StockService {
 
     private final WebClient webClient;
