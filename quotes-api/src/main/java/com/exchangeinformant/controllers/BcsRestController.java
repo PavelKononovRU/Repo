@@ -20,7 +20,7 @@ import java.util.List;
  * Time: 10:21
  */
 @RestController
-@RequestMapping(value = "/api",produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/bcs",produces = MediaType.APPLICATION_JSON_VALUE)
 public class BcsRestController {
 
     private final BcsStockService bcsStockService;
