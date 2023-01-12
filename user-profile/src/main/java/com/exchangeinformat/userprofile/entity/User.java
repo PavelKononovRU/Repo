@@ -24,6 +24,11 @@ public class User {
     @ToString.Include
     private Long id;
 
+    @Column(name = "ext_id")
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    private String extId;
+
     @Column(name = "username")
     @EqualsAndHashCode.Include
     @ToString.Include
