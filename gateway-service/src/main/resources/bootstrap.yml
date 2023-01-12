@@ -30,10 +30,18 @@ spring:
         registration:
           keycloak-spring-gateway-client:
             provider: my-keycloak-provider
+            scope: openid
             client-id: gateway-client
             client-secret: PX6A34wWxDNYQcHa0pdPdOk3f42Jo0aA
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/gateway-client
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: DEBUG
 management:
   endpoints:
     web:
