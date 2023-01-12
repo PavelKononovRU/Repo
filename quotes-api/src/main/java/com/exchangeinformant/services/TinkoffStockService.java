@@ -34,7 +34,7 @@ public class TinkoffStockService implements StockService {
 
 
     @Override
-    public void updateAllStocks() throws IOException {
+    public void updateAllStocks() {
         List<Stock> companies = stockRepository.findAll();
         for (Stock stock : companies) {
             Info updatedStock = getStockByTicker(stock.getSecureCode());
