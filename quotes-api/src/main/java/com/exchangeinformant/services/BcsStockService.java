@@ -3,6 +3,8 @@ package com.exchangeinformant.services;
 import com.exchangeinformant.configuration.BcsConfig;
 import com.exchangeinformant.dto.InfoDTO;
 import com.exchangeinformant.dto.StockDTO;
+import com.exchangeinformant.exception.ErrorCodes;
+import com.exchangeinformant.exception.QuotesUpdateException;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
@@ -68,6 +70,7 @@ public class BcsStockService implements StockService {
                 infoRepository.save(info);
             } catch (WebClientRequestException e) {
                 e.printStackTrace();
+                throw new QuotesUpdateException(ErrorCodes.UPDATE_PROBLEM.name());
             }
         }
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());

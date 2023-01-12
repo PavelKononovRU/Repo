@@ -10,7 +10,6 @@ import ru.tinkoff.invest.openapi.MarketContext;
 import ru.tinkoff.invest.openapi.OpenApi;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +39,7 @@ public class TinkoffStockService implements StockService {
             Info updatedStock = getStockByTicker(stock.getSecureCode());
             infoRepository.save(updatedStock);
         }
+        System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
     @Override

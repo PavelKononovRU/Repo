@@ -1,8 +1,7 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.services.StockService;
-import com.exchangeinformant.util.ErrorCodes;
-import com.exchangeinformant.util.QuotesUpdateException;
+import com.exchangeinformant.exception.ErrorCodes;
+import com.exchangeinformant.exception.QuotesUpdateException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +22,6 @@ public class StockRestController {
 
     @GetMapping("/error")
     public ResponseEntity<?> getError() {
-        throw new QuotesUpdateException(ErrorCodes.BAD_GATEWAY.name());
+        throw new QuotesUpdateException(ErrorCodes.UPDATE_PROBLEM.name());
     }
 }
