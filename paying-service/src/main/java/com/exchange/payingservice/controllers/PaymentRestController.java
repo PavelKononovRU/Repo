@@ -34,15 +34,8 @@ public class PaymentRestController {
         return ResponseEntity.ok(paymentService.getAllPayment());
     }
 
-//    Старый стандартный POST
-/*    @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createPayment(@Valid @RequestBody PaymentDTO payment) {
-        paymentService.createPayment(payment);
-        return ResponseEntity.ok(HttpStatus.CREATED);
-    }*/
-
-    @PutMapping
-    public ResponseEntity<HttpStatus> updatePayment(@PathVariable("id") Long id,@Valid @RequestBody PaymentDTO paymentDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> updatePayment(@PathVariable("id") Long id, @Valid @RequestBody PaymentDTO paymentDTO) {
         paymentService.updatePayment(id, paymentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -54,13 +47,10 @@ public class PaymentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> postToStudPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
+    public ResponseEntity<Object> createPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
         ResponseEntity<Object> response = paymentService.methodGetBodyToStudPayment(studPayment);
-        System.out.println(response.getStatusCode());
-        if (response.getStatusCode().is2xxSuccessful()) {
-            paymentService.createPayment(studPayment,Payment.Status.OK);
-        }
-        return paymentService.methodGetBodyToStudPayment(studPayment);
+        paymentService.createPayment(studPayment, Payment.Status.OK);
+        return response;
     }
 
 }

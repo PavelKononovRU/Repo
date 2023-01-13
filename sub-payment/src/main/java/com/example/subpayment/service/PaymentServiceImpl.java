@@ -43,18 +43,8 @@ public class PaymentServiceImpl implements PaymentsService {
         } else {
             payment.setStatus(Status.ERROR);
             studPaymentRepository.save(payment);
-            return new PaymentStatus(Status.ERROR,"Ваш платеж не принят, пожалуйста,потворите позже.");
+            throw new TestPaymentException("Ваш платеж не прошел,пожалуйста,повторите позже.");
         }
-    }
-
-    @Override
-    @Transactional
-    public PaymentStatus createPaymentTest(Payment payment) {
-        Payment paymentUp = new Payment();
-        payment.setCreateAt(new Date());
-        payment.setStatus(Status.SUCCESSFULLY);
-        studPaymentRepository.save(payment);
-        return new PaymentStatus(Status.SUCCESSFULLY, "Ваш платеж успешно принят");
     }
 
 }

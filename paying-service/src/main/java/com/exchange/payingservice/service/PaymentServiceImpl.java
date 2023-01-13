@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -31,7 +32,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentsMapper paymentsMapper;
     private final CardService cardService;
     private static int flag;
-    private ResponseEntity<Object> response;
 
     @Autowired
     public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService) {
@@ -94,9 +94,12 @@ public class PaymentServiceImpl implements PaymentService {
         RestTemplate restTemplateStudPayment = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        response = restTemplateStudPayment.postForEntity(
+        return restTemplateStudPayment.postForEntity(
                 "http://localhost:8082/stud/payment/v1", testMap, Object.class);
-        return response;
+    }
+    @Scheduled(cron = "* * 1 * * ?")
+    protected void clearCounter() {
+        flag = 0;
     }
 
 }
