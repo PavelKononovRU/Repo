@@ -21,7 +21,5 @@ public interface PaymentService {
 
     void deletePaymentById(Long id);
 
-    StudPaymentDTO testMethodPostToStudPayment();
-
     ResponseEntity<Object> methodGetBodyToStudPayment(StudPaymentDTO studPayment);
 }

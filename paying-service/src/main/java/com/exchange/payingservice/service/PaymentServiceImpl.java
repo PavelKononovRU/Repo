@@ -2,6 +2,7 @@ package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
@@ -54,6 +55,9 @@ public class PaymentServiceImpl implements PaymentService {
     public StudPaymentDTO createPayment(StudPaymentDTO payment, Payment.Status status) {
         PaymentDTO created = new PaymentDTO();
         created.setCard((cardService.getCardById(payment.getCard_id())));
+        if (created.getCard() == null) {
+            throw new PaymentException("Карты с данным номером не обнаружено.");
+        }
         created.setCreateAt(new Date());
         created.setUpdateAt(new Date());
         created.setStatus(status);
@@ -76,21 +80,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public void deletePaymentById(Long id) {
         paymentRepository.deleteById(id);
-    }
-
-    // Имитирует тело для POST запроса
-    @Override
-    public StudPaymentDTO testMethodPostToStudPayment() {
-        StudPaymentDTO studPayment = new StudPaymentDTO();
-        studPayment.setPhone("string");
-        studPayment.setEmail("ivanov@gmail.com");
-        studPayment.setPromocode("PROMO412GWOT");
-        studPayment.setCard_id(64556L);
-        Map<String, String> mapItems = new HashMap<>();
-        mapItems.put("amount", "129900");
-        mapItems.put("subscription_id", "12345");
-        studPayment.setItems(mapItems);
-        return studPayment;
     }
 
     @Override

@@ -43,7 +43,7 @@ public class PaymentServiceImpl implements PaymentsService {
         } else {
             payment.setStatus(Status.ERROR);
             studPaymentRepository.save(payment);
-            throw new TestPaymentException("Ваш платеж не принят");
+            return new PaymentStatus(Status.ERROR,"Ваш платеж не принят, пожалуйста,потворите позже.");
         }
     }
 

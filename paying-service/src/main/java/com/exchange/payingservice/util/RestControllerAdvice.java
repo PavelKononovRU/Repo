@@ -63,11 +63,10 @@ public class RestControllerAdvice {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
     //Перехватывает исключения валидации
-    @ExceptionHandler({MethodArgumentNotValidException.class, PaymentException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ValidationErrorResponse onConstraintValidationException(MethodArgumentNotValidException e
-    ) {
+    public ValidationErrorResponse onConstraintValidationException(MethodArgumentNotValidException e) {
         final List<StatusCards> violations = e.getAllErrors().stream()
                 .map(
                         status -> new StatusCards(
@@ -80,15 +79,17 @@ public class RestControllerAdvice {
         return new ValidationErrorResponse(violations);
     }
 
-    @ResponseBody
-    @ExceptionHandler(HttpClientErrorException.UnprocessableEntity.class)
+/*    @ResponseBody
+    @ExceptionHandler({HttpClientErrorException.UnprocessableEntity.class})
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    public PaymentStatus catchPaymentException(HttpClientErrorException.UnprocessableEntity e, WebRequest webRequest) {
-        PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR,"Платеж не прошел,пожалуйста,повторите позже.");
-        System.out.println(e.toString());
-        return paymentStatus;
+    public PaymentStatus catchPaymentException(HttpClientErrorException.UnprocessableEntity e) {
+        return new PaymentStatus(Status.ERROR,"Платеж не прошел,пожалуйста,повторите позже.");
+    }*/
+
+    @ResponseBody
+    @ExceptionHandler({PaymentException.class})
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    public PaymentStatus catchPaymentException(PaymentException e) {
+        return new PaymentStatus(Status.ERROR,e.getMessage());
     }
-
-
-
 }

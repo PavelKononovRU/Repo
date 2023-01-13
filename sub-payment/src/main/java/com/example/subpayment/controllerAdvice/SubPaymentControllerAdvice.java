@@ -15,14 +15,12 @@ import org.springframework.web.context.request.WebRequest;
 @ControllerAdvice
 public class SubPaymentControllerAdvice {
 
-    @ResponseBody
+/*    @ResponseBody
     @ExceptionHandler(HttpClientErrorException.UnprocessableEntity.class)
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public PaymentStatus catchPaymentException(HttpClientErrorException.UnprocessableEntity e, WebRequest webRequest) {
         PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR,
                             e.getMessage());
         return paymentStatus;
-    }
-
-
+    }*/
 }

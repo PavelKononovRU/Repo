@@ -53,16 +53,6 @@ public class PaymentRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    // Имитирует тело для stud-payment POST
-    @GetMapping("/test/v1")
-    public ResponseEntity<Object> testV1Method() {
-        RestTemplate restTemplate = new RestTemplate();
-        StudPaymentDTO studPayment = paymentService.testMethodPostToStudPayment();
-        ResponseEntity<Object> responseEntity =
-                restTemplate.postForEntity("http://localhost:8081/api/payments", studPayment, Object.class);
-        return responseEntity;
-    }
-
     @PostMapping
     public ResponseEntity<Object> postToStudPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
         ResponseEntity<Object> response = paymentService.methodGetBodyToStudPayment(studPayment);
