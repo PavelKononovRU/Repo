@@ -1,5 +1,6 @@
 package com.exchange.payingservice.entity;
 
+import com.exchange.payingservice.util.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,11 +36,5 @@ public class Payment {
     @Column(name = "message")
     private String message;
 
-    public enum Status{
-        OK,
-        DENIED,
-        ERROR,
-        WAITING
-    }
 }
 

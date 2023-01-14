@@ -7,6 +7,7 @@ import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
 import com.exchange.payingservice.entity.Payment;
+import com.exchange.payingservice.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -52,7 +55,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public StudPaymentDTO createPayment(StudPaymentDTO payment, Payment.Status status) {
+    public StudPaymentDTO createPayment(StudPaymentDTO payment, Status status) {
         PaymentDTO created = new PaymentDTO();
         created.setCard((cardService.getCardById(payment.getCard_id())));
         if (created.getCard() == null) {
@@ -84,19 +87,27 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public ResponseEntity<Object> methodGetBodyToStudPayment(StudPaymentDTO studPayment) {
-        String stringBuilder = "1-" +
+        Status status = Status.SUCCESSFULLY;
+        String extId = "1-" +
                 LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + ++flag;
-        Map<String, String> testMap = studPayment.getItems();
-        testMap.put("ext_id", stringBuilder);
-        testMap.put("status", "SUCCESSFULLY");
-        testMap.put("createAt", LocalDateTime.now().toString());
+        Map<String, String> testMap = new HashMap<>();
+        testMap.put("ext_id", extId);
+        testMap.put("amount", studPayment.getItems().get("amount"));
 
         RestTemplate restTemplateStudPayment = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return restTemplateStudPayment.postForEntity(
-                "http://localhost:8082/stud/payment/v1", testMap, Object.class);
+
+        ResponseEntity<Object> response;
+        try {
+            response = restTemplateStudPayment.postForEntity("http://localhost:8082/stud/payment", testMap, Object.class);
+        } catch (HttpClientErrorException.UnprocessableEntity e) {
+            status = Status.ERROR;
+            throw new PaymentException("Платеж не прошел,пожалуйста,повторите позже.");
+        }finally {
+            this.createPayment(studPayment, status);
+        }
+        return response;
     }
+
     @Scheduled(cron = "* * 1 * * ?")
     protected void clearCounter() {
         flag = 0;

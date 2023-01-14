@@ -3,6 +3,7 @@ package com.exchange.payingservice.service;
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.util.Status;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +16,7 @@ public interface PaymentService {
 
     List<Payment> getAllPayment();
 
-    StudPaymentDTO createPayment(StudPaymentDTO payment,Payment.Status status);
+    StudPaymentDTO createPayment(StudPaymentDTO payment, Status status);
 
     void updatePayment(Long id, PaymentDTO paymentDTO);
 

@@ -48,9 +48,7 @@ public class PaymentRestController {
 
     @PostMapping
     public ResponseEntity<Object> createPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
-        ResponseEntity<Object> response = paymentService.methodGetBodyToStudPayment(studPayment);
-        paymentService.createPayment(studPayment, Payment.Status.OK);
-        return response;
+        return paymentService.methodGetBodyToStudPayment(studPayment);
     }
 
 }

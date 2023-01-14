@@ -23,8 +23,8 @@ public class SubPaymentController {
 
 
     @SneakyThrows
-    @PostMapping("/v1")
-    public ResponseEntity<PaymentStatus> testV22Method(@RequestBody PaymentDTO paymentDTO) {
+    @PostMapping
+    public ResponseEntity<PaymentStatus> createStubPayment(@RequestBody PaymentDTO paymentDTO) {
         PaymentStatus paymentStatus = paymentsService.createPayment(paymentDTO);
         return new ResponseEntity<>(paymentStatus, paymentStatus.getStatus().equals(Status.SUCCESSFULLY) ? HttpStatus.OK : HttpStatus.UNPROCESSABLE_ENTITY);
     }

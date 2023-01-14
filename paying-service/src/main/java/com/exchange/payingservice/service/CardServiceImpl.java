@@ -28,8 +28,9 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public CardDTO createCard(CardDTO card) {
-        boolean number = getAllCard().stream().map(Card::getNumber).noneMatch(s->s.equals(card.getNumber()));
-        if (!number) throw new PaymentException("Данный номер карты уже существует");
+        if (getAllCard().stream().map(Card::getNumber).anyMatch(s->s.equals(card.getNumber()))) {
+            throw new PaymentException("Данный номер карты уже существует");
+        }
         cardRepository.saveAndFlush(CardMapper.INSTANCE.toEntity(card));
         return card;
     }
