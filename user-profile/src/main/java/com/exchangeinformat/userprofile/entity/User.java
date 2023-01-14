@@ -1,6 +1,7 @@
 package com.exchangeinformat.userprofile.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -91,13 +92,13 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean isDeleted = true;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private boolean isActive = true;
 
     @Column(name = "is_banned")
-    private boolean isBanned;
+    private boolean isBanned = true;
 
     @Column(name = "token")
     private String token;

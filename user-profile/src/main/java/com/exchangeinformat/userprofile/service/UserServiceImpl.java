@@ -45,4 +45,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public User getUserByExtId(String extId) {
+        return userRepository.findByExtId(extId).orElse(null);
+    }
 }
