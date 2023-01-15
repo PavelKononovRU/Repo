@@ -35,3 +35,4 @@ build/
 !/src/main/resources/config/sub-payment.yml
 !/src/main/resources/config/subscription-local.yaml
 !/src/main/resources/config/user-profile-local.yml
+!\config\src\main\resources\config\user-profile-local.yml
