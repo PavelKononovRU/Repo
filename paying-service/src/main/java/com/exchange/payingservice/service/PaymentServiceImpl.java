@@ -54,10 +54,10 @@ public class PaymentServiceImpl implements PaymentService {
     public StudPaymentDTO createPayment(StudPaymentDTO payment, Status status) {
         Payment created = new Payment();
         Card card = cardService.getCardById(payment.getCard_id());
-        if (card.getId() == null) {
+        created.setCard(card);
+        if (created.getCard() == null) {
             throw new PaymentException("Карты с данным номером не обнаружено.");
         }
-        created.setCard(card);
         created.setCreateAt(new Date());
         created.setUpdateAt(new Date());
         created.setStatus(status);
