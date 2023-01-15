@@ -4,6 +4,7 @@ import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
+import com.exchangeinformant.util.Tinkoff;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.MarketContext;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Tinkoff
 public class TinkoffStockService implements StockService {
     private final InfoRepository infoRepository;
 

@@ -1,16 +1,14 @@
 //package com.exchangeinformant.controllers;
 //
 //import com.exchangeinformant.model.Stock;
-//import com.exchangeinformant.services.StockService;
+//import com.exchangeinformant.services.StockServiceSwitcher;
+//import com.exchangeinformant.util.Bcs;
 //import org.springframework.http.HttpStatus;
-//import org.springframework.http.MediaType;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.PathVariable;
-//import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
 //
-//import java.io.IOException;
 //import java.util.List;
 //
 ///**
@@ -20,29 +18,36 @@
 // * Time: 10:21
 // */
 //@RestController
-//@RequestMapping(value = "/bcs",produces = MediaType.APPLICATION_JSON_VALUE)
+//@Bcs
 //public class BcsRestController {
 //
-//    private final StockService stockService;
+//    private final StockServiceSwitcher stockServiceSwitcher;
 //
-//    public BcsRestController(StockService stockService) {
-//        this.stockService = stockService;
+//    public BcsRestController(StockServiceSwitcher stockServiceSwitcher) {
+//        this.stockServiceSwitcher = stockServiceSwitcher;
 //    }
+//
+//    @GetMapping("/inform")
+//    public String getInfo() {
+//        return "its bcs";
+//    }
+//
+//
 //
 //    @GetMapping("/get/{stock}")
 //    public ResponseEntity<Stock> get(@PathVariable(name = "stock") String stock) {
-//        return new ResponseEntity<>(stockService.getStock(stock), HttpStatus.OK);
+//        return new ResponseEntity<>(stockServiceSwitcher.getCurrentService().getStock(stock), HttpStatus.OK);
 //    }
 //
 //    @GetMapping("/get/all")
 //    public ResponseEntity<List<Stock>> getAll() {
-//        return new ResponseEntity<>(stockService.getAllStocks(), HttpStatus.OK);
+//        return new ResponseEntity<>(stockServiceSwitcher.getCurrentService().getAllStocks(), HttpStatus.OK);
 //    }
 //
 //    //TODO - только премиум
 //    @GetMapping("/update")
 //    public String update() {
-//        stockService.updateAllStocks();
+//        stockServiceSwitcher.getCurrentService().updateAllStocks();
 //        return "OK";
 //    }
 //

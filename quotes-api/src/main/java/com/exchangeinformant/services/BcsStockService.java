@@ -9,6 +9,7 @@ import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
+import com.exchangeinformant.util.Bcs;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,9 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created in IntelliJ
@@ -26,6 +29,7 @@ import java.util.*;
  * Time: 17:27
  */
 @Service
+@Bcs
 public class BcsStockService implements StockService {
 
     private final WebClient webClient;

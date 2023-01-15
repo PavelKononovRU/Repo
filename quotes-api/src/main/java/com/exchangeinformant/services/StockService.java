@@ -3,7 +3,6 @@ package com.exchangeinformant.services;
 import com.exchangeinformant.model.Stock;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,5 +19,6 @@ public interface StockService {
     List<Stock> getAllStocks();
 
     void updateAllStocks();
+
     List<Stock> getStocksByCodes(List<String> codes);
 }

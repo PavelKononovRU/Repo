@@ -1,38 +1,51 @@
 //package com.exchangeinformant.controllers;
 //
 //import com.exchangeinformant.model.Stock;
-//import com.exchangeinformant.services.StockService;
-//import lombok.RequiredArgsConstructor;
+//import com.exchangeinformant.services.StockServiceSwitcher;
+//import com.exchangeinformant.util.Tinkoff;
+//import org.springframework.cloud.context.config.annotation.RefreshScope;
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.web.bind.annotation.*;
 //
-//import java.io.IOException;
 //import java.util.List;
 //
 //@RestController
-//@RequiredArgsConstructor
-//@RequestMapping("tinkoff/")
+//@RefreshScope
+//@Tinkoff
 //public class TinkoffRestController {
-//    private final StockService stockService;
+//
+//    private final StockServiceSwitcher stockServiceSwitcher;
+//
+//
+//    public TinkoffRestController(StockServiceSwitcher stockServiceSwitcher) {
+//        this.stockServiceSwitcher = stockServiceSwitcher;
+//    }
+//
+//    @GetMapping("/inform")
+//    public String getInfo() {
+//        return "its tinkoff";
+//    }
+//
+//
 //
 //    @GetMapping("/update")
 //    public ResponseEntity<String> updateStockPrices() {
-//        stockService.updateAllStocks();
+//        stockServiceSwitcher.getCurrentService().updateAllStocks();
 //        return ResponseEntity.ok("All stocks have been updated");
 //    }
 //
 //    @GetMapping("/getStocks")
 //    public List<Stock> getStocks() {
-//       return stockService.getAllStocks();
+//       return stockServiceSwitcher.getCurrentService().getAllStocks();
 //    }
 //
 //    @GetMapping("/{code}")
 //    public Stock getStock(@PathVariable("code") String code) {
-//        return stockService.getStock(code);
+//        return stockServiceSwitcher.getCurrentService().getStock(code);
 //    }
 //
 //    @PostMapping("/getSomeStocks")
 //    public List<Stock> getSomeStocks(@RequestBody List<String> codes) {
-//        return stockService.getStocksByCodes(codes);
+//        return stockServiceSwitcher.getCurrentService().getStocksByCodes(codes);
 //    }
 //}

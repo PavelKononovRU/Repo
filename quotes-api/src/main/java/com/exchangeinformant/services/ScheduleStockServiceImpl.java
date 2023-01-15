@@ -10,16 +10,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ScheduleStockServiceImpl implements ScheduleStockService {
-    private final StockServiceSwitcher stockServiceSwitcher;
+    private final StockService stockService;
 
-    public ScheduleStockServiceImpl(StockServiceSwitcher stockServiceSwitcher) {
-        this.stockServiceSwitcher = stockServiceSwitcher;
+    public ScheduleStockServiceImpl(StockService stockService) {
+        this.stockService = stockService;
     }
+
     @Override
-    @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "0 */30 * * * *")
     public void updateAllStocks() {
-        StockService stockService = stockServiceSwitcher.getCurrentService();
         stockService.updateAllStocks();
     }
+
 }
 
