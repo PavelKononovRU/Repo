@@ -2,25 +2,21 @@ package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.entity.Card;
+import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.exceptions.PaymentException;
-import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
-import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
@@ -56,18 +52,19 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public StudPaymentDTO createPayment(StudPaymentDTO payment, Status status) {
-        PaymentDTO created = new PaymentDTO();
-        created.setCard((cardService.getCardById(payment.getCard_id())));
-        if (created.getCard() == null) {
+        Payment created = new Payment();
+        Card card = cardService.getCardById(payment.getCard_id());
+        if (card.getId() == null) {
             throw new PaymentException("Карты с данным номером не обнаружено.");
         }
+        created.setCard(card);
         created.setCreateAt(new Date());
         created.setUpdateAt(new Date());
         created.setStatus(status);
         created.setMessage("MESSAGE");
-        created.setUser_id(666L);
+        created.setUser_id(card.getUser_id());
         System.out.println(payment);
-        paymentRepository.save(paymentsMapper.toEntity(created));
+        paymentRepository.save(created);
         return payment;
     }
 

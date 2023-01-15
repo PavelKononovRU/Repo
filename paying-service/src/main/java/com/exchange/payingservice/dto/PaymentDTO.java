@@ -1,7 +1,6 @@
 package com.exchange.payingservice.dto;
 
 import com.exchange.payingservice.entity.Card;
-import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.util.Status;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

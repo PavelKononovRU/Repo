@@ -16,7 +16,7 @@ public class Payment {
     @Column(name = "payment_id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "card_id", referencedColumnName = "card_id", foreignKey = @ForeignKey(name = "card_id"))
     private Card card;
 
