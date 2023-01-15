@@ -2,6 +2,7 @@ package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.StockService;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
