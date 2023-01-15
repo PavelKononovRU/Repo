@@ -36,8 +36,7 @@ public class SecurityConfig {
                 .authenticationSuccessHandler(successHandler)
                 .and()
                 .logout()
-                .logoutSuccessHandler(handler)
-        ;
+                .logoutSuccessHandler(handler);
 
         return http.build();
     }

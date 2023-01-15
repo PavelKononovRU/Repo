@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/user")
@@ -25,7 +24,7 @@ public class RestUserController {
     }
 
     @GetMapping("/findOne")
-    @RolesAllowed({"ADMIN", "USER"})
+    @RolesAllowed({"ADMIN"})
     public ResponseEntity<User> getUser(Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
@@ -58,6 +57,7 @@ public class RestUserController {
     }
 
     @GetMapping("/home")
+    @RolesAllowed({"ADMIN", "USER"})
     public ResponseEntity<User>  getUserDetails(Principal principal) {
 
         JwtAuthenticationToken kp = (JwtAuthenticationToken) principal;

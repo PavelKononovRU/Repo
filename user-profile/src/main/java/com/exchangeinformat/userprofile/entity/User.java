@@ -1,7 +1,6 @@
 package com.exchangeinformat.userprofile.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
