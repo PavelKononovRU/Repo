@@ -10,12 +10,6 @@ eureka:
   instance:
       preferIpAddress: true
       lease-renewal-interval-in-seconds: 30
-alpha-vantage:
-  api:
-    url: https://www.alphavantage.co/query/?function=%s&symbol=%s&apikey=%s
-    key: R5Y1MX285BT0WOJZ
-    global-function: GLOBAL_QUOTE
-    overview-function: OVERVIEW
 bcs:
   api:
     url: https://api.bcs.ru

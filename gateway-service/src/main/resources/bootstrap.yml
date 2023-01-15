@@ -21,6 +21,10 @@ spring:
           uri: lb://user-profile
           predicates:
             - Path=/api/user/**
+        - id: quotes-api
+          uri: lb://quotes-api
+          predicates:
+            - Path=/**
   security:
     oauth2:
       client:
