@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
-public class QuotesUpdateException extends RuntimeException {
+public class QuotesException extends RuntimeException {
 
     private String message;
 

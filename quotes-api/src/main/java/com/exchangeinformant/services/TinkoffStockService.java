@@ -12,7 +12,6 @@ import ru.tinkoff.invest.openapi.OpenApi;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,16 +22,6 @@ public class TinkoffStockService implements StockService {
 
     private final StockRepository stockRepository;
     private final OpenApi openApi;
-    @Override
-    public Stock getStock(String stockName) {
-        return stockRepository.findBySecureCode(stockName);
-    }
-
-    @Override
-    public List<Stock> getAllStocks() {
-        return stockRepository.findAll();
-    }
-
 
     @Override
     public void updateAllStocks() {
@@ -44,14 +33,8 @@ public class TinkoffStockService implements StockService {
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
-    @Override
-    public List<Stock> getStocksByCodes(List<String> codes) {
-        List<Stock> result = new ArrayList<>();
-        for(String code : codes){
-            result.add(stockRepository.findBySecureCode(code));
-        }
-        return result;
-    }
+
+
     private Info getStockByTicker(String ticker) {
 
         MarketContext context = openApi.getMarketContext();

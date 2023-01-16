@@ -1,9 +1,6 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.model.Stock;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created in IntelliJ
@@ -14,11 +11,8 @@ import java.util.List;
 @Service
 public interface StockService {
 
-    Stock getStock(String stockName);
-
-    List<Stock> getAllStocks();
-
     void updateAllStocks();
 
-    List<Stock> getStocksByCodes(List<String> codes);
+    //TODO PREMIUM
+//    Stock getStockDirectly(String stockName);
 }

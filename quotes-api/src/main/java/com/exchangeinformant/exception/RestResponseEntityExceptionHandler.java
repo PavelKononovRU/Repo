@@ -15,9 +15,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({ QuotesUpdateException.class })
-    public ResponseEntity<ExceptionBody> handleQuotesException(QuotesUpdateException e) {
-        //TODO переделать
+    @ExceptionHandler({ QuotesException.class })
+    public ResponseEntity<ExceptionBody> handleQuotesException(QuotesException e) {
         return new ResponseEntity<>(
                 new ExceptionBody(ErrorCodes.valueOf(e.getMessage()).getErrorMessage(), ErrorCodes.valueOf(e.getMessage()).getErrorCode()), new HttpHeaders(), HttpStatus.BAD_GATEWAY);
     }
