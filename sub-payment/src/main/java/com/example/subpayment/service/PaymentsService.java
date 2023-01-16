@@ -11,6 +11,5 @@ public interface PaymentsService {
 
     PaymentStatus createPayment(PaymentDTO payment) throws TestPaymentException;
 
-    PaymentStatus createPaymentTest(Payment payment);
 
 }

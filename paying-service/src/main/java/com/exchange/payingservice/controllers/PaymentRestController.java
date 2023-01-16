@@ -34,15 +34,8 @@ public class PaymentRestController {
         return ResponseEntity.ok(paymentService.getAllPayment());
     }
 
-//    Старый стандартный POST
-    @PostMapping("/create")
-    public ResponseEntity<HttpStatus> createPayment(@Valid @RequestBody PaymentDTO payment) {
-        paymentService.createPayment(payment);
-        return ResponseEntity.ok(HttpStatus.CREATED);
-    }
-
-    @PutMapping
-    public ResponseEntity<HttpStatus> updatePayment(@PathVariable("id") Long id,@Valid @RequestBody PaymentDTO paymentDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> updatePayment(@PathVariable("id") Long id, @Valid @RequestBody PaymentDTO paymentDTO) {
         paymentService.updatePayment(id, paymentDTO);
         return ResponseEntity.ok(HttpStatus.OK);
     }
@@ -53,18 +46,8 @@ public class PaymentRestController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    // Имитирует тело для stud-payment POST
-    @GetMapping("/test/v1")
-    public ResponseEntity<Object> testV1Method() {
-        RestTemplate restTemplate = new RestTemplate();
-        StudPaymentDTO studPayment = paymentService.testMethodPostToStudPayment();
-        ResponseEntity<Object> responseEntity =
-                restTemplate.postForEntity("http://localhost:8081/api/payments", studPayment, Object.class);
-        return responseEntity;
-    }
-
     @PostMapping
-    public ResponseEntity<Object> postToStudPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
+    public ResponseEntity<Object> createPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
         return paymentService.methodGetBodyToStudPayment(studPayment);
     }
 
