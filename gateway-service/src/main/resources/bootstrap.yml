@@ -25,6 +25,10 @@ spring:
           uri: lb://quotes-api
           predicates:
             - Path=/**
+        - id: subscription
+          uri: lb://subscription
+          predicates:
+            - Path=/api/**
   security:
     oauth2:
       client:
