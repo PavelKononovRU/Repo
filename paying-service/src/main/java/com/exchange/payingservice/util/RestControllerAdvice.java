@@ -4,12 +4,15 @@ import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.dto.StatusCards;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.exceptions.PaymentException;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -24,7 +27,7 @@ public class RestControllerAdvice {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("date", new StatusCards("Карта сохранена",
                 "Управляйте картами в платежной информации"));
-        map.put("create_at", LocalDateTime.now());
+        map.put("update_at", LocalDateTime.now());
         return new ResponseEntity<Object>(map, HttpStatus.OK);
     }
 
@@ -56,15 +59,14 @@ public class RestControllerAdvice {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("date", new StatusCards(String.format("Карта c id %d удалена", id),
                 "Управляйте картами в платежной информации"));
-        map.put("create_at", LocalDateTime.now());
+        map.put("delete_at", LocalDateTime.now());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
     //Перехватывает исключения валидации
-    @ExceptionHandler({MethodArgumentNotValidException.class, PaymentException.class})
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ValidationErrorResponse onConstraintValidationException(MethodArgumentNotValidException e
-    ) {
+    public ValidationErrorResponse onConstraintValidationException(MethodArgumentNotValidException e) {
         final List<StatusCards> violations = e.getAllErrors().stream()
                 .map(
                         status -> new StatusCards(
@@ -77,6 +79,17 @@ public class RestControllerAdvice {
         return new ValidationErrorResponse(violations);
     }
 
+    @ResponseBody
+    @ExceptionHandler({HttpClientErrorException.UnprocessableEntity.class})
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    public PaymentStatus catchPaymentException(HttpClientErrorException.UnprocessableEntity e) {
+        return new PaymentStatus(Status.ERROR,"Платеж не прошел,пожалуйста,повторите позже.");
+    }
 
-
+    @ResponseBody
+    @ExceptionHandler({PaymentException.class})
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    public PaymentStatus catchPaymentException(PaymentException e) {
+        return new PaymentStatus(Status.ERROR,e.getMessage());
+    }
 }
