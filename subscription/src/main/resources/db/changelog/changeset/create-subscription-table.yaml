@@ -56,3 +56,9 @@ databaseChangeLog:
               - column:
                   name: send_sms
                   type: bigint
+              - column:
+                  name: tariff_id
+                  type: bigint
+              - column:
+                  name: user_id
+                  type: bigint

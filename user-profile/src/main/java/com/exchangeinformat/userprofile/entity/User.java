@@ -6,11 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
 
 @Data
 @Entity
@@ -96,4 +94,5 @@ public class User {
 
     @Column(name = "token")
     private String token;
+
 }

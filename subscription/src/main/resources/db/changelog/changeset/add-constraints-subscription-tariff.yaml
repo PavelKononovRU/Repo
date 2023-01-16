@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-constraints-subscription-tariff
+      author: Vladislav
+      changes:
+        - addForeignKeyConstraint:
+           constraintName: tariff_fk
+           baseTableName: subscriptions
+           baseColumnNames: tariff_id
+           referencedTableName: tariff
+           referencedColumnNames: tariff_id

@@ -1,11 +1,10 @@
 package com.exchangeinformant.subscription.model;
 
-import com.exchangeinformant.subscription.util.Interval;
-import com.exchangeinformant.subscription.util.Status;
+import com.exchangeinformant.subscription.util.enums.Interval;
+import com.exchangeinformant.subscription.util.enums.Status;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -19,7 +18,7 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "tariff_id")
     private Tariff tariff;
 
@@ -52,21 +51,7 @@ public class Subscription {
     @Column(name = "send_sms")
     private int sendSMS;
 
-//    @Column(name="is_promo")
-//    private Boolean isPromo;
-//
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "promosubscription_id")
-//    private PromoSubscription promoSubscription;
-//
-    public enum Status {
-        AWAITING_TRANSACTION,
-        ACTIVE,
-        INACTIVE,
-        PAYMENT_ERROR,
-        AWAITING_DEACTIVATION,
-        DEACTIVATION_ERROR,
-        AWAITING_START_DATE,
-        ARCHIVED
-    }
+    @Column(name = "user_id")
+    private Long userId;
+
 }
