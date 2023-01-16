@@ -1,6 +1,7 @@
 package com.exchangeinformant.subscription.controllers;
 
-import com.exchangeinformant.subscription.model.PromoSubscription;
+import com.exchangeinformant.subscription.dto.PromoSubscriptionDTO;
+import com.exchangeinformant.subscription.repository.PromoSubscriptionRepository;
 import com.exchangeinformant.subscription.service.PromoSubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,36 +15,40 @@ import java.util.List;
 public class RestPromoSubscriptionController {
     private final PromoSubscriptionService promoSubscriptionService;
 
+    private final PromoSubscriptionRepository promoSubscriptionRepository;
+
+
     @Autowired
-    public RestPromoSubscriptionController(PromoSubscriptionService promoSubscriptionService) {
+    public RestPromoSubscriptionController(PromoSubscriptionService promoSubscriptionService, PromoSubscriptionRepository promoSubscriptionRepository) {
         this.promoSubscriptionService = promoSubscriptionService;
+        this.promoSubscriptionRepository = promoSubscriptionRepository;
     }
 
     @GetMapping("/promosubscription/{id}")
-    public ResponseEntity<PromoSubscription> getPromoSubscription(@PathVariable Long id) {
+    public ResponseEntity<PromoSubscriptionDTO> getPromoSubscription(@PathVariable Long id) {
         return ResponseEntity.ok(promoSubscriptionService.getPromoSubscription(id));
     }
 
     @GetMapping("/promosubscription")
-    public ResponseEntity<List<PromoSubscription>> getPromoSubscriptions() {
+    public ResponseEntity<List<PromoSubscriptionDTO>> getPromoSubscription() {
         return ResponseEntity.ok(promoSubscriptionService.getAllPromoSubscription());
     }
 
     @PostMapping("/promosubscription")
-    public ResponseEntity<HttpStatus> createPromoSubscription(@RequestBody PromoSubscription promosubscription) {
-        promoSubscriptionService.createPromoSubscription(promosubscription);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<?> createPromoSubscription(@RequestBody PromoSubscriptionDTO promosubscriptionDTO) {
+        promoSubscriptionService.createPromoSubscription(promosubscriptionDTO);
+        return ResponseEntity.ok(promosubscriptionDTO);
     }
 
     @PutMapping("/promosubscription")
-    public ResponseEntity<HttpStatus> updatePromoSubscription(@RequestBody PromoSubscription promosubscription) {
-        promoSubscriptionService.updatePromoSubscription(promosubscription);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<?> updatePromoSubscription(@RequestBody PromoSubscriptionDTO promosubscriptionDTO) {
+        promoSubscriptionService.updatePromoSubscription(promosubscriptionDTO);
+        return ResponseEntity.ok(promosubscriptionDTO);
     }
 
     @DeleteMapping("/promosubscription/{id}")
-    public ResponseEntity<HttpStatus> deletePromoSubscription(@PathVariable Long id) {
+    public ResponseEntity<?> deletePromoSubscription(@PathVariable Long id) {
         promoSubscriptionService.deletePromoSubscription(id);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 }
