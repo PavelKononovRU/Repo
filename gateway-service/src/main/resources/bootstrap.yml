@@ -10,6 +10,8 @@ spring:
         enabled: false
         service-id: config-server
     gateway:
+      default-filters:
+        - TokenRelay
       discovery:
         locator:
           enabled: true
@@ -23,3 +25,29 @@ spring:
           uri: lb://quotes-api
           predicates:
             - Path=/**
+  security:
+    oauth2:
+      client:
+        provider:
+          my-keycloak-provider:
+            issuer-uri: http://localhost:8890/realms/project-realm
+        registration:
+          keycloak-spring-gateway-client:
+            provider: my-keycloak-provider
+            scope: openid
+            client-id: gateway-client
+            client-secret: PX6A34wWxDNYQcHa0pdPdOk3f42Jo0aA
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/gateway-client
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: DEBUG
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
