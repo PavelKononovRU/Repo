@@ -54,4 +54,11 @@ public class Subscription {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "is_promo")
+    private Boolean isPromo;
+
+    @OneToOne
+    @JoinColumn(name = "promocode_id")
+    private PromoSubscription promoSubscription;
+
 }
