@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-constraints-subscription-promosubscription
+      author: Sergey
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: promosubscription_fk
+            baseTableName: subscriptions
+            baseColumnNames: promocode_id
+            referencedTableName: promosubscription
+            referencedColumnNames: promocode_id

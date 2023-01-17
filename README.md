@@ -244,3 +244,27 @@ Swagger и Postman.
 2. Прописываем id: (название вашего сервиса)
 3. Прописываем uri: lb://(название вашего сервиса)
 4. В predicates прописываем адреса к которым будет обращаться gateway - Path=/адрес
+
+### Keycloak
+
+### Настройка Keycloak
+
+1. Запускаем Docker-compose
+2. Keycloak запускается на порту 8890, заходим в keycloak логин <code>admin</code> пароль <code>admin</code>
+3. Создаем новый realm, с названием <code>Project-realm</code> и выбираем его
+4. Создаем нового клиента <code>gateway-client</code>, выбираем Access Type <code>confidential</code>, в Valid Redirect URIs указываем, <code> http://localhost:8080/api/user/home </code> и <code> http://localhost:8080/login/oauth2/code/gateway-client </code>
+5. Создаем две роли <code> ADMIN </code> и <code> USER </code>
+6. В Default Roles выбираем роль USER как роль по умолчание, для того что бы при создании юзера к юзеру добавлялась эта роль
+7. В Users Создаем юзера с логином <code> admin</code> и паролем <code>admin</code>, c ролями ADMIN и USER
+8. Полезная ссылка: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
+
+### Подключить service к Keycloak в качестве ресурс сервера
+
+1. Добавляем зависимость <code> <dependency\>
+   <groupId\>org.springframework.boot<\/groupId>
+   <artifactId\>spring-boot-starter-oauth2-resource-server<\/artifactId>
+   <\/dependency> </code>
+2. в фале пропирти вашего сервиса укаываем           jwk-set-uri: http://localhost:8890/realms/project-realm/protocol/openid-connect/certs
+3. Создаем классы RealmRoleConverter и ResourceServerConfig в пакете config по аналогии с user-profile
+4. С помощью аннотации <code> @RolesAllowed({"ADMIN"})</code> ограничиваем доступ к своим контроллерам только по определенной роли
+

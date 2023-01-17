@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-subscription
+      id: create-subscriptions
       author: Vladislav
       changes:
         - createTable:
@@ -55,4 +55,16 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: send_sms
+                  type: bigint
+              - column:
+                  name: tariff_id
+                  type: bigint
+              - column:
+                  name: user_id
+                  type: bigint
+              - column:
+                  name: is_promo
+                  type: boolean
+              - column:
+                  name: promocode_id
                   type: bigint
