@@ -7,11 +7,16 @@ databaseChangeLog:
             tableName: promosubscription
             columns:
               - column:
-                  name: promosubscription_id
+                  name: promocode_id
                   type: bigint
                   autoIncrement: true
                   constraints:
                     primaryKey: true
+                    nullable: false
+              - column:
+                  name: is_promocode_applied
+                  type: boolean
+                  constraints:
                     nullable: false
               - column:
                   name: promocode

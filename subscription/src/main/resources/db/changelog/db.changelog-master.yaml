@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-promosubscription-table.yaml
   - include:
       file: db/changelog/changeset/add-constraints-subscription-tariff.yaml
+  - include:
+      file: db/changelog/changeset/add-constraints-subscription-promosubscription.yaml

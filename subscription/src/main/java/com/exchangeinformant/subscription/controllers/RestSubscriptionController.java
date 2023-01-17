@@ -26,7 +26,7 @@ public class RestSubscriptionController {
     }
 
     @GetMapping("/subscriptions")
-    public ResponseEntity<List<SubscriptionDTO>> getSubscriptions() {
+    public ResponseEntity<List<SubscriptionDTO>> getSubscription() {
         return ResponseEntity.ok(subscriptionService.getAllSubscription());
     }
 

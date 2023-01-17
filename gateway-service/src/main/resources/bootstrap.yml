@@ -41,6 +41,10 @@ spring:
                   maxBackoff: 50ms
                   factor: 2
                   basedOnPreviousValue: false
+        - id: subscription
+          uri: lb://subscription
+          predicates:
+            - Path=/api/**
   security:
     oauth2:
       client:
