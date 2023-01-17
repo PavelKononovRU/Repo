@@ -49,8 +49,6 @@ services:
       - spring.config.import=optional:configserver:http://config:8888
       - spring.cloud.config.profile=dev
     depends_on:
-      - server
-      - config
       - gateway-service
       - postgres
     ports:
@@ -64,8 +62,6 @@ services:
       - spring.config.import=optional:configserver:http://config:8888
       - spring.cloud.config.profile=dev
     depends_on:
-      - server
-      - config
       - gateway-service
       - postgres
     ports:
@@ -79,8 +75,6 @@ services:
       - spring.config.import=optional:configserver:http://config:8888
       - spring.cloud.config.profile=dev
     depends_on:
-      - server
-      - config
       - gateway-service
       - postgres
     ports:
@@ -94,8 +88,6 @@ services:
       - spring.config.import=optional:configserver:http://config:8888
       - spring.cloud.config.profile=dev
     depends_on:
-      - server
-      - config
       - gateway-service
       - postgres
     ports:
@@ -109,12 +101,25 @@ services:
       - spring.config.import=optional:configserver:http://config:8888
       - spring.cloud.config.profile=dev
     depends_on:
-      - server
-      - config
       - gateway-service
       - postgres
     ports:
       - 8082:8082
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rm
+      - RABBITMQ_DEFAULT_PASS=rmp
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    networks:
+      - rabbitmq_go_net
+    depends_on:
+      - keycloak
+    ports:
+      - 15672:15672
   keycloak:
     image: quay.io/keycloak/keycloak:18.0.0
     command: start-dev
@@ -128,10 +133,9 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "8890:8080"
+      - "8008:8008"
     depends_on:
-      postgres_keycloak:
-        condition: service_healthy
+     - postgres_keycloak
     networks:
       - keycloak_dev_network
   postgres_keycloak:
@@ -151,6 +155,8 @@ services:
       - keycloak_dev_network
 volumes:
   pgdata_keycloak:
-    networks:
+networks:
       keycloak_dev_network:
+        driver: bridge
+      rabbitmq_go_net:
         driver: bridge

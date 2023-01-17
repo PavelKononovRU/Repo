@@ -3,13 +3,13 @@ spring:
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
   instance:
       preferIpAddress: true
       lease-renewal-interval-in-seconds: 30
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
 bcs:
   api:
     url: https://api.bcs.ru
