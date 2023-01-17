@@ -1,10 +1,6 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.model.Stock;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Created in IntelliJ
@@ -15,10 +11,8 @@ import java.util.List;
 @Service
 public interface StockService {
 
-    Stock getStock(String stockName);
+    void updateAllStocks();
 
-    List<Stock> getAllStocks();
-
-    void updateAllStocks() throws IOException;
-    List<Stock> getStocksByCodes(List<String> codes);
+    //TODO PREMIUM
+//    Stock getStockDirectly(String stockName);
 }

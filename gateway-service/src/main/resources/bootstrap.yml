@@ -5,7 +5,9 @@ spring:
     name: gateway-service
   cloud:
     config:
+      # noinspection SpringBootApplicationYaml
       profile: local
+      # noinspection SpringBootApplicationYaml
       discovery:
         enabled: false
         service-id: config-server
@@ -24,7 +26,21 @@ spring:
         - id: quotes-api
           uri: lb://quotes-api
           predicates:
-            - Path=/**
+            - Path=/quotes/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+              # noinspection SpringBootApplicationYaml
+              # ругается но работает
+              args:
+                retries: 4
+                statuses: BAD_GATEWAY
+                methods: GET,POST
+                backoff:
+                  firstBackoff: 10ms
+                  maxBackoff: 50ms
+                  factor: 2
+                  basedOnPreviousValue: false
         - id: subscription
           uri: lb://subscription
           predicates:
