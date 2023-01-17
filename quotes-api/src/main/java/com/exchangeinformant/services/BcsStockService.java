@@ -11,6 +11,7 @@ import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Bcs;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
@@ -42,16 +43,6 @@ public class BcsStockService implements StockService {
         this.bcsConfig = bcsConfig;
         this.infoRepository = infoRepository;
         this.stockRepository = stockRepository;
-    }
-
-    @Override
-    public Stock getStock(String stockName) {
-        return stockRepository.findBySecureCode(stockName);
-    }
-
-    @Override
-    public List<Stock> getAllStocks() {
-        return stockRepository.findAll();
     }
 
     @Scheduled(cron = "0 */10 * * * *")
