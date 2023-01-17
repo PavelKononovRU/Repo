@@ -3,20 +3,22 @@ package com.exchangeinformant.services;
 import com.exchangeinformant.configuration.BcsConfig;
 import com.exchangeinformant.dto.InfoDTO;
 import com.exchangeinformant.dto.StockDTO;
+import com.exchangeinformant.exception.ErrorCodes;
+import com.exchangeinformant.exception.QuotesException;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
-import org.springframework.context.annotation.Primary;
+import com.exchangeinformant.util.Bcs;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Created in IntelliJ
@@ -25,7 +27,7 @@ import java.util.*;
  * Time: 17:27
  */
 @Service
-@Primary
+@Bcs
 public class BcsStockService implements StockService {
 
     private final WebClient webClient;
@@ -70,20 +72,21 @@ public class BcsStockService implements StockService {
                 infoRepository.save(info);
             } catch (WebClientRequestException e) {
                 e.printStackTrace();
+                throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.name());
             }
         }
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
 
-    @Override
-    public List<Stock> getStocksByCodes(List<String> codes) {
-        List<Stock> result = new ArrayList<>();
-        for(String code : codes){
-            result.add(stockRepository.findBySecureCode(code));
-        }
-        return result;
-    }
+//    @Override
+//    public List<Stock> getStocksByCodes(List<String> codes) {
+//        List<Stock> result = new ArrayList<>();
+//        for(String code : codes){
+//            result.add(stockRepository.findBySecureCode(code));
+//        }
+//        return result;
+//    }
 
     private Info convertInfoDTOToInfo(InfoDTO infoDTO) {
         Info info = new Info();
