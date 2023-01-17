@@ -2,20 +2,23 @@ package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.entity.Card;
+import com.exchange.payingservice.entity.Payment;
+import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
-import com.exchange.payingservice.entity.Payment;
+import com.exchange.payingservice.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,13 +29,14 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentRepository paymentRepository;
 
     private final PaymentsMapper paymentsMapper;
-
+    private final CardService cardService;
     private static int flag;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService) {
         this.paymentRepository = paymentRepository;
         this.paymentsMapper = paymentsMapper;
+        this.cardService = cardService;
     }
 
     @Override
@@ -47,8 +51,21 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public void createPayment(PaymentDTO payment) {
-        paymentRepository.save(paymentsMapper.toEntity(payment));
+    public StudPaymentDTO createPayment(StudPaymentDTO payment, Status status) {
+        Payment created = new Payment();
+        Card card = cardService.getCardById(payment.getCard_id());
+        created.setCard(card);
+        if (created.getCard() == null) {
+            throw new PaymentException("Карты с данным номером не обнаружено.");
+        }
+        created.setCreateAt(new Date());
+        created.setUpdateAt(new Date());
+        created.setStatus(status);
+        created.setMessage("MESSAGE");
+        created.setUser_id(card.getUser_id());
+        System.out.println(payment);
+        paymentRepository.save(created);
+        return payment;
     }
 
     @Override
@@ -65,38 +82,32 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.deleteById(id);
     }
 
-    // Имитирует тело для POST запроса
-    @Override
-    public StudPaymentDTO testMethodPostToStudPayment() {
-        StudPaymentDTO studPayment = new StudPaymentDTO();
-        studPayment.setPhone("string");
-        studPayment.setEmail("ivanov@gmail.com");
-        studPayment.setPromocode("PROMO412GWOT");
-        studPayment.setCard_id(64556L);
-        Map<String, String> mapItems = new HashMap<>();
-        mapItems.put("amount", "129900");
-        mapItems.put("subscription_id", "12345");
-        studPayment.setItems(mapItems);
-        return studPayment;
-    }
-
     @Override
     public ResponseEntity<Object> methodGetBodyToStudPayment(StudPaymentDTO studPayment) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("1-");
-        stringBuilder.append(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")).toString() + "-" + ++flag);
-
-        Map<String, String> testMap = studPayment.getItems();
-        testMap.put("ext_id", stringBuilder.toString());
-        testMap.put("status", "SUCCESSFULLY");
-        testMap.put("createAt", LocalDateTime.now().toString());
+        Status status = Status.SUCCESSFULLY;
+        String extId = "1-" +
+                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + ++flag;
+        Map<String, String> testMap = new HashMap<>();
+        testMap.put("ext_id", extId);
+        testMap.put("amount", studPayment.getItems().get("amount"));
 
         RestTemplate restTemplateStudPayment = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        ResponseEntity<Object> response = restTemplateStudPayment.postForEntity(
-                "http://localhost:8082/stud/payment/v1", testMap, Object.class);
+
+        ResponseEntity<Object> response;
+        try {
+            response = restTemplateStudPayment.postForEntity("http://localhost:8082/stud/payment", testMap, Object.class);
+        } catch (HttpClientErrorException.UnprocessableEntity e) {
+            status = Status.ERROR;
+            throw new PaymentException("Платеж не прошел,пожалуйста,повторите позже.");
+        }finally {
+            this.createPayment(studPayment, status);
+        }
         return response;
+    }
+
+    @Scheduled(cron = "* * 1 * * ?")
+    protected void clearCounter() {
+        flag = 0;
     }
 
 }

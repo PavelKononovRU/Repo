@@ -6,11 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-
 
 @Data
 @Entity
@@ -23,6 +21,11 @@ public class User {
     @EqualsAndHashCode.Include
     @ToString.Include
     private Long id;
+
+    @Column(name = "ext_id")
+    @EqualsAndHashCode.Include
+    @ToString.Include
+    private String extId;
 
     @Column(name = "username")
     @EqualsAndHashCode.Include
@@ -86,14 +89,15 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private boolean isDeleted = true;
 
     @Column(name = "is_active")
-    private boolean isActive;
+    private boolean isActive = true;
 
     @Column(name = "is_banned")
-    private boolean isBanned;
+    private boolean isBanned = true;
 
     @Column(name = "token")
     private String token;
+
 }

@@ -1,5 +1,6 @@
 package com.exchange.payingservice.entity;
 
+import com.exchange.payingservice.util.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,7 @@ public class Payment {
     @Column(name = "payment_id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "card_id", referencedColumnName = "card_id", foreignKey = @ForeignKey(name = "card_id"))
     private Card card;
 
@@ -35,10 +36,5 @@ public class Payment {
     @Column(name = "message")
     private String message;
 
-    public enum Status{
-        OK,
-        DENIED,
-        ERROR
-    }
 }
 

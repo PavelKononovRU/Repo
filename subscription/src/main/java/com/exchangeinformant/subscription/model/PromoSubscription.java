@@ -1,20 +1,31 @@
 package com.exchangeinformant.subscription.model;
 
 
+import com.exchangeinformant.subscription.util.enums.Type;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
-@NoArgsConstructor
 @Table(name = "promosubscription")
 public class PromoSubscription {
+
     @Id
-    @Column(name = "promosubscription_id")
+    @Column(name = "promocode_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    public PromoSubscription( Boolean isPromocodeApplied, String promocode, Type type) {
+        this.isPromocodeApplied = isPromocodeApplied;
+        this.promocode = promocode;
+        this.type = type;
+    }
+    public PromoSubscription() {
+    }
+
+    @Column(name = "is_promocode_applied")
+    private Boolean isPromocodeApplied;
 
     @Column(name = "promocode")
     private String promocode;
@@ -23,8 +34,4 @@ public class PromoSubscription {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    public enum Type {
-        PROCENT,
-        SUMM
-    }
 }

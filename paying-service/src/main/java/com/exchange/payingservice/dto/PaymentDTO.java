@@ -1,7 +1,7 @@
 package com.exchange.payingservice.dto;
 
 import com.exchange.payingservice.entity.Card;
-import com.exchange.payingservice.entity.Payment;
+import com.exchange.payingservice.util.Status;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -16,7 +16,7 @@ public class PaymentDTO {
 
     private Long id;
     @Valid
-    private CardDTO card;
+    private Card card;
     @PastOrPresent
     private Date createAt;
     @PastOrPresent
@@ -24,13 +24,8 @@ public class PaymentDTO {
     @NotNull
     private Long user_id;
 
-    private Payment.Status status;
+    private Status status;
 
     private String message;
 
-    public enum Status {
-        OK,
-        DENIED,
-        ERROR
-    }
 }
