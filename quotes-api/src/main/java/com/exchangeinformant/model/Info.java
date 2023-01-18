@@ -1,11 +1,13 @@
 package com.exchangeinformant.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 /**
@@ -23,6 +25,7 @@ public class Info {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private long id;
 
     @Column(name = "last-price")
@@ -34,6 +37,11 @@ public class Info {
 
     @Column(name = "secure-code")
     private String secureCode;
+
+    @JsonGetter("price")
+    public double getLastPrice() {
+        return lastPrice;
+    }
 
     public Info(double lastPrice, LocalDateTime updatedAt, String secureCode) {
         this.lastPrice = lastPrice;

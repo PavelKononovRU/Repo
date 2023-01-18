@@ -2,7 +2,7 @@ server:
   port: 8082
 spring:
   application:
-    name: paying-service
+    name: sub-payment
   cloud:
     config:
       profile: local

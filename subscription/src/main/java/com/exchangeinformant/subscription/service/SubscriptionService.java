@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SubscriptionService {
 
-    void createSubscription(SubscriptionDTO subscriptionDTO);
+    void createSubscription(SubscriptionDTO subscription);
 
     SubscriptionDTO getSubscription(Long id) ;
 

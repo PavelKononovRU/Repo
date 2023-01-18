@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-subscription
+      id: create-subscriptions
       author: Vladislav
       changes:
         - createTable:
@@ -61,4 +61,10 @@ databaseChangeLog:
                   type: bigint
               - column:
                   name: user_id
+                  type: bigint
+              - column:
+                  name: is_promo
+                  type: boolean
+              - column:
+                  name: promocode_id
                   type: bigint
