@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CardDTO {
     private Long id;
@@ -23,8 +25,7 @@ public class CardDTO {
     @NotNull
     private Long user_id;
 
-    public CardDTO(Long id, String number, String principal, String CSV, Long user_id) {
-        this.id = id;
+    public CardDTO(String number, String principal, String CSV, Long user_id) {
         this.number = number;
         this.principal = principal;
         this.CSV = CSV;
