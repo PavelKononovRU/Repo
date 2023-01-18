@@ -9,7 +9,7 @@ spring:
       profile: local
       # noinspection SpringBootApplicationYaml
       discovery:
-        enabled: false
+        enabled: true
         service-id: config-server
     gateway:
       default-filters:
