@@ -246,10 +246,11 @@ Swagger и Postman.
 3. Создаем новый realm, с названием <code>project-realm</code> и выбираем его
 4. Создаем нового клиента <code>gateway-client</code>, выбираем Access Type <code>confidential</code>, в Valid Redirect URIs указываем, <code> http://localhost:8080/api/user/home </code> и <code> http://localhost:8080/login/oauth2/code/gateway-client </code>
 5. Взять у gateway-client secret поля из вкладки _Credentials_ и вставить в bootstrap.yml сервиса gateway-service
-6. Создаем две роли <code> ADMIN </code> и <code> USER </code> в Сonfigure -> Roles
-7. В Default Roles выбираем роль USER как роль по умолчание, для того что бы при создании юзера к юзеру добавлялась эта роль
-8. В Users Создаем юзера с логином <code> admin</code> и паролем <code>admin</code>, c ролями ADMIN и USER.
-9. Полезная ссылка: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
+6. Переключить Direct Access Grants Enabled на OFF и Service Accounts Enabled на ON
+7. Создаем две роли <code> ADMIN </code> и <code> USER </code> в Сonfigure -> Roles
+8. В Default Roles выбираем роль USER как роль по умолчание, для того что бы при создании юзера к юзеру добавлялась эта роль
+9. В Users Создаем юзера с логином <code> admin</code> и паролем <code>admin</code>, c ролями ADMIN и USER.
+10.Полезная ссылка: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
 
 ### Подключить service к Keycloak в качестве ресурс сервера
 
