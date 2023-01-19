@@ -134,11 +134,13 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "8890:8890"
+      - "8890:8080"
     depends_on:
-     - postgres_keycloak
+      postgres_keycloak:
+        condition: service_healthy
     networks:
       - keycloak_dev_network
+
   postgres_keycloak:
     image: postgres:14.2
     command: postgres -c 'max_connections=200'
@@ -157,7 +159,7 @@ services:
 volumes:
   pgdata_keycloak:
 networks:
-      keycloak_dev_network:
-        driver: bridge
-      rabbitmq_go_net:
-        driver: bridge
+  keycloak_dev_network:
+    driver: bridge
+  rabbitmq_go_net:
+    driver: bridge
