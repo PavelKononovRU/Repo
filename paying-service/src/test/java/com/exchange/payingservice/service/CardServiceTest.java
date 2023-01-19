@@ -4,6 +4,7 @@ import com.exchange.payingservice.IntegrationTestBase;
 import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.mappers.CardMapper;
+import com.exchange.payingservice.repository.CardRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,9 @@ public class CardServiceTest extends IntegrationTestBase {
 
     @Autowired
     private CardService cardService;
+
+    @Autowired
+    private CardRepository cardRepository;
 
     @BeforeEach
     void setUp() {
@@ -54,6 +58,7 @@ public class CardServiceTest extends IntegrationTestBase {
         Optional<Card> maybeCard = Optional.ofNullable(cardService.getCardById(1L));
         maybeCard.ifPresent(entity -> {
             assertNull(entity.getNumber());
+            assertEquals(entity.getNumber(), "1111-2222-3333-4444");
         });
     }
 
@@ -61,14 +66,7 @@ public class CardServiceTest extends IntegrationTestBase {
     void testSave() {
         CardDTO cardDTO = new CardDTO("1234-1231-1235-7665", "user55", "754", 23L);
         cardService.createCard(cardDTO);
-        boolean b = false;
-        for (Card em : cardService.getAllCard()) {
-            if (em.getNumber().equals("1234-1231-1235-7665")) {
-                b = true;
-                break;
-            }
-        }
-        assertTrue(b);
+        assertEquals(cardDTO.getNumber(), cardRepository.getCardByNumber("1234-1231-1235-7665").getNumber());
     }
 
 }
