@@ -68,4 +68,9 @@ public class StockDbServiceImpl implements StockDbService {
         return stockList;
     }
 
+    @Override
+    public List<Stock> getAllStocks() {
+        return stockRepository.findAll();
+    }
+
 }

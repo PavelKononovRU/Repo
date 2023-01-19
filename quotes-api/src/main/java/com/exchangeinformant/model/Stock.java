@@ -6,6 +6,8 @@ import java.util.List;
 @Data
 @Table(name = "stock")
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Stock {
     @Id
     @Column(name = "secure-code")
