@@ -71,11 +71,4 @@ public class CardServiceTest extends IntegrationTestBase {
         assertTrue(b);
     }
 
-//    @Test почему-то всегда проходит успешно
-//    void testSaveWhat() {
-//        CardDTO cardDTO = new CardDTO("1234-1231-7777-7665", "user55", "754", 23L);
-//        cardService.createCard(cardDTO);
-//        assertNotNull(cardService.getAllCard().stream().anyMatch(ex -> ex.getNumber().equals("1233-1111-1235-7665")));
-//    }
-
 }
