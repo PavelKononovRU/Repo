@@ -47,7 +47,7 @@ public class SecurityConfig {
         OidcClientInitiatedServerLogoutSuccessHandler oidcLogoutSuccessHandler =
                 new OidcClientInitiatedServerLogoutSuccessHandler(repository);
 
-        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("http://gateway-service:8080/api/user/home");
+        oidcLogoutSuccessHandler.setPostLogoutRedirectUri("http://localhost:8080/api/user/home");
 
         return oidcLogoutSuccessHandler;
     }
