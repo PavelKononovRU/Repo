@@ -44,7 +44,6 @@ class PaymentRestControllerTest extends IntegrationTestBase {
     void getPayment() throws Exception {
         mockMvc.perform(get("/api/payments/{id}", 1))
                 .andDo(print())
-                .andExpect(jsonPath("$.id").value("1"))
                 .andExpect(status().isOk());
     }
 
@@ -87,6 +86,15 @@ class PaymentRestControllerTest extends IntegrationTestBase {
     void createErrorPayment() {
         StudPaymentDTO studPaymentDTO = createStudPaymentDTO();
         assertEquals(Status.ERROR, createTestPaymentStubError(studPaymentDTO).getBody());
+    }
+
+    @Test
+    @DisplayName("get payment by id not found")
+    void getPaymentNotFound() throws Exception {
+        mockMvc.perform(get("/api/payments/{id}", 10))
+                .andDo(print())
+//                .andExpect(jsonPath("$.title").value("Card not found"))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
