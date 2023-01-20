@@ -17,7 +17,9 @@
     - [Spring Boot Dev Tools](#Spring Boot Dev Tools)
     - [Аутентификация](#аутентификация)
     - [Liquibase](#liquibase)
-    - [API Руководство](#api-guide)
+    - [API Gateway Руководство](#api-gateway)
+    - [Keycloak Руководство](#keycloak)
+    - [Keycloak подключение сервиса](#-service--keycloak----)
 
 ### Summary
 
@@ -227,16 +229,6 @@ Swagger и Postman.
 - создаем сам скрипт, название должно соответствовать тому что он делает(create-tariff-table.yaml смотрим пример).
 - запускаем, таблица вашей модели создана
 
-### API Guide
-1. Запрашиваем информацию о компании по адресу - info/{stockName}. Список всех акций можно скачать [здесь](https://www.alphavantage.co/query?function=LISTING_STATUS&apikey=demo). Вот несколько stockName для примера - IBM, NVDA, AAPL, MSFT, AMD.
-2. Чтобы узнать стоимость акций компании переходим по адресу - api/{stockName}.
-3. Для получения полно списка запросов по акциям конкретной компании возвращаемся на - info/{stockName}.
-***
-**P.S.** В Alpha Vantage ограничение по количеству запросов - 5 запросов в минут и 500 за один день. Если результат запроса будет null, можно получить свой ключ по этой [ссылке](https://www.alphavantage.co/support/#api-key). 
-
-Вставить свой _ключ_ нужно сюда - config/src/main/resources/config/quotes-api-local.yml
-***
-
 ### API Gateway
 
 В bootstrap.yml gateway-service прописываем следующие данные для своего сервиса:
@@ -251,12 +243,14 @@ Swagger и Postman.
 
 1. Запускаем Docker-compose
 2. Keycloak запускается на порту 8890, заходим в keycloak логин <code>admin</code> пароль <code>admin</code>
-3. Создаем новый realm, с названием <code>Project-realm</code> и выбираем его
+3. Создаем новый realm, с названием <code>project-realm</code> и выбираем его
 4. Создаем нового клиента <code>gateway-client</code>, выбираем Access Type <code>confidential</code>, в Valid Redirect URIs указываем, <code> http://localhost:8080/api/user/home </code> и <code> http://localhost:8080/login/oauth2/code/gateway-client </code>
-5. Создаем две роли <code> ADMIN </code> и <code> USER </code>
-6. В Default Roles выбираем роль USER как роль по умолчание, для того что бы при создании юзера к юзеру добавлялась эта роль
-7. В Users Создаем юзера с логином <code> admin</code> и паролем <code>admin</code>, c ролями ADMIN и USER
-8. Полезная ссылка: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
+5. Взять у gateway-client secret поля из вкладки _Credentials_ и вставить в bootstrap.yml сервиса gateway-service
+6. Переключить Direct Access Grants Enabled на OFF и Service Accounts Enabled на ON
+7. Создаем две роли <code> ADMIN </code> и <code> USER </code> в Сonfigure -> Roles
+8. В Default Roles выбираем роль USER как роль по умолчание, для того что бы при создании юзера к юзеру добавлялась эта роль
+9. В Users Создаем юзера с логином <code> admin</code> и паролем <code>admin</code>, c ролями ADMIN и USER.
+10.Полезная ссылка: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
 
 ### Подключить service к Keycloak в качестве ресурс сервера
 
