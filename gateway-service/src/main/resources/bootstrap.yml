@@ -1,6 +1,9 @@
 server:
   port: 8080
 spring:
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
   application:
     name: gateway-service
   cloud:
@@ -56,7 +59,7 @@ spring:
             provider: my-keycloak-provider
             scope: openid
             client-id: gateway-client
-            client-secret: PX6A34wWxDNYQcHa0pdPdOk3f42Jo0aA
+            client-secret: PfEvi0rAx7Ksqk8XZs8auha4fbQZ5A9U
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/gateway-client
 

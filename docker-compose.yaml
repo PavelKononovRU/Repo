@@ -1,5 +1,126 @@
-
 services:
+  server:
+    container_name: eureka
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+  config:
+    container_name: config
+    build:
+      context: ./config
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://server:8761/eureka/
+    depends_on:
+      - server
+    ports:
+      - 8888:8888
+  gateway-service:
+    container_name: gateway
+    build:
+      context: ./gateway-service
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config:8888
+    depends_on:
+      - server
+      - config
+    ports:
+      - 8080:8080
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    depends_on:
+      - server
+      - config
+    ports:
+      - 5432:5432
+  quotes:
+    build:
+      context: ./quotes-api
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config:8888
+      - spring.cloud.config.profile=dev
+    depends_on:
+      - gateway-service
+      - postgres
+    ports:
+      - 8889:8889
+  user-profile:
+    build:
+      context: ./user-profile
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config:8888
+      - spring.cloud.config.profile=dev
+    depends_on:
+      - gateway-service
+      - postgres
+    ports:
+      - 8892:8892
+  subscription:
+    build:
+      context: ./subscription
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config:8888
+      - spring.cloud.config.profile=dev
+    depends_on:
+      - gateway-service
+      - postgres
+    ports:
+      - 8891:8891
+  paying-service:
+    build:
+      context: ./paying-service
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config:8888
+      - spring.cloud.config.profile=dev
+    depends_on:
+      - gateway-service
+      - postgres
+    ports:
+      - 8081:8081
+  sub-payment:
+    build:
+      context: ./sub-payment
+      dockerfile: Dockerfile
+    environment:
+      - eureka.client.service-url.defaultZone=http://server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config:8888
+      - spring.cloud.config.profile=dev
+    depends_on:
+      - gateway-service
+      - postgres
+    ports:
+      - 8082:8082
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    hostname: rabbitmq
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=rm
+      - RABBITMQ_DEFAULT_PASS=rmp
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    networks:
+      - rabbitmq_go_net
+    depends_on:
+      - keycloak
+    ports:
+      - 15672:15672
   keycloak:
     image: quay.io/keycloak/keycloak:18.0.0
     command: start-dev
@@ -40,4 +161,5 @@ volumes:
 networks:
   keycloak_dev_network:
     driver: bridge
-
+  rabbitmq_go_net:
+    driver: bridge

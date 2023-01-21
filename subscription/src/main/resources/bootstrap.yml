@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8891
 spring:
   application:
     name: subscription
@@ -9,3 +9,8 @@ spring:
       discovery:
         enabled: false
         service-id: config-server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8890/realms/project-realm/protocol/openid-connect/certs
