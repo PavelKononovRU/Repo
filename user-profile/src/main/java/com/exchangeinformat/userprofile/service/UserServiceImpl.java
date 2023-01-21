@@ -50,4 +50,9 @@ public class UserServiceImpl implements UserService {
     public User getUserByExtId(String extId) {
         return userRepository.findByExtId(extId).orElse(null);
     }
+
+    @Override
+    public boolean isUserPresent(String extId) {
+        return userRepository.existsByExtId(extId);
+    }
 }
