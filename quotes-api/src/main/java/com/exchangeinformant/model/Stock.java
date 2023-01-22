@@ -22,6 +22,7 @@ public class Stock {
 
     @OneToMany(mappedBy = "secureCode")
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private List<Info> infoList;
 
 }

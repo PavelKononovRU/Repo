@@ -9,6 +9,7 @@ import com.exchangeinformant.repository.StockRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,8 +70,12 @@ public class StockDbServiceImpl implements StockDbService {
     }
 
     @Override
-    public List<Stock> getAllStocks() {
-        return stockRepository.findAll();
+    public List<Stock> getAllStocksByCodes(List<String> codes) {
+        List<Stock> result = new ArrayList<>();
+        for (String code : codes) {
+            result.add(stockRepository.findBySecureCode(code));
+        }
+        return result;
     }
 
 }

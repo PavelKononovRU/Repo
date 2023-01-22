@@ -2,6 +2,7 @@ package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.exception.ErrorCodes;
 import com.exchangeinformant.exception.QuotesException;
+import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.StockDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,8 @@ public class StockRestController {
 
     @GetMapping("/stock")
     public ResponseEntity<?> getStock(@RequestParam("name") String secureCode) {
-        return new ResponseEntity<>(stockDbService.getStock(secureCode), HttpStatus.OK);
+        Stock stock = stockDbService.getStock(secureCode);
+        return new ResponseEntity<>(stock, HttpStatus.OK);
     }
 
     @GetMapping("/stock/query")

@@ -20,10 +20,7 @@ public interface StockDbService {
 
     List<Stock> getAllStocksByDate(LocalDateTime dateFrom, LocalDateTime dateTo);
 
-    List<Stock> getAllStocks();
-
-
-
+    List<Stock> getAllStocksByCodes(List<String> codes);
 
 
 }

@@ -22,7 +22,7 @@ class StockRepositoryTest {
     }
 
     @Test
-    void itShouldFindStockCode() {
+    void itShouldFindStock() {
         String secureCode = "AAPL";
         Stock stock = new Stock(secureCode, "Apple" ,"USD", new ArrayList<Info>());
 
