@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created in IntelliJ
@@ -70,12 +72,20 @@ public class StockDbServiceImpl implements StockDbService {
     }
 
     @Override
-    public List<Stock> getAllStocksByCodes(List<String> codes) {
+    public List<Stock> getAllAvailableStocksByCodes(List<String> codes) {
         List<Stock> result = new ArrayList<>();
         for (String code : codes) {
-            result.add(stockRepository.findBySecureCode(code));
+            Stock expectedStock = stockRepository.findBySecureCode(code);
+            if(expectedStock!=null){
+                result.add(expectedStock);
+            }
         }
         return result;
+    }
+
+    @Override
+    public List<Stock> getAllStocks() {
+        return stockRepository.findAll();
     }
 
 }

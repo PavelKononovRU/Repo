@@ -1,5 +1,7 @@
 package com.exchangeinformant.services;
 
+import com.exchangeinformant.exception.ErrorCodes;
+import com.exchangeinformant.exception.QuotesException;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
@@ -41,7 +43,7 @@ public class TinkoffStockService implements StockService {
         var list = context.searchMarketInstrumentsByTicker(ticker);
         List<MarketInstrument> miList =list.join().getInstruments();
         if (miList.isEmpty()) {
-            throw new RuntimeException("Stock not found");
+            throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.getErrorMessage());
         }
         MarketInstrument item = miList.get(0);
 
