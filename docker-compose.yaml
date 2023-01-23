@@ -115,13 +115,15 @@ services:
       - 15672:15672
   keycloak:
     image: quay.io/keycloak/keycloak:18.0.0
-    command: start-dev
+    command: [ 'start-dev --import-realm' ]
+    volumes:
+      - ./keycloak-server/realm-export.json:/opt/keycloak/data/import/realm-export.json
     environment:
-      KC_DB: postgres
-      KC_DB_URL_HOST: postgres_keycloak
-      KC_DB_URL_DATABASE: keycloak
-      KC_DB_PASSWORD: password
-      KC_DB_USERNAME: keycloak
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres_keycloak
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
       KC_DB_SCHEMA: public
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -132,7 +134,6 @@ services:
         condition: service_healthy
     networks:
       - keycloak_dev_network
-
   postgres_keycloak:
     image: postgres:14.2
     command: postgres -c 'max_connections=200'
@@ -150,6 +151,8 @@ services:
       - keycloak_dev_network
 volumes:
   pgdata_keycloak:
+    name: keycloak_postgres_data
+    driver: local
 networks:
   keycloak_dev_network:
     driver: bridge
