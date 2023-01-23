@@ -1,6 +1,7 @@
 package com.exchange.payingservice.util;
 
 import com.exchange.payingservice.dto.CardDTO;
+import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StatusCards;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.exceptions.PaymentException;
@@ -62,6 +63,17 @@ public class RestControllerAdvice {
         map.put("delete_at", LocalDateTime.now());
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
+
+    public static ResponseEntity<Object> generatePaymentsResponse(PaymentDTO paymentDTO) {
+        if (paymentDTO == null) {
+            throw new UsernameNotFoundException("Payment not found");
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("date", paymentDTO);
+        map.put("create_at", LocalDateTime.now());
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
     //Перехватывает исключения валидации
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseBody
