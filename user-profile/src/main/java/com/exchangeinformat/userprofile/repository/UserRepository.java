@@ -14,4 +14,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u  where u.extId =:extId")
     Optional<User> findByExtId(String extId);
+    boolean existsByExtId(String exId);
 }

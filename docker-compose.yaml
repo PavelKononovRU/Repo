@@ -15,8 +15,6 @@ services:
       - eureka.client.service-url.defaultZone=http://server:8761/eureka/
     depends_on:
       - server
-    ports:
-      - 8888:8888
   gateway-service:
     container_name: gateway
     build:
@@ -25,9 +23,11 @@ services:
     environment:
       - eureka.client.service-url.defaultZone=http://server:8761/eureka/
       - spring.config.import=optional:configserver:http://config:8888
+      - spring.security.oauth2.client.provider.my-keycloak-provider.issuer-uri=http://host.docker.internal:8890/realms/project-realm
     depends_on:
       - server
       - config
+      - keycloak
     ports:
       - 8080:8080
   postgres:
@@ -52,8 +52,6 @@ services:
     depends_on:
       - gateway-service
       - postgres
-    ports:
-      - 8889:8889
   user-profile:
     build:
       context: ./user-profile
@@ -62,11 +60,10 @@ services:
       - eureka.client.service-url.defaultZone=http://server:8761/eureka/
       - spring.config.import=optional:configserver:http://config:8888
       - spring.cloud.config.profile=dev
+      - spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://host.docker.internal:8890/realms/project-realm/protocol/openid-connect/certs
     depends_on:
       - gateway-service
       - postgres
-    ports:
-      - 8892:8892
   subscription:
     build:
       context: ./subscription
@@ -75,11 +72,10 @@ services:
       - eureka.client.service-url.defaultZone=http://server:8761/eureka/
       - spring.config.import=optional:configserver:http://config:8888
       - spring.cloud.config.profile=dev
+      - spring.security.oauth2.resourceserver.jwt.jwk-set-uri=http://host.docker.internal:8890/realms/project-realm/protocol/openid-connect/certs
     depends_on:
       - gateway-service
       - postgres
-    ports:
-      - 8891:8891
   paying-service:
     build:
       context: ./paying-service
@@ -91,8 +87,6 @@ services:
     depends_on:
       - gateway-service
       - postgres
-    ports:
-      - 8081:8081
   sub-payment:
     build:
       context: ./sub-payment
@@ -104,8 +98,6 @@ services:
     depends_on:
       - gateway-service
       - postgres
-    ports:
-      - 8082:8082
   rabbitmq:
     image: rabbitmq:3-management-alpine
     hostname: rabbitmq
