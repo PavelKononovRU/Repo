@@ -18,7 +18,7 @@
     - [Аутентификация](#аутентификация)
     - [Liquibase](#liquibase)
     - [API Gateway Руководство](#api-gateway)
-    - [Keycloak Руководство](#keycloak)
+    - [Docker-Compose и Keycloak Руководство](#-docker-compose--keycloak)
     - [Keycloak подключение сервиса](#-service--keycloak----)
 
 ### Summary
@@ -239,18 +239,15 @@ Swagger и Postman.
 
 ### Keycloak
 
-### Настройка Keycloak
+### Настройка Docker-Compose и Keycloak
 
-1. Запускаем Docker-compose
-2. Keycloak запускается на порту 8890, заходим в keycloak логин <code>admin</code> пароль <code>admin</code>
-3. Создаем новый realm, с названием <code>project-realm</code> и выбираем его
-4. Создаем нового клиента <code>gateway-client</code>, выбираем Access Type <code>confidential</code>, в Valid Redirect URIs указываем, <code> http://localhost:8080/api/user/home </code> и <code> http://localhost:8080/login/oauth2/code/gateway-client </code>, <code> http://gateway-service:8080/login/oauth2/code/gateway-client </code> и <code> http://gateway-service:8080/api/user/home </code>
-5. Взять у gateway-client secret поля из вкладки _Credentials_ и вставить в bootstrap.yml сервиса gateway-service
-6. Переключить Direct Access Grants Enabled на OFF и Service Accounts Enabled на ON
-7. Создаем две роли <code> ADMIN </code> и <code> USER </code> в Сonfigure -> Roles
-8. В Default Roles выбираем роль USER как роль по умолчание, для того что бы при создании юзера к юзеру добавлялась эта роль
-9. В Users Создаем юзера с логином <code> admin</code> и паролем <code>admin</code>, c ролями ADMIN и USER.
-10. Полезная ссылка: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
+1. В Maven сделать clean и install по всем сервисам.
+2. Запустить все сервисы в docker-compose.yaml.
+3. Наслаждаться моментом. 
+4. Keycloak запускается на порту 8890, заходить в keycloak под логин admin с паролем admin. 
+5. В Users Создаем юзера с логином  admin и паролем admin, c ролями ADMIN и USER.
+6. Проверяем всех пользователей с помощью юзера admin по ссылке - http://localhost:8080/api/user
+7. Полезная ссылка по Keycloak: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
 
 ### Подключить service к Keycloak в качестве ресурс сервера
 
