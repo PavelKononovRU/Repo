@@ -8,12 +8,9 @@ import com.example.subpayment.util.PaymentStatus;
 import com.example.subpayment.util.TestPaymentException;
 import com.example.subpayment.util.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
