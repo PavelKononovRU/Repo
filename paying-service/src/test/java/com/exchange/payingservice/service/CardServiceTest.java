@@ -33,7 +33,7 @@ public class CardServiceTest extends IntegrationTestBase {
 
     @Test
     void testGetById() {
-        Optional<Card> maybeCard = Optional.ofNullable(cardService.getCardById(1L));
+        Optional<Card> maybeCard = cardService.getCardById(1L);
         assertTrue(maybeCard.isPresent());
         maybeCard.ifPresent(entity -> {
             assertEquals("1111-2222-3333-4444", entity.getNumber());
@@ -42,20 +42,20 @@ public class CardServiceTest extends IntegrationTestBase {
 
     @Test
     void testUpdate() {
-        CardDTO cardDTO = CardMapper.INSTANCE.toDTO(cardService.getCardById(1L));
+        CardDTO cardDTO = CardMapper.INSTANCE.toDTO(cardService.getCardById(1L).get());
         cardDTO.setCSV("333");
         cardDTO.setNumber("1234-1234-1234-5112");
         cardDTO.setPrincipal("user123");
         cardDTO.setUser_id(23L);
         cardService.createCard(cardDTO);
-        assertEquals(cardDTO.getNumber(), cardService.getCardById(1L).getNumber());
+        assertEquals(cardDTO.getNumber(), cardService.getCardById(1L).get().getNumber());
         assertNotNull(cardDTO.getId());
     }
 
     @Test
     void testDelete() {
         cardService.deleteCard(1L);
-        Optional<Card> maybeCard = Optional.ofNullable(cardService.getCardById(1L));
+        Optional<Card> maybeCard = cardService.getCardById(1L);
         maybeCard.ifPresent(entity -> {
             assertNull(entity.getNumber());
             assertEquals(entity.getNumber(), "1111-2222-3333-4444");

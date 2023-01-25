@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
+import java.util.Optional;
+
 public interface CardService {
 
     CardDTO createCard(CardDTO card);
@@ -16,7 +18,7 @@ public interface CardService {
 
     List<Card> getAllCard();
 
-    Card getCardById(Long id);
+    Optional <Card> getCardById(Long id);
 
 
 }
