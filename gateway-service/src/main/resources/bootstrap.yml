@@ -59,7 +59,7 @@ spring:
             provider: my-keycloak-provider
             scope: openid
             client-id: gateway-client
-            client-secret: PfEvi0rAx7Ksqk8XZs8auha4fbQZ5A9U
+            client-secret: Gyo45aIz0hUFYz2pgN3uwevEVvUDvOhT
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/gateway-client
 logging:
