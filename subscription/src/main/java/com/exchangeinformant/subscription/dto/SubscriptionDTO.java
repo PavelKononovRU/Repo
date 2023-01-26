@@ -7,7 +7,7 @@ import com.exchangeinformant.subscription.util.enums.Status;
 import lombok.Data;
 import org.mapstruct.Mapper;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
