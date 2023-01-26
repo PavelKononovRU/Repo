@@ -44,7 +44,7 @@ public class TinkoffStockService implements StockService {
         var list = context.searchMarketInstrumentsByTicker(ticker);
         List<MarketInstrument> miList =list.join().getInstruments();
         if (miList.isEmpty()) {
-            throw new QuotesException(ErrorCodes.NO_INFO.name());
+            throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.name());
         }
         MarketInstrument item = miList.get(0);
 
