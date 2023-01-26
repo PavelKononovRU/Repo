@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://postgres:5432/postgres
+  instance:
+    preferIpAddress: true
+    lease-renewal-interval-in-seconds: 30
