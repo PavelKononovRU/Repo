@@ -53,7 +53,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public StudPaymentDTO createPayment(StudPaymentDTO payment, Status status) {
         Payment created = new Payment();
-        Card card = cardService.getCardById(payment.getCard_id());
+        Card card = cardService.getCardById(payment.getCard_id()).get();
         created.setCard(card);
         if (created.getCard() == null) {
             throw new PaymentException("Карты с данным номером не обнаружено.");
