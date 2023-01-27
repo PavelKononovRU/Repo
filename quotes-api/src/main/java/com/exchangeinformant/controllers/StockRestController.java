@@ -2,7 +2,9 @@ package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.exception.ErrorCodes;
 import com.exchangeinformant.exception.QuotesException;
+import com.exchangeinformant.services.BcsStockService;
 import com.exchangeinformant.services.StockDbService;
+import com.exchangeinformant.services.StockService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,11 @@ import java.time.LocalDateTime;
 public class StockRestController {
 
     private final StockDbService stockDbService;
+    private final StockService stockService;
 
-    public StockRestController(StockDbService stockDbService) {
+    public StockRestController(StockDbService stockDbService, BcsStockService bcsStockService) {
         this.stockDbService = stockDbService;
+        this.stockService = bcsStockService;
     }
 
     @GetMapping("/stock")
@@ -33,8 +37,8 @@ public class StockRestController {
 
     @GetMapping("/stock/query")
     public ResponseEntity<?> getStockWithParameters(@RequestParam(name = "dateFrom", required = false, defaultValue = "#{T(java.time.LocalDateTime).now().toLocalDate().atStartOfDay()}") LocalDateTime dateFrom,
-                                     @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo,
-                                     @RequestParam("stock") String secureCode) {
+                                                    @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo,
+                                                    @RequestParam("stock") String secureCode) {
         return new ResponseEntity<>(stockDbService.getStockByDate(secureCode, dateFrom, dateTo), HttpStatus.OK);
     }
 
@@ -50,5 +54,8 @@ public class StockRestController {
         throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.name());
     }
 
-
+    @GetMapping("/test")
+    public ResponseEntity<?> getAllStocksName() {
+        return new ResponseEntity<>(stockService.getAllStocks(), HttpStatus.OK);
+    }
 }

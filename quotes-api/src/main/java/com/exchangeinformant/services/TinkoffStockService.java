@@ -1,5 +1,7 @@
 package com.exchangeinformant.services;
 
+import com.exchangeinformant.dto.NameDTO;
+import com.exchangeinformant.dto.StockDTO;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
@@ -33,6 +35,10 @@ public class TinkoffStockService implements StockService {
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
+    @Override
+    public List<String> getAllStocks() {
+        return null;
+    }
 
 
     private Info getStockByTicker(String ticker) {
@@ -53,4 +59,5 @@ public class TinkoffStockService implements StockService {
                 item.getTicker()
         );
     }
+
 }

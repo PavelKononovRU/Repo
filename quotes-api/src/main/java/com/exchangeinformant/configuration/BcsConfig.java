@@ -15,8 +15,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "bcs.api")
 public class BcsConfig {
     private String url;
-
     private String partnerToken;
-
     private String oneStock;
+    private String allStocks;
 }

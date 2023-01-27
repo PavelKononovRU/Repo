@@ -2,6 +2,8 @@ package com.exchangeinformant.services;
 
 import com.exchangeinformant.configuration.BcsConfig;
 import com.exchangeinformant.dto.InfoDTO;
+import com.exchangeinformant.dto.NameDTO;
+import com.exchangeinformant.dto.RootDTO;
 import com.exchangeinformant.dto.StockDTO;
 import com.exchangeinformant.exception.ErrorCodes;
 import com.exchangeinformant.exception.QuotesException;
@@ -11,15 +13,22 @@ import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Bcs;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Created in IntelliJ
@@ -67,6 +76,26 @@ public class BcsStockService implements StockService {
             }
         }
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
+    }
+
+    @Override
+    public List<String> getAllStocks() {
+        List<String> result = new ArrayList<>();
+        try {
+            List<NameDTO> mono =  webClient
+                    .get()
+                    .uri(bcsConfig.getUrl() + bcsConfig.getAllStocks())
+                    .header("partner-token", bcsConfig.getPartnerToken())
+                    .accept(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .bodyToMono(new ParameterizedTypeReference<RootDTO>(){})
+                    .block()
+                    .getNameDTO();
+            result.add(mono.get(0).getSecureCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 
