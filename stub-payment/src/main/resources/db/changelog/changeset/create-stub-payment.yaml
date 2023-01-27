@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-sub-payment
+      id: create-stub-payment
       author: Misha
       changes:
         - createTable:
