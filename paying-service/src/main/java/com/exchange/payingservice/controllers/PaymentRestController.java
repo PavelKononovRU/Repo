@@ -1,15 +1,16 @@
 package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.dto.PaymentDTO;
-import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.service.PaymentService;
+import com.exchange.payingservice.util.RestControllerAdvice;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -24,9 +25,9 @@ public class PaymentRestController {
     }
 
     @GetMapping(("/{id}"))
-    public ResponseEntity<PaymentDTO> getPayment(@PathVariable Long id) {
+    public ResponseEntity<Object> getPayment(@PathVariable Long id) {
         PaymentDTO paymentDTO = PaymentsMapper.INSTANCE.toDTO(paymentService.getPaymentById(id));
-        return ResponseEntity.ok(paymentDTO);
+        return RestControllerAdvice.generatePaymentsResponse(paymentDTO);
     }
 
     @GetMapping
@@ -49,6 +50,11 @@ public class PaymentRestController {
     @PostMapping
     public ResponseEntity<Object> createPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
         return paymentService.methodGetBodyToStudPayment(studPayment);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleException(Exception e) {
+        return RestControllerAdvice.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
 }

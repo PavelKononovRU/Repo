@@ -66,7 +66,7 @@ public class RestUserController {
 
         User user = new User();
         String extId = cl.get("sub").toString();
-        if (userService.getUserByExtId(extId) == null) {
+        if (!userService.isUserPresent(extId)) {
             user.setExtId(extId);
             user.setUsername(cl.get("preferred_username").toString());
             user.setFirstName(cl.get("given_name").toString());

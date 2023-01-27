@@ -1,7 +1,6 @@
 package com.exchangeinformant.subscription.service;
 
 import com.exchangeinformant.subscription.dto.PromoSubscriptionDTO;
-import com.exchangeinformant.subscription.model.PromoSubscription;
 
 import java.util.List;
 

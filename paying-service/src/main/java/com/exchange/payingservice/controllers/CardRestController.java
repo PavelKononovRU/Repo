@@ -1,10 +1,10 @@
 package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.dto.CardDTO;
-import com.exchange.payingservice.mappers.CardMapper;
-import com.exchange.payingservice.util.RestControllerAdvice;
-import com.exchange.payingservice.service.CardService;
 import com.exchange.payingservice.entity.Card;
+import com.exchange.payingservice.mappers.CardMapper;
+import com.exchange.payingservice.service.CardService;
+import com.exchange.payingservice.util.RestControllerAdvice;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,19 +35,19 @@ public class CardRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getCard(@PathVariable("id") Long id) {
-        Card card = cardService.getCardById(id);
+        Card card = cardService.getCardById(id).get();
         System.out.println(card);
         return RestControllerAdvice.generateResponse(CardMapper.INSTANCE.toDTO(card));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateCard(@PathVariable("id") Long id, @Valid @RequestBody CardDTO cardDTO) {
+    public ResponseEntity<Object> updateCard(@PathVariable Long id, @Valid @RequestBody CardDTO cardDTO) {
         cardService.updateCard(id, cardDTO);
         return RestControllerAdvice.generateResponsePut(CardMapper.INSTANCE.toEntity(cardDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteCard(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> deleteCard(@PathVariable Long id) {
         cardService.deleteCard(id);
         return RestControllerAdvice.generateResponseDelete(id);
     }

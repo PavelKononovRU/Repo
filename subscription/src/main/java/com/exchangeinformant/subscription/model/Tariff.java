@@ -1,11 +1,18 @@
 package com.exchangeinformant.subscription.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import org.hibernate.Hibernate;
+
+import java.util.Objects;
 
 
-@Data
+@Getter
+@Setter
+@ToString
+//@RequiredArgsConstructor
 @Entity
 @Table(name = "tariff")
 public class Tariff {
@@ -36,4 +43,16 @@ public class Tariff {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Tariff tariff = (Tariff) o;
+        return id != null && Objects.equals(id, tariff.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -1,7 +1,6 @@
 package com.exchangeinformat.userprofile.repository;
 
 import com.exchangeinformat.userprofile.entity.User;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,4 +13,5 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u  where u.extId =:extId")
     Optional<User> findByExtId(String extId);
+    boolean existsByExtId(String exId);
 }

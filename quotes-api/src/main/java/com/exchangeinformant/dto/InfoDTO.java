@@ -3,6 +3,8 @@ package com.exchangeinformant.dto;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * Created in IntelliJ
  * User: e-davidenko
@@ -14,6 +16,6 @@ import lombok.Data;
 public class InfoDTO {
 
     @JsonSetter("close")
-    private double lastPrice;
+    private BigDecimal lastPrice;
 
 }

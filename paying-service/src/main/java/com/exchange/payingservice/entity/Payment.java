@@ -2,13 +2,17 @@ package com.exchange.payingservice.entity;
 
 import com.exchange.payingservice.util.Status;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "payment_table")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
 
     @Id
