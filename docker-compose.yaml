@@ -87,14 +87,14 @@ services:
     depends_on:
       - gateway-service
       - postgres
-  sub-payment:
+  stub-payment:
     build:
-      context: ./sub-payment
+      context: ./stub-payment
       dockerfile: Dockerfile
     environment:
       - eureka.client.service-url.defaultZone=http://server:8761/eureka/
       - spring.config.import=optional:configserver:http://config:8888
-      - spring.cloud.config.profile=dev\
+      - spring.cloud.config.profile=dev
     depends_on:
       - gateway-service
       - postgres
