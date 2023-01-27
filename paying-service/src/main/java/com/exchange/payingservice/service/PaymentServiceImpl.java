@@ -52,17 +52,17 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public StudPaymentDTO createPayment(StudPaymentDTO payment, Status status) {
+        Card card = cardService.getCardById(payment.getCard_id());
         Payment created = new Payment();
-        Card card = cardService.getCardById(payment.getCard_id()).get();
+        if (created.getCard() == null) throw new PaymentException("Карты с данным номером не обнаружено.");
+
         created.setCard(card);
-        if (created.getCard() == null) {
-            throw new PaymentException("Карты с данным номером не обнаружено.");
-        }
         created.setCreateAt(new Date());
         created.setUpdateAt(new Date());
         created.setStatus(status);
         created.setMessage("MESSAGE");
         created.setUser_id(card.getUser_id());
+
         System.out.println(payment);
         paymentRepository.save(created);
         return payment;
@@ -99,7 +99,7 @@ public class PaymentServiceImpl implements PaymentService {
         } catch (HttpClientErrorException.UnprocessableEntity e) {
             status = Status.ERROR;
             throw new PaymentException("Платеж не прошел,пожалуйста,повторите позже.");
-        }finally {
+        } finally {
             this.createPayment(studPayment, status);
         }
         return response;

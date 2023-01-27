@@ -2,7 +2,9 @@ package com.exchangeinformat.userprofile.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import java.sql.Date;
 import java.util.List;

@@ -1,10 +1,9 @@
 package com.exchangeinformant.subscription.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.mapstruct.Mapper;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotNull;
 
 @Data
 @Mapper

@@ -1,12 +1,10 @@
 package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.PaymentDTO;
-import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.util.Status;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 

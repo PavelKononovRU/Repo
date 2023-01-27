@@ -41,13 +41,13 @@ public class CardRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateCard(@PathVariable("id") Long id, @Valid @RequestBody CardDTO cardDTO) {
+    public ResponseEntity<Object> updateCard(@PathVariable Long id, @Valid @RequestBody CardDTO cardDTO) {
         cardService.updateCard(id, cardDTO);
         return RestControllerAdvice.generateResponsePut(CardMapper.INSTANCE.toEntity(cardDTO));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteCard(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> deleteCard(@PathVariable Long id) {
         cardService.deleteCard(id);
         return RestControllerAdvice.generateResponseDelete(id);
     }
