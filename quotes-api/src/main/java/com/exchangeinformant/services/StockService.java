@@ -18,7 +18,9 @@ public interface StockService {
 
     void updateAllStocks();
 
-    List<String> getAllStocks();
+    void getAllStocks();
+
+    List<NameDTO> getAllNames();
 
     //TODO PREMIUM
 //    Stock getStockDirectly(String stockName);

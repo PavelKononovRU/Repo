@@ -1,7 +1,6 @@
 package com.exchangeinformant.services;
 
 import com.exchangeinformant.dto.NameDTO;
-import com.exchangeinformant.dto.StockDTO;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
@@ -36,10 +35,14 @@ public class TinkoffStockService implements StockService {
     }
 
     @Override
-    public List<String> getAllStocks() {
-        return null;
+    public void getAllStocks() {
+        System.out.println("Use BCS");
     }
 
+    @Override
+    public List<NameDTO> getAllNames() {
+        return null;
+    }
 
     private Info getStockByTicker(String ticker) {
 

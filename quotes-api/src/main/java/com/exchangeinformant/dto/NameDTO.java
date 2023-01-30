@@ -1,10 +1,18 @@
 package com.exchangeinformant.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
 
 @Data
-public class NameDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+@RedisHash("Name")
+public class NameDTO implements Serializable {
     @JsonProperty("secur_code")
     private String secureCode;
 

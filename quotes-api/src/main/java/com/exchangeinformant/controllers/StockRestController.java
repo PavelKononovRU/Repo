@@ -56,6 +56,6 @@ public class StockRestController {
 
     @GetMapping("/test")
     public ResponseEntity<?> getAllStocksName() {
-        return new ResponseEntity<>(stockService.getAllStocks(), HttpStatus.OK);
+        return new ResponseEntity<>(stockService.getAllNames(), HttpStatus.OK);
     }
 }

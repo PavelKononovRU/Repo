@@ -24,4 +24,9 @@ public class Stock {
     @JsonIgnore
     private List<Info> infoList;
 
+    public Stock(String secureCode, String issuer, String currency) {
+        this.secureCode = secureCode;
+        this.issuer = issuer;
+        this.currency = currency;
+    }
 }

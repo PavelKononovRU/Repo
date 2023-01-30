@@ -10,6 +10,7 @@ import com.exchangeinformant.exception.QuotesException;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
+import com.exchangeinformant.repository.NameRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Bcs;
 import org.springframework.core.ParameterizedTypeReference;
@@ -18,17 +19,13 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Created in IntelliJ
@@ -45,20 +42,21 @@ public class BcsStockService implements StockService {
     private final InfoRepository infoRepository;
 
     private final StockRepository stockRepository;
+    private final NameRepository nameRepository;
 
 
-    public BcsStockService(WebClient webClient, BcsConfig bcsConfig, InfoRepository infoRepository, StockRepository stockRepository) {
+    public BcsStockService(WebClient webClient, BcsConfig bcsConfig, InfoRepository infoRepository, StockRepository stockRepository, NameRepository nameRepository) {
         this.webClient = webClient;
         this.bcsConfig = bcsConfig;
         this.infoRepository = infoRepository;
         this.stockRepository = stockRepository;
+        this.nameRepository = nameRepository;
     }
 
-    @Scheduled(cron = "0 */10 * * * *")
     @Override
     public void updateAllStocks() {
-        List<Stock> allStocks = stockRepository.findAll();
-        for (Stock stock : allStocks) {
+        List<NameDTO> allStocks = nameRepository.findAll();
+        for (NameDTO stock : allStocks) {
             try {
                 Mono<List<StockDTO>> mono = webClient
                         .get()
@@ -66,6 +64,7 @@ public class BcsStockService implements StockService {
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<>() {});
                 StockDTO stockDTO = Objects.requireNonNull(mono.block()).get(0);
+                stockRepository.save(new Stock(stockDTO.getSecureCode(),stockDTO.getIssuer(), stockDTO.getCurrency()));
                 InfoDTO infoDTO = stockDTO.getInfoList();
                 Info info = convertInfoDTOToInfo(infoDTO);
                 info.setSecureCode(stock.getSecureCode());
@@ -78,9 +77,9 @@ public class BcsStockService implements StockService {
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
+    @Scheduled(cron = "0 */1 * * * *")
     @Override
-    public List<String> getAllStocks() {
-        List<String> result = new ArrayList<>();
+    public void getAllStocks() {
         try {
             List<NameDTO> mono =  webClient
                     .get()
@@ -91,11 +90,19 @@ public class BcsStockService implements StockService {
                     .bodyToMono(new ParameterizedTypeReference<RootDTO>(){})
                     .block()
                     .getNameDTO();
-            result.add(mono.get(0).getSecureCode());
+            for (NameDTO name : mono) {
+                System.out.println(name.getSecureCode() +" " + name.getIssuer());
+                nameRepository.save(name);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        System.out.printf("%s: Found Names Successfully%n", LocalDateTime.now());
+    }
+
+    @Override
+    public List<NameDTO> getAllNames() {
+        return  nameRepository.findAll();
     }
 
 
@@ -114,5 +121,17 @@ public class BcsStockService implements StockService {
         info.setLastPrice(infoDTO.getLastPrice());
         return info;
     }
+
+    private Stock convertNameDTOToStock(NameDTO nameDTO) {
+        Stock stock = new Stock();
+        stock.setCurrency(nameDTO.getCurrency());
+        stock.setIssuer(nameDTO.getIssuer());
+        stock.setSecureCode(nameDTO.getSecureCode());
+        return stock;
+    }
+
+
+
+
 
 }
