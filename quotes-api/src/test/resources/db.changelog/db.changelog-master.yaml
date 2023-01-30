@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/stock.yaml
+  - include:
+      file: db/changelog/changeset/info.yaml

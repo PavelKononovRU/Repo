@@ -69,16 +69,6 @@ public class BcsStockService implements StockService {
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
-
-//    @Override
-//    public List<Stock> getStocksByCodes(List<String> codes) {
-//        List<Stock> result = new ArrayList<>();
-//        for(String code : codes){
-//            result.add(stockRepository.findBySecureCode(code));
-//        }
-//        return result;
-//    }
-
     private Info convertInfoDTOToInfo(InfoDTO infoDTO) {
         Info info = new Info();
         info.setUpdatedAt(LocalDateTime.now());

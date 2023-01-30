@@ -2,14 +2,14 @@ package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.exception.ErrorCodes;
 import com.exchangeinformant.exception.QuotesException;
+import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.StockDbService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by e-davidenko
@@ -28,7 +28,8 @@ public class StockRestController {
 
     @GetMapping("/stock")
     public ResponseEntity<?> getStock(@RequestParam("name") String secureCode) {
-        return new ResponseEntity<>(stockDbService.getStock(secureCode), HttpStatus.OK);
+        Stock stock = stockDbService.getStock(secureCode);
+        return new ResponseEntity<>(stock, HttpStatus.OK);
     }
 
     @GetMapping("/stock/query")
@@ -38,10 +39,19 @@ public class StockRestController {
         return new ResponseEntity<>(stockDbService.getStockByDate(secureCode, dateFrom, dateTo), HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/allWithDates")
     public ResponseEntity<?> getAllStocksByDates(@RequestParam(name = "dateFrom", required = false, defaultValue = "#{T(java.time.LocalDateTime).now().toLocalDate().atStartOfDay()}") LocalDateTime dateFrom,
                                                  @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo) {
         return new ResponseEntity<>(stockDbService.getAllStocksByDate(dateFrom, dateTo), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllStocks() {
+        return new ResponseEntity<>(stockDbService.getAllStocks(), HttpStatus.OK);
+    }
+    @PostMapping("/availableStocks")
+    public ResponseEntity<?> getAllAvailableStocks(@RequestBody List<String> securityCodes) {
+        return new ResponseEntity<>(stockDbService.getAllAvailableStocksByCodes(securityCodes), HttpStatus.OK);
     }
 
     // для наглядности
