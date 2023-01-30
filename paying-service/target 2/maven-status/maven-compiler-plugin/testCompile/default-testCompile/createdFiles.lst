@@ -1,0 +1,7 @@
+com/exchange/payingservice/IntegrationTestBase.class
+com/exchange/payingservice/controllers/PaymentRestControllerTest.class
+com/exchange/payingservice/initializer/Postgres.class
+com/exchange/payingservice/controllers/CardRestControllerTest.class
+com/exchange/payingservice/service/PaymentServiceTest.class
+com/exchange/payingservice/initializer/Postgres$Initializer.class
+com/exchange/payingservice/service/CardServiceTest.class

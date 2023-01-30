@@ -22,14 +22,38 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
+        #Регистрация user-profile
         - id: user-profile
           uri: lb://user-profile
           predicates:
-            - Path=/api/user/**
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+        #Регистрация quotes-api
         - id: quotes-api
           uri: lb://quotes-api
           predicates:
             - Path=/quotes/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+        #Регистрация paying-service
+        - id: paying-service
+          uri: lb://paying-service
+          predicates:
+            - Path=/paying-service/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+        #Регистрация subscription
+        - id: subscription
+          uri: lb://subscription
+          predicates:
+            - Path=/subscription/**
           filters:
             - StripPrefix=1
             - name: Retry
@@ -44,10 +68,7 @@ spring:
                   maxBackoff: 50ms
                   factor: 2
                   basedOnPreviousValue: false
-        - id: subscription
-          uri: lb://subscription
-          predicates:
-            - Path=/api/**
+
   security:
     oauth2:
       client:
