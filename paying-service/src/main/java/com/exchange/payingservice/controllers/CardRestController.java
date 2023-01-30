@@ -35,7 +35,7 @@ public class CardRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getCard(@PathVariable("id") Long id) {
-        Card card = cardService.getCardById(id).get();
+        Card card = cardService.getCardById(id);
         System.out.println(card);
         return RestControllerAdvice.generateResponse(CardMapper.INSTANCE.toDTO(card));
     }
