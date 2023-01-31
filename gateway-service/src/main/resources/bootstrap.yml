@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -8,9 +9,8 @@ spring:
     name: gateway-service
   cloud:
     config:
-      # noinspection SpringBootApplicationYaml
-      profile: local
-      # noinspection SpringBootApplicationYaml
+      uri: http://localhost:8888
+      profile: dev
       discovery:
         enabled: false
         service-id: config-server
@@ -83,6 +83,7 @@ spring:
             client-secret: Gyo45aIz0hUFYz2pgN3uwevEVvUDvOhT
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/gateway-client
+
 logging:
   level:
     org:
