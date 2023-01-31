@@ -7,8 +7,6 @@ spring:
     password: postgres
     uri: jdbc:postgresql://localhost:5432/postgres
 
-    #Перекомпилировать конфиг файлы а не только  paying-service
-
 eureka:
   client:
     serviceUrl:
