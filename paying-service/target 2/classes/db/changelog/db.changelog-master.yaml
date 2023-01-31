@@ -1,7 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/changeset/create-card-table-paying.yaml
-  - include:
-      file: db/changelog/changeset/create-payment-table-paying.yaml
-  - include:
-      file: db/changelog/changeset/add-column-payment-table.yaml
