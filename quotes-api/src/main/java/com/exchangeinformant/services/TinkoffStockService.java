@@ -4,16 +4,20 @@ import com.exchangeinformant.dto.NameDTO;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
+import com.exchangeinformant.repository.NameRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Tinkoff;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.MarketContext;
 import ru.tinkoff.invest.openapi.OpenApi;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
+import ru.tinkoff.invest.openapi.model.rest.MarketInstrumentList;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +26,9 @@ public class TinkoffStockService implements StockService {
     private final InfoRepository infoRepository;
 
     private final StockRepository stockRepository;
+    private final NameRepository nameRepository;
     private final OpenApi openApi;
+
 
     @Override
     public void updateAllStocks() {
@@ -34,9 +40,16 @@ public class TinkoffStockService implements StockService {
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
+    @Scheduled(cron = "0 */1 * * * *")
     @Override
     public void getAllStocks() {
-        System.out.println("Use BCS");
+        MarketContext context = openApi.getMarketContext();
+        CompletableFuture<MarketInstrumentList> marketList = context.getMarketStocks();
+        List<MarketInstrument> miList = marketList.join().getInstruments();
+        for (MarketInstrument mi : miList) {
+            nameRepository.save(new NameDTO(mi.getTicker(),mi.getCurrency().name(),mi.getName()));
+        }
+        System.out.printf("%s: Found Names Successfully%n", LocalDateTime.now());
     }
 
     @Override
@@ -45,6 +58,7 @@ public class TinkoffStockService implements StockService {
     }
 
     private Info getStockByTicker(String ticker) {
+
 
         MarketContext context = openApi.getMarketContext();
         var list = context.searchMarketInstrumentsByTicker(ticker);

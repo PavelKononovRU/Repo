@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableConfigurationProperties
 public class QuotesApiApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(QuotesApiApplication.class, args);
     }

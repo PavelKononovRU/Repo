@@ -22,8 +22,6 @@ import org.springframework.web.reactive.function.client.WebClientRequestExceptio
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -91,7 +89,6 @@ public class BcsStockService implements StockService {
                     .block()
                     .getNameDTO();
             for (NameDTO name : mono) {
-                System.out.println(name.getSecureCode() +" " + name.getIssuer());
                 nameRepository.save(name);
             }
         } catch (Exception e) {

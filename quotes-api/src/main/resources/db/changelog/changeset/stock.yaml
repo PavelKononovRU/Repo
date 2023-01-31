@@ -20,3 +20,24 @@ databaseChangeLog:
               - column:
                   name: currency
                   type: varchar(4)
+  - changeSet:
+      id: name
+      author: e-davidenko
+      changes:
+        - createTable:
+            tableName: name
+            columns:
+              - column:
+                  name: secure_code
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: issuer
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(100)
