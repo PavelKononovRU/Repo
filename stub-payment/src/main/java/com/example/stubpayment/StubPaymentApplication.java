@@ -1,4 +1,4 @@
-package com.example.subpayment;
+package com.example.stubpayment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

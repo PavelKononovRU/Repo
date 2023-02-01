@@ -1,4 +1,4 @@
-package com.example.subpayment.util.enums;
+package com.example.stubpayment.util.enums;
 
 public enum Status {
     SUCCESSFULLY,

@@ -1,7 +1,7 @@
 package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.PaymentDTO;
-import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.exceptions.PaymentException;
@@ -51,7 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public StudPaymentDTO createPayment(StudPaymentDTO payment, Status status) {
+    public StubPaymentDTO createPayment(StubPaymentDTO payment, Status status) {
         Card card = cardService.getCardById(payment.getCard_id());
         Payment created = new Payment();
         if (created.getCard() == null) throw new PaymentException("Карты с данным номером не обнаружено.");
@@ -83,24 +83,24 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public ResponseEntity<Object> methodGetBodyToStudPayment(StudPaymentDTO studPayment) {
+    public ResponseEntity<Object> methodGetBodyToStubPayment(StubPaymentDTO stubPayment) {
         Status status = Status.SUCCESSFULLY;
         String extId = "1-" +
                 LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + ++flag;
         Map<String, String> testMap = new HashMap<>();
         testMap.put("ext_id", extId);
-        testMap.put("amount", studPayment.getItems().get("amount"));
+        testMap.put("amount", stubPayment.getItems().get("amount"));
 
-        RestTemplate restTemplateStudPayment = new RestTemplate();
+        RestTemplate restTemplateStubPayment = new RestTemplate();
 
         ResponseEntity<Object> response;
         try {
-            response = restTemplateStudPayment.postForEntity("http://localhost:8082/stud/payment", testMap, Object.class);
+            response = restTemplateStubPayment.postForEntity("http://localhost:8082/stub/payment", testMap, Object.class);
         } catch (HttpClientErrorException.UnprocessableEntity e) {
             status = Status.ERROR;
             throw new PaymentException("Платеж не прошел,пожалуйста,повторите позже.");
         } finally {
-            this.createPayment(studPayment, status);
+            this.createPayment(stubPayment, status);
         }
         return response;
     }

@@ -10,7 +10,7 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class StudPaymentDTO {
+public class StubPaymentDTO {
 
     private Long card_id;
     @NotNull

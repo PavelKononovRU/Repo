@@ -1,4 +1,4 @@
-package com.example.subpayment.dto;
+package com.example.stubpayment.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

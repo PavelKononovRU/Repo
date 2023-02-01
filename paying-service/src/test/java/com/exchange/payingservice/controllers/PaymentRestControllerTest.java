@@ -1,7 +1,7 @@
 package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.IntegrationTestBase;
-import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.util.Status;
@@ -83,8 +83,8 @@ class PaymentRestControllerTest extends IntegrationTestBase {
     @Test
     @DisplayName("save status ERROR payment")
     void createErrorPayment() {
-        StudPaymentDTO studPaymentDTO = createStudPaymentDTO();
-        assertEquals(Status.ERROR, createTestPaymentStubError(studPaymentDTO).getBody());
+        StubPaymentDTO stubPaymentDTO = createStubPaymentDTO();
+        assertEquals(Status.ERROR, createTestPaymentStubError(stubPaymentDTO).getBody());
     }
 
     @Test
@@ -98,30 +98,30 @@ class PaymentRestControllerTest extends IntegrationTestBase {
     @Test
     @DisplayName("save status SUCCESSFULLY payment")
     void createSuccessfulyPayment() {
-        StudPaymentDTO studPaymentDTO = createStudPaymentDTO();
-        assertEquals(Status.SUCCESSFULLY, createTestPaymentStubSuccessfuly(studPaymentDTO).getBody());
+        StubPaymentDTO stubPaymentDTO = createStubPaymentDTO();
+        assertEquals(Status.SUCCESSFULLY, createTestPaymentStubSuccessfuly(stubPaymentDTO).getBody());
     }
 
-    private ResponseEntity createTestPaymentStubError(StudPaymentDTO studPaymentDTO) {
+    private ResponseEntity createTestPaymentStubError(StubPaymentDTO stubPaymentDTO) {
         return new ResponseEntity<>(Status.ERROR, HttpStatus.OK);
     }
 
-    private ResponseEntity createTestPaymentStubSuccessfuly(StudPaymentDTO studPaymentDTO) {
+    private ResponseEntity createTestPaymentStubSuccessfuly(StubPaymentDTO stubPaymentDTO) {
         return new ResponseEntity<>(Status.SUCCESSFULLY, HttpStatus.OK);
     }
 
-    private StudPaymentDTO createStudPaymentDTO() {
+    private StubPaymentDTO createStubPaymentDTO() {
         Map<String, String> items = new HashMap<>();
         items.put("subscription_id", "12345");
         items.put("amount", "129900");
 
-        StudPaymentDTO studPaymentDTO = new StudPaymentDTO();
-        studPaymentDTO.setPromocode("PROMO412GWOT");
-        studPaymentDTO.setEmail("test@mail.ru");
-        studPaymentDTO.setItems(items);
-        studPaymentDTO.setCard_id(1L);
-        studPaymentDTO.setPhone("string");
-        return studPaymentDTO;
+        StubPaymentDTO stubPaymentDTO = new StubPaymentDTO();
+        stubPaymentDTO.setPromocode("PROMO412GWOT");
+        stubPaymentDTO.setEmail("test@mail.ru");
+        stubPaymentDTO.setItems(items);
+        stubPaymentDTO.setCard_id(1L);
+        stubPaymentDTO.setPhone("string");
+        return stubPaymentDTO;
     }
 
 }

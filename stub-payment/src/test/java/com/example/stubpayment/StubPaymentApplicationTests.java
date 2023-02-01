@@ -1,4 +1,4 @@
-package com.example.subpayment;
+package com.example.stubpayment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

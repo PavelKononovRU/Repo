@@ -1,12 +1,12 @@
-package com.example.subpayment.service;
+package com.example.stubpayment.service;
 
-import com.example.subpayment.dto.PaymentDTO;
-import com.example.subpayment.entity.Payment;
-import com.example.subpayment.mappers.StubPaymentMapper;
-import com.example.subpayment.repository.StudPaymentRepository;
-import com.example.subpayment.util.PaymentStatus;
-import com.example.subpayment.util.TestPaymentException;
-import com.example.subpayment.util.enums.Status;
+import com.example.stubpayment.dto.PaymentDTO;
+import com.example.stubpayment.entity.Payment;
+import com.example.stubpayment.mappers.StubPaymentMapper;
+import com.example.stubpayment.repository.StubPaymentRepository;
+import com.example.stubpayment.util.PaymentStatus;
+import com.example.stubpayment.util.TestPaymentException;
+import com.example.stubpayment.util.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +16,15 @@ import java.util.Date;
 @Service
 public class PaymentServiceImpl implements PaymentsService {
 
-    private final StudPaymentRepository studPaymentRepository;
+    private final StubPaymentRepository stubPaymentRepository;
     @Autowired
-    public PaymentServiceImpl(StudPaymentRepository studPaymentRepository) {
-        this.studPaymentRepository = studPaymentRepository;
+    public PaymentServiceImpl(StubPaymentRepository stubPaymentRepository) {
+        this.stubPaymentRepository = stubPaymentRepository;
     }
 
     @Override
     public Payment getPayment(Long id) {
-        return studPaymentRepository.findById(id).orElse(null);
+        return stubPaymentRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -35,11 +35,11 @@ public class PaymentServiceImpl implements PaymentsService {
         payment.setCreateAt(new Date());
         if (res >= 1) {
             payment.setStatus(Status.SUCCESSFULLY);
-            studPaymentRepository.save(payment);
+            stubPaymentRepository.save(payment);
             return new PaymentStatus(Status.SUCCESSFULLY, "Ваш платеж успешно принят");
         } else {
             payment.setStatus(Status.ERROR);
-            studPaymentRepository.save(payment);
+            stubPaymentRepository.save(payment);
             throw new TestPaymentException("Ваш платеж не прошел,пожалуйста,повторите позже.");
         }
     }

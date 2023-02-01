@@ -1,7 +1,7 @@
 package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.PaymentDTO;
-import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.util.Status;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +14,12 @@ public interface PaymentService {
 
     List<Payment> getAllPayment();
 
-    StudPaymentDTO createPayment(StudPaymentDTO payment, Status status);
+    StubPaymentDTO createPayment(StubPaymentDTO payment, Status status);
 
     void updatePayment(Long id, PaymentDTO paymentDTO);
 
     void deletePaymentById(Long id);
 
-    ResponseEntity<Object> methodGetBodyToStudPayment(StudPaymentDTO studPayment);
+    ResponseEntity<Object> methodGetBodyToStubPayment(StubPaymentDTO studPayment);
 }
+
