@@ -1,11 +1,17 @@
 package com.exchangeinformant.util;
 
+import com.exchangeinformant.dto.StockDTO;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(value = "stockClient",url =" https://api.bcs.ru")
+import java.util.List;
+
+@FeignClient(value = "stockClient")
 public interface StockClient {
-    @RequestMapping(method = RequestMethod.GET, value = "/partner/quotations?portfolio_ids%5B0%5D=115&limit=500",produces = "application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "${bcs.api.all-stocks}")
     Root findAllStocks();
+    @RequestMapping(method = RequestMethod.GET, value = "${bcs.api.one-stock}")
+    List<StockDTO> findOneStock(@PathVariable("secureCode") String secureCode);
 }

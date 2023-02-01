@@ -1,5 +1,6 @@
 package com.exchangeinformant.configuration;
 
+import com.exchangeinformant.util.Name;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -20,8 +21,8 @@ public class RedisConfig {
     }
 
     @Bean
-    public <String, NameDTO> RedisTemplate<String, NameDTO> redisTemplate() {
-        final RedisTemplate<String, NameDTO> redisTemplate = new RedisTemplate<>();
+        public RedisTemplate<String, Name> redisTemplate() {
+        RedisTemplate<String, Name> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory());
         redisTemplate.setDefaultSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.afterPropertiesSet();

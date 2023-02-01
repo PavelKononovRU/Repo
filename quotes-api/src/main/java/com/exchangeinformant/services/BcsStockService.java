@@ -61,12 +61,13 @@ public class BcsStockService implements StockService {
         List<Stock> allStocks = stockRepository.findAll();
         for (Stock stock : allStocks) {
             try {
-                Mono<List<StockDTO>> mono = webClient
-                        .get()
-                        .uri(bcsConfig.getUrl() + String.format(bcsConfig.getOneStock(), stock.getSecureCode()))
-                        .retrieve()
-                        .bodyToMono(new ParameterizedTypeReference<>() {});
-                StockDTO stockDTO = Objects.requireNonNull(mono.block()).get(0);
+//                Mono<List<StockDTO>> mono = webClient
+//                        .get()
+//                        .uri(bcsConfig.getUrl() + String.format(bcsConfig.getOneStock(), stock.getSecureCode()))
+//                        .retrieve()
+//                        .bodyToMono(new ParameterizedTypeReference<>() {});
+                List<StockDTO> foundStock = stockClient.findOneStock(stock.getSecureCode());
+                StockDTO stockDTO = Objects.requireNonNull(foundStock).get(0);
                 stockRepository.save(new Stock(stockDTO.getSecureCode(),stockDTO.getIssuer(), stockDTO.getCurrency()));
                 InfoDTO infoDTO = stockDTO.getInfoList();
                 Info info = convertInfoDTOToInfo(infoDTO);
