@@ -16,8 +16,12 @@ import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrumentList;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,12 +59,67 @@ public class TinkoffStockService implements StockService {
         saveAllStocks();
     }
 
+    @Override
+    public Stock getStockDirectly(String secureCode) {
+        Stock stock;
+        if (stockRepository.existsBySecureCode(secureCode)) {
+            stock = stockRepository.findBySecureCode(secureCode);
+        }else{
+            Name name = nameRepository.get(secureCode);
+            stock = new Stock(name.getSecureCode(), name.getIssuer(), name.getCurrency());
+        }
+        MarketContext context = openApi.getMarketContext();
+        var list = context.searchMarketInstrumentsByTicker(secureCode);
+        List<MarketInstrument> miList =list.join().getInstruments();
+        MarketInstrument item = miList.get(0);
+
+        var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().get().getLastPrice();
+
+        stock.getInfoList().add(new Info(
+                lastPrice.doubleValue(),
+                LocalDateTime.now(),
+                item.getTicker())
+        );
+
+        return stock;
+    }
+
+    @Override
+    public List<Stock> getStocksDirectly(List<String> secureCodes) {
+        MarketContext context = openApi.getMarketContext();
+        List<CompletableFuture<MarketInstrumentList>> marketInstruments = new ArrayList<>();
+        secureCodes.forEach(code -> marketInstruments.add(getMarketInstrumentTicker(code)));
+        return   marketInstruments.stream()
+                .map(CompletableFuture::join)
+                .map(mi -> {
+                    if (!mi.getInstruments().isEmpty()) {
+                        return mi.getInstruments().get(0);
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .map(mi -> new Stock(
+                        mi.getTicker(),
+                        mi.getName(),
+                        mi.getCurrency().name(),
+                        new ArrayList<>(Arrays.asList(
+                                new Info(context.getMarketOrderbook(mi.getFigi(),0).join().get().getLastPrice().doubleValue(),LocalDateTime.now(),mi.getTicker())))
+                        ))
+                .collect(Collectors.toList());
+    }
+
+    private CompletableFuture<MarketInstrumentList> getMarketInstrumentTicker(String secureCode) {
+        MarketContext context = openApi.getMarketContext();
+        return context.searchMarketInstrumentsByTicker(secureCode);
+    }
+
 
     private void saveAllStocks() {
         nameRepository.findAll().stream()
                 .limit(200)
                 .forEach(n -> stockRepository.save(new Stock(n.getSecureCode(),n.getIssuer(),n.getCurrency())));
     }
+
 
     private Info getStockByTicker(String ticker) {
         MarketContext context = openApi.getMarketContext();

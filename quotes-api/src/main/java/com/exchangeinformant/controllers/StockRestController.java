@@ -1,15 +1,14 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.exception.ErrorCodes;
-import com.exchangeinformant.exception.QuotesException;
+import com.exchangeinformant.services.BcsStockService;
 import com.exchangeinformant.services.StockDbService;
+import com.exchangeinformant.services.TinkoffStockService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by e-davidenko
@@ -21,9 +20,11 @@ import java.time.LocalDateTime;
 public class StockRestController {
 
     private final StockDbService stockDbService;
+    private final BcsStockService bcsStockService;
 
-    public StockRestController(StockDbService stockDbService) {
+    public StockRestController(StockDbService stockDbService, BcsStockService bcsStockService) {
         this.stockDbService = stockDbService;
+        this.bcsStockService = bcsStockService;
     }
 
     @GetMapping("/stock")
@@ -44,10 +45,12 @@ public class StockRestController {
         return new ResponseEntity<>(stockDbService.getAllStocksByDate(dateFrom, dateTo), HttpStatus.OK);
     }
 
-    // для наглядности
-    @GetMapping("/error")
-    public ResponseEntity<?> getError() {
-        throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.name());
+    @GetMapping("/bcsStock")
+    public ResponseEntity<?> getStockDirectlyByBcs(@RequestParam("name") String secureCode) {
+        return new ResponseEntity<>(bcsStockService.getStockDirectly(secureCode), HttpStatus.OK);
     }
-
+    @PostMapping("/bcsStock")
+    public ResponseEntity<?> getStocksDirectlyByBcs(@RequestBody List<String> secureCodes) {
+        return new ResponseEntity<>(bcsStockService.getStocksDirectly(secureCodes), HttpStatus.OK);
+    }
 }

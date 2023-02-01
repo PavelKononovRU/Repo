@@ -19,6 +19,10 @@ public class NameRepositoryRedis {
         return name;
     }
 
+    public Name get(String secureCode) {
+        return (Name) redisTemplate.opsForHash().get(HASH_KEY, secureCode);
+    }
+
     public List<Name> findAll() {
         return redisTemplate.opsForHash().values(HASH_KEY);
     }
