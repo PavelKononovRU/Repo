@@ -1,10 +1,10 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.dto.NameDTO;
+import com.exchangeinformant.repository.NameRepositoryRedis;
+import com.exchangeinformant.util.Name;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
-import com.exchangeinformant.repository.NameRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Tinkoff;
 import lombok.RequiredArgsConstructor;
@@ -26,40 +26,43 @@ public class TinkoffStockService implements StockService {
     private final InfoRepository infoRepository;
 
     private final StockRepository stockRepository;
-    private final NameRepository nameRepository;
+    private final NameRepositoryRedis nameRepository;
     private final OpenApi openApi;
 
 
+    @Scheduled(cron = "0 */2 * * * *")
     @Override
     public void updateAllStocks() {
-        List<Stock> companies = stockRepository.findAll();
-        for (Stock stock : companies) {
+        if(nameRepository.findAll().isEmpty()){
+            getAllStocks();
+        }
+        List<Stock> stocks = stockRepository.findAll();
+        for (Stock stock : stocks) {
             Info updatedStock = getStockByTicker(stock.getSecureCode());
             infoRepository.save(updatedStock);
         }
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
     @Override
     public void getAllStocks() {
         MarketContext context = openApi.getMarketContext();
         CompletableFuture<MarketInstrumentList> marketList = context.getMarketStocks();
         List<MarketInstrument> miList = marketList.join().getInstruments();
         for (MarketInstrument mi : miList) {
-            nameRepository.save(new NameDTO(mi.getTicker(),mi.getCurrency().name(),mi.getName()));
+            nameRepository.save(new Name(mi.getTicker(),mi.getName(),mi.getCurrency().name()));
         }
-        System.out.printf("%s: Found Names Successfully%n", LocalDateTime.now());
+        saveAllStocks();
     }
 
-    @Override
-    public List<NameDTO> getAllNames() {
-        return null;
+
+    private void saveAllStocks() {
+        nameRepository.findAll().stream()
+                .limit(200)
+                .forEach(n -> stockRepository.save(new Stock(n.getSecureCode(),n.getIssuer(),n.getCurrency())));
     }
 
     private Info getStockByTicker(String ticker) {
-
-
         MarketContext context = openApi.getMarketContext();
         var list = context.searchMarketInstrumentsByTicker(ticker);
         List<MarketInstrument> miList =list.join().getInstruments();
@@ -76,5 +79,4 @@ public class TinkoffStockService implements StockService {
                 item.getTicker()
         );
     }
-
 }

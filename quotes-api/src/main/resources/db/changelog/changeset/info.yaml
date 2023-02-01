@@ -14,7 +14,7 @@ databaseChangeLog:
                     primaryKey: true
               - column:
                   name: secure-code
-                  type: varchar(5)
+                  type: varchar(50)
                   constraints:
                     foreignKeyName: secure-code
                     references: stock

@@ -2,17 +2,18 @@ package com.exchangeinformant.services;
 
 import com.exchangeinformant.configuration.BcsConfig;
 import com.exchangeinformant.dto.InfoDTO;
-import com.exchangeinformant.dto.NameDTO;
-import com.exchangeinformant.dto.RootDTO;
+import com.exchangeinformant.repository.NameRepositoryRedis;
+import com.exchangeinformant.util.Name;
+import com.exchangeinformant.util.Root;
 import com.exchangeinformant.dto.StockDTO;
 import com.exchangeinformant.exception.ErrorCodes;
 import com.exchangeinformant.exception.QuotesException;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
-import com.exchangeinformant.repository.NameRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Bcs;
+import com.exchangeinformant.util.StockClient;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import reactor.core.publisher.Mono;
+import ru.tinkoff.invest.openapi.OpenApi;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,23 +40,26 @@ public class BcsStockService implements StockService {
     private final WebClient webClient;
     private final BcsConfig bcsConfig;
     private final InfoRepository infoRepository;
-
     private final StockRepository stockRepository;
-    private final NameRepository nameRepository;
+    private final NameRepositoryRedis nameRepository;
+    private final StockClient stockClient;
 
-
-    public BcsStockService(WebClient webClient, BcsConfig bcsConfig, InfoRepository infoRepository, StockRepository stockRepository, NameRepository nameRepository) {
+    public BcsStockService(WebClient webClient, BcsConfig bcsConfig, InfoRepository infoRepository, StockRepository stockRepository, NameRepositoryRedis nameRepository, StockClient stockClient) {
         this.webClient = webClient;
         this.bcsConfig = bcsConfig;
         this.infoRepository = infoRepository;
         this.stockRepository = stockRepository;
         this.nameRepository = nameRepository;
+        this.stockClient = stockClient;
     }
-
+    @Scheduled(cron = "0 */2 * * * *")
     @Override
     public void updateAllStocks() {
-        List<NameDTO> allStocks = nameRepository.findAll();
-        for (NameDTO stock : allStocks) {
+        if(nameRepository.findAll().isEmpty()){
+            getAllStocks();
+        }
+        List<Stock> allStocks = stockRepository.findAll();
+        for (Stock stock : allStocks) {
             try {
                 Mono<List<StockDTO>> mono = webClient
                         .get()
@@ -75,31 +80,31 @@ public class BcsStockService implements StockService {
         System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
     }
 
-    @Scheduled(cron = "0 */1 * * * *")
     @Override
     public void getAllStocks() {
         try {
-            List<NameDTO> mono =  webClient
-                    .get()
-                    .uri(bcsConfig.getUrl() + bcsConfig.getAllStocks())
-                    .header("partner-token", bcsConfig.getPartnerToken())
-                    .accept(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .bodyToMono(new ParameterizedTypeReference<RootDTO>(){})
-                    .block()
-                    .getNameDTO();
-            for (NameDTO name : mono) {
+//            List<Name> mono =  webClient
+//                    .get()
+//                    .uri(bcsConfig.getUrl() + bcsConfig.getAllStocks())
+//                    .header("partner-token", bcsConfig.getPartnerToken())
+//                    .accept(MediaType.APPLICATION_JSON)
+//                    .retrieve()
+//                    .bodyToMono(new ParameterizedTypeReference<Root>(){})
+//                    .block()
+//                    .getName();
+            List<Name> names = stockClient.findAllStocks().getName();
+            for (Name name : names) {
                 nameRepository.save(name);
             }
+            saveAllStocks();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.printf("%s: Found Names Successfully%n", LocalDateTime.now());
     }
 
-    @Override
-    public List<NameDTO> getAllNames() {
-        return  nameRepository.findAll();
+    private void saveAllStocks() {
+        nameRepository.findAll()
+                .forEach(n -> stockRepository.save(new Stock(n.getSecureCode(),n.getIssuer(),n.getCurrency())));
     }
 
 
@@ -119,13 +124,6 @@ public class BcsStockService implements StockService {
         return info;
     }
 
-    private Stock convertNameDTOToStock(NameDTO nameDTO) {
-        Stock stock = new Stock();
-        stock.setCurrency(nameDTO.getCurrency());
-        stock.setIssuer(nameDTO.getIssuer());
-        stock.setSecureCode(nameDTO.getSecureCode());
-        return stock;
-    }
 
 
 

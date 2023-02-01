@@ -1,8 +1,6 @@
 package com.exchangeinformant.services;
 
-import com.exchangeinformant.dto.NameDTO;
-import com.exchangeinformant.dto.StockDTO;
-import com.exchangeinformant.model.Info;
+import com.exchangeinformant.util.Name;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +18,6 @@ public interface StockService {
 
     void getAllStocks();
 
-    List<NameDTO> getAllNames();
 
     //TODO PREMIUM
 //    Stock getStockDirectly(String stockName);
