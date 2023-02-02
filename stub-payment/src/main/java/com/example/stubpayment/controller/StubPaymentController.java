@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/stud/payment")
+@RequestMapping("/stub/payment")
 public class StubPaymentController {
 
     private final PaymentsService paymentsService;

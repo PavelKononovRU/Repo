@@ -48,8 +48,8 @@ public class PaymentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createPayment(@Valid @RequestBody StubPaymentDTO studPayment) {
-        return paymentService.methodGetBodyToStubPayment(studPayment);
+    public ResponseEntity<Object> createPayment(@Valid @RequestBody StubPaymentDTO stubPayment) {
+        return paymentService.methodGetBodyToStubPayment(stubPayment);
     }
 
     @ExceptionHandler(Exception.class)

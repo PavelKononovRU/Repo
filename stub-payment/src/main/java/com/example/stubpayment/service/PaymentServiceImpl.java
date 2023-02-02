@@ -40,7 +40,7 @@ public class PaymentServiceImpl implements PaymentsService {
         } else {
             payment.setStatus(Status.ERROR);
             stubPaymentRepository.save(payment);
-            throw new TestPaymentException("Ваш платеж не прошел,пожалуйста,повторите позже.");
+            return new PaymentStatus(Status.ERROR, "Ваш платеж не прошел,пожалуйста,повторите позже.");
         }
     }
 
