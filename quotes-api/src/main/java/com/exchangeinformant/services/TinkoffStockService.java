@@ -20,7 +20,6 @@ import ru.tinkoff.invest.openapi.model.rest.MarketInstrumentList;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -32,7 +31,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TinkoffStockService implements StockService {
     private final InfoRepository infoRepository;
-
     private final StockRepository stockRepository;
     private final NameRepositoryRedis nameRepository;
     private final OpenApi openApi;
@@ -46,7 +44,7 @@ public class TinkoffStockService implements StockService {
         }
         List<Stock> stocks = stockRepository.findAll();
         for (Stock stock : stocks) {
-            Info updatedStock = getStockByTicker(stock.getSecureCode());
+            Info updatedStock = getInfoByCode(stock.getSecureCode());
             infoRepository.save(updatedStock);
         }
         log.info("Updated Successfully");
@@ -70,7 +68,7 @@ public class TinkoffStockService implements StockService {
             stock = stockRepository.findBySecureCode(secureCode);
         }else{
             Name name = nameRepository.get(secureCode);
-            stock = new Stock(name.getSecureCode(), name.getIssuer(), name.getCurrency());
+            stock = new Stock(name.getSecureCode(), name.getIssuer(), name.getCurrency(), new ArrayList<>());
         }
         MarketContext context = openApi.getMarketContext();
         var list = context.searchMarketInstrumentsByTicker(secureCode);
@@ -106,8 +104,8 @@ public class TinkoffStockService implements StockService {
                         mi.getTicker(),
                         mi.getName(),
                         mi.getCurrency().name(),
-                        new ArrayList<>(Arrays.asList(
-                                new Info(context.getMarketOrderbook(mi.getFigi(),0).join().orElseThrow(()->new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice().doubleValue(),LocalDateTime.now(),mi.getTicker())))
+                        new ArrayList<>(List.of(
+                                new Info(context.getMarketOrderbook(mi.getFigi(), 0).join().orElseThrow(() -> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice().doubleValue(), LocalDateTime.now(), mi.getTicker())))
                         ))
                 .collect(Collectors.toList());
     }
@@ -125,9 +123,9 @@ public class TinkoffStockService implements StockService {
     }
 
 
-    private Info getStockByTicker(String ticker) {
+    private Info getInfoByCode(String secureCode) {
         MarketContext context = openApi.getMarketContext();
-        var list = context.searchMarketInstrumentsByTicker(ticker);
+        var list = context.searchMarketInstrumentsByTicker(secureCode);
         List<MarketInstrument> miList =list.join().getInstruments();
         if (miList.isEmpty()) {
             throw new RuntimeException("Stock not found");

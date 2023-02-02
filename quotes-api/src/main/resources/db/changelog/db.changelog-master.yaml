@@ -3,5 +3,3 @@ databaseChangeLog:
       file: db/changelog/changeset/stock.yaml
   - include:
       file: db/changelog/changeset/info.yaml
-  - include:
-      file: db/changelog/changeset/stock-insert.yaml
