@@ -48,13 +48,13 @@ public class StockRestController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllStocks() {
-        return new ResponseEntity<>(stockDbService.getAllStocks(), HttpStatus.OK);
+    public List<Stock> getAllStocks() {
+        return stockDbService.getAllStocks();
     }
 
     @PostMapping("/availableStocks")
-    public ResponseEntity<?> getAllAvailableStocks(@RequestBody List<String> securityCodes) {
-        return new ResponseEntity<>(stockDbService.getAllAvailableStocksByCodes(securityCodes), HttpStatus.OK);
+    public List<Stock> getAllAvailableStocks(@RequestBody List<String> securityCodes) {
+        return stockDbService.getAllAvailableStocksByCodes(securityCodes);
     }
     @GetMapping("/directStock")
     public Stock getStockDirectlyByBcs(@RequestParam("name") String secureCode) {

@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Created in IntelliJ
@@ -42,9 +40,6 @@ public class StockDbServiceImpl implements StockDbService {
         stock.setInfoList(Collections.singletonList(info));
         return stock;
     }
-
-
-
 
     @Override
     public Stock getStockByDate(String stockName, LocalDateTime dateFrom, LocalDateTime dateTo) {

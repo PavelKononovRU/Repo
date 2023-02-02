@@ -24,6 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,7 +57,7 @@ class StockRestControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(stockRestController).build();
         stock = new Stock("AAPL", "Apple" ,"USD", new ArrayList<>(){
             {
-                add(new Info(1,34d, LocalDateTime.now(),"AAPL"));
+                add(new Info(1,new BigDecimal(34), LocalDateTime.now(),"AAPL"));
             }
         });
     }

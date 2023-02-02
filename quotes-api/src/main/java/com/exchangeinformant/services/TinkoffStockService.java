@@ -18,6 +18,7 @@ import ru.tinkoff.invest.openapi.OpenApi;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrumentList;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,7 @@ public class TinkoffStockService implements StockService {
         List<MarketInstrument> miList =list.join().getInstruments();
         MarketInstrument item = miList.get(0);
 
-        var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().get().getLastPrice();
+        var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().orElseThrow(()-> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice();
 
         stock.getInfoList().add(new Info(
                 lastPrice,
@@ -128,11 +129,11 @@ public class TinkoffStockService implements StockService {
         var list = context.searchMarketInstrumentsByTicker(secureCode);
         List<MarketInstrument> miList =list.join().getInstruments();
         if (miList.isEmpty()) {
-            throw new RuntimeException("Stock not found");
+            throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.name());
         }
         MarketInstrument item = miList.get(0);
 
-        var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().get().getLastPrice();
+        BigDecimal lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().orElseThrow(()-> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice();
 
         return new Info(
                 lastPrice,

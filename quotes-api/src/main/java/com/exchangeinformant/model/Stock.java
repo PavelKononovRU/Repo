@@ -20,6 +20,7 @@ public class Stock {
     private String currency;
 
     @OneToMany(mappedBy = "secureCode")
+    @EqualsAndHashCode.Exclude
     private List<Info> infoList;
 
     public Stock(String secureCode, String issuer, String currency) {

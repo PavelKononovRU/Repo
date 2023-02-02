@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ class StockDbServiceImplTest {
     void shouldGetStockByCode() {
         Stock stock = new Stock("AAPL", "Apple" ,"USD", new ArrayList<>(){
             {
-                add(new Info(1,34d,LocalDateTime.now(),"AAPL"));
+                add(new Info(1,new BigDecimal(34),LocalDateTime.now(),"AAPL"));
             }
         });
 
@@ -77,7 +78,7 @@ class StockDbServiceImplTest {
         LocalDateTime actualTime = LocalDateTime.of(2021, Month.APRIL, 24, 14, 33, 48);
         Stock stock = new Stock("AAPL", "Apple" ,"USD", new ArrayList<>(){
             {
-                add(new Info(1,34d,actualTime,"AAPL"));
+                add(new Info(1,new BigDecimal(34),actualTime,"AAPL"));
             }
         });
 
@@ -95,7 +96,7 @@ class StockDbServiceImplTest {
         codes.add("AAPL");
         Stock stock = new Stock("AAPL", "Apple" ,"USD", new ArrayList<>(){
             {
-                add(new Info(1,34d,LocalDateTime.now(),"AAPL"));
+                add(new Info(1,new BigDecimal(34),LocalDateTime.now(),"AAPL"));
             }
         });
         List<Stock> stocks = new ArrayList<>();
