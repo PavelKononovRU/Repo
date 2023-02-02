@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -30,7 +31,7 @@ public class Info {
 
     @Column(name = "last-price")
     @JsonSetter("close")
-    private double lastPrice;
+    private BigDecimal lastPrice;
 
     @Column(name = "updated-at")
     private LocalDateTime updatedAt;
@@ -39,11 +40,11 @@ public class Info {
     private String secureCode;
 
     @JsonGetter("price")
-    public double getLastPrice() {
+    public BigDecimal getLastPrice() {
         return lastPrice;
     }
 
-    public Info(double lastPrice, LocalDateTime updatedAt, String secureCode) {
+    public Info(BigDecimal lastPrice, LocalDateTime updatedAt, String secureCode) {
         this.lastPrice = lastPrice;
         this.updatedAt = updatedAt;
         this.secureCode = secureCode;

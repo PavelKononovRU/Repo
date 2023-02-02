@@ -35,8 +35,7 @@ public class CardServiceTest extends IntegrationTestBase {
     void testGetById() {
         Optional<Card> maybeCard = Optional.ofNullable(cardService.getCardById(1L));
         assertTrue(maybeCard.isPresent());
-        maybeCard.ifPresent(entity -> {
-            assertEquals("1111-2222-3333-4444", entity.getNumber());
+        maybeCard.ifPresent(entity -> {assertEquals("1111-2222-3333-4444", entity.getNumber());
         });
     }
 
@@ -58,7 +57,7 @@ public class CardServiceTest extends IntegrationTestBase {
         Optional<Card> maybeCard = Optional.ofNullable(cardService.getCardById(1L));
         maybeCard.ifPresent(entity -> {
             assertNull(entity.getNumber());
-            assertEquals(entity.getNumber(), "1111-2222-3333-4444");
+            assertEquals("1111-2222-3333-4444", entity.getNumber());
         });
     }
 

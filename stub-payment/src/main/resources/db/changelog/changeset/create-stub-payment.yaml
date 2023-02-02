@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-stub-payment
+      author: Misha
+      changes:
+        - createTable:
+            tableName: stud_payment
+            columns:
+              - column:
+                  name: stud_payment_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ext_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: create_at
+                  type: DATETIME
+                  constraints:
+                    nullable: false

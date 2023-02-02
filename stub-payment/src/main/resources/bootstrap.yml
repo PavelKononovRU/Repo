@@ -1,0 +1,11 @@
+server:
+  port: 0
+spring:
+  application:
+    name: stub-payment
+  cloud:
+    config:
+      profile: local
+      discovery:
+        enabled: false
+        service-id: config-server
