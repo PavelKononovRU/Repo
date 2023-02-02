@@ -1,8 +1,8 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.services.BcsStockService;
+import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.services.StockDbService;
-import com.exchangeinformant.services.TinkoffStockService;
+import com.exchangeinformant.services.StockService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +20,14 @@ import java.util.List;
 public class StockRestController {
 
     private final StockDbService stockDbService;
-    private final BcsStockService bcsStockService;
+    private final StockService stockService;
+    private final StockRepository stockRepository;
 
-    public StockRestController(StockDbService stockDbService, BcsStockService bcsStockService) {
+    public StockRestController(StockDbService stockDbService, StockService stockService,
+                               StockRepository stockRepository) {
         this.stockDbService = stockDbService;
-        this.bcsStockService = bcsStockService;
+        this.stockService = stockService;
+        this.stockRepository = stockRepository;
     }
 
     @GetMapping("/stock")
@@ -45,12 +48,12 @@ public class StockRestController {
         return new ResponseEntity<>(stockDbService.getAllStocksByDate(dateFrom, dateTo), HttpStatus.OK);
     }
 
-    @GetMapping("/bcsStock")
+    @GetMapping("/directStock")
     public ResponseEntity<?> getStockDirectlyByBcs(@RequestParam("name") String secureCode) {
-        return new ResponseEntity<>(bcsStockService.getStockDirectly(secureCode), HttpStatus.OK);
+        return new ResponseEntity<>(stockService.getStockDirectly(secureCode), HttpStatus.OK);
     }
-    @PostMapping("/bcsStock")
+    @PostMapping("/directStock")
     public ResponseEntity<?> getStocksDirectlyByBcs(@RequestBody List<String> secureCodes) {
-        return new ResponseEntity<>(bcsStockService.getStocksDirectly(secureCodes), HttpStatus.OK);
+        return new ResponseEntity<>(stockService.getStocksDirectly(secureCodes), HttpStatus.OK);
     }
 }
