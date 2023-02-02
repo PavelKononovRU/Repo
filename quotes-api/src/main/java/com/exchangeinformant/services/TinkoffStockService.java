@@ -54,7 +54,7 @@ public class TinkoffStockService implements StockService {
     public void getAllStocks() {
         MarketContext context = openApi.getMarketContext();
         CompletableFuture<MarketInstrumentList> marketList = context.getMarketStocks();
-        List<MarketInstrument> miList = marketList.join().getInstruments();
+            List<MarketInstrument> miList = marketList.join().getInstruments();
         for (MarketInstrument mi : miList) {
             nameRepository.save(new Name(mi.getTicker(),mi.getName(),mi.getCurrency().name()));
         }
@@ -78,7 +78,7 @@ public class TinkoffStockService implements StockService {
         var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().get().getLastPrice();
 
         stock.getInfoList().add(new Info(
-                lastPrice.doubleValue(),
+                lastPrice,
                 LocalDateTime.now(),
                 item.getTicker())
         );
@@ -105,7 +105,7 @@ public class TinkoffStockService implements StockService {
                         mi.getName(),
                         mi.getCurrency().name(),
                         new ArrayList<>(List.of(
-                                new Info(context.getMarketOrderbook(mi.getFigi(), 0).join().orElseThrow(() -> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice().doubleValue(), LocalDateTime.now(), mi.getTicker())))
+                                new Info(context.getMarketOrderbook(mi.getFigi(), 0).join().orElseThrow(() -> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice(), LocalDateTime.now(), mi.getTicker())))
                         ))
                 .collect(Collectors.toList());
     }
@@ -135,7 +135,7 @@ public class TinkoffStockService implements StockService {
         var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().get().getLastPrice();
 
         return new Info(
-                lastPrice.doubleValue(),
+                lastPrice,
                 LocalDateTime.now(),
                 item.getTicker()
         );

@@ -14,7 +14,6 @@ public class NameRepositoryRedis {
     @Autowired
     private RedisTemplate redisTemplate;
 
-
     public void save(Name name) {
         redisTemplate.opsForHash().put(HASH_KEY, name.getSecureCode(), name);
     }
