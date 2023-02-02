@@ -1,5 +1,6 @@
 server:
   port: 8080
+
 spring:
   main:
     allow-bean-definition-overriding: true
@@ -8,9 +9,8 @@ spring:
     name: gateway-service
   cloud:
     config:
-      # noinspection SpringBootApplicationYaml
-      profile: local
-      # noinspection SpringBootApplicationYaml
+      uri: http://localhost:8888
+      profile: dev
       discovery:
         enabled: false
         service-id: config-server
@@ -22,14 +22,38 @@ spring:
           enabled: true
           lower-case-service-id: true
       routes:
+        #Регистрация paying-service
+        - id: paying-service
+          uri: lb://paying-service
+          predicates:
+            - Path=/paying-service/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+        #Регистрация user-profile
         - id: user-profile
           uri: lb://user-profile
           predicates:
-            - Path=/api/user/**
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+        #Регистрация quotes-api
         - id: quotes-api
           uri: lb://quotes-api
           predicates:
             - Path=/quotes/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+        #Регистрация  subscription
+        - id: subscription
+          uri: lb://subscription
+          predicates:
+            - Path=/api/**
           filters:
             - StripPrefix=1
             - name: Retry
@@ -44,10 +68,7 @@ spring:
                   maxBackoff: 50ms
                   factor: 2
                   basedOnPreviousValue: false
-        - id: subscription
-          uri: lb://subscription
-          predicates:
-            - Path=/api/**
+
   security:
     oauth2:
       client:
@@ -62,6 +83,7 @@ spring:
             client-secret: Gyo45aIz0hUFYz2pgN3uwevEVvUDvOhT
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/gateway-client
+
 logging:
   level:
     org:
