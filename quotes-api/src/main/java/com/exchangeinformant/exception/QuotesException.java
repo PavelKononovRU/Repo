@@ -14,7 +14,5 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 public class QuotesException extends RuntimeException {
 
-    private String message;
-
-
+    private final String message;
 }

@@ -12,6 +12,8 @@ import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Bcs;
 import com.exchangeinformant.util.StockClient;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
@@ -29,6 +31,7 @@ import java.util.Objects;
  */
 @Service
 @Bcs
+@Slf4j
 public class BcsStockService implements StockService {
 
     private final InfoRepository infoRepository;
@@ -64,7 +67,7 @@ public class BcsStockService implements StockService {
                 throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.name());
             }
         }
-        System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
+        log.info("Updated Successfully");
     }
 
     @Override

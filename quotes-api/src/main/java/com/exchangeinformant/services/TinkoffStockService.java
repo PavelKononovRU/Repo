@@ -1,5 +1,7 @@
 package com.exchangeinformant.services;
 
+import com.exchangeinformant.exception.ErrorCodes;
+import com.exchangeinformant.exception.QuotesException;
 import com.exchangeinformant.repository.NameRepositoryRedis;
 import com.exchangeinformant.util.Name;
 import com.exchangeinformant.model.Info;
@@ -8,6 +10,7 @@ import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Tinkoff;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.MarketContext;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Tinkoff
+@Slf4j
 public class TinkoffStockService implements StockService {
     private final InfoRepository infoRepository;
 
@@ -45,7 +49,7 @@ public class TinkoffStockService implements StockService {
             Info updatedStock = getStockByTicker(stock.getSecureCode());
             infoRepository.save(updatedStock);
         }
-        System.out.printf("%s: Updated Successfully%n", LocalDateTime.now());
+        log.info("Updated Successfully");
     }
 
     @Override
@@ -103,7 +107,7 @@ public class TinkoffStockService implements StockService {
                         mi.getName(),
                         mi.getCurrency().name(),
                         new ArrayList<>(Arrays.asList(
-                                new Info(context.getMarketOrderbook(mi.getFigi(),0).join().get().getLastPrice().doubleValue(),LocalDateTime.now(),mi.getTicker())))
+                                new Info(context.getMarketOrderbook(mi.getFigi(),0).join().orElseThrow(()->new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice().doubleValue(),LocalDateTime.now(),mi.getTicker())))
                         ))
                 .collect(Collectors.toList());
     }
