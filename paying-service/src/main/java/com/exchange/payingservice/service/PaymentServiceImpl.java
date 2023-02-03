@@ -7,6 +7,7 @@ import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
+import com.exchange.payingservice.util.PaymentStatus;
 import com.exchange.payingservice.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentsMapper paymentsMapper;
     private final CardService cardService;
-    private static int flag;
 
     @Autowired
     public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService) {
@@ -56,6 +56,7 @@ public class PaymentServiceImpl implements PaymentService {
     public StubPaymentDTO createPayment(StubPaymentDTO payment, Status status) {
         Card card = cardService.getCardById(payment.getCard_id());
         Payment created = new Payment();
+        created.setCard(card);
         if (created.getCard() == null) throw new PaymentException("Карты с данным номером не обнаружено.");
 
         created.setCard(card);
@@ -85,29 +86,36 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Object> methodGetBodyToStubPayment(StubPaymentDTO stubPaymentDTO) {
-        Status status = Status.SUCCESSFULLY;
+        Status status = Status.ERROR;
+        String message = "Ваш платеж не прошел, пожалуйста, повторите позже.";
         String extId = "1-" +
-                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + ++flag;
+                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + paymentRepository.getNextValue();
         Map<String, String> testMap = new HashMap<>();
         testMap.put("ext_id", extId);
         testMap.put("amount", stubPaymentDTO.getItems().get("amount"));
 
         RestTemplate restTemplateStubPayment = new RestTemplate();
 
-        ResponseEntity<Object> response = new ResponseEntity<>(Status.ERROR, HttpStatus.UNPROCESSABLE_ENTITY);
+        PaymentStatus paymentStatus = new PaymentStatus(status, message);
+
+        ResponseEntity<Object> response = new ResponseEntity<>(Status.ERROR, HttpStatus.OK);
+
         try {
-            response = restTemplateStubPayment.postForEntity("http://localhost:8082/stub/payment", testMap, Object.class);
-        } catch (HttpClientErrorException.UnprocessableEntity e) {
-            status = Status.ERROR;
+            response = restTemplateStubPayment.postForEntity("http://localhost:64467/stub/payment", testMap, Object.class);
+        } catch (PaymentException | HttpClientErrorException.UnprocessableEntity e) {
+
+
+//            paymentStatus.setUser_message("Ваш платеж не прошел, пожалуйста, повторите позже.");
         }
+
         this.createPayment(stubPaymentDTO, status);
         return response;
     }
 
-    @Scheduled(cron = "* * 1 * * ?")
-    protected void clearCounter() {
-        flag = 0;
+    @Scheduled(cron = "0 0 * * * ?")
+    public void reloadSequence(){
+        paymentRepository.getNewSequence();
     }
-
 }

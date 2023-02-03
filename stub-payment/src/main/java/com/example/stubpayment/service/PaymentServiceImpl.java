@@ -36,11 +36,11 @@ public class PaymentServiceImpl implements PaymentsService {
         if (res >= 1) {
             payment.setStatus(Status.SUCCESSFULLY);
             stubPaymentRepository.save(payment);
-            return new PaymentStatus(Status.SUCCESSFULLY, "Ваш платеж успешно принят");
+            return new PaymentStatus(Status.SUCCESSFULLY, "Ваш платеж успешно принят.");
         } else {
             payment.setStatus(Status.ERROR);
             stubPaymentRepository.save(payment);
-            return new PaymentStatus(Status.ERROR, "Ваш платеж не прошел,пожалуйста,повторите позже.");
+            return new PaymentStatus(Status.ERROR, "Ваш платеж не прошел, пожалуйста, повторите позже.");
         }
     }
 

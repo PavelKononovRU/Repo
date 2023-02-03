@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changeset/create-payment-table-paying.yaml
   - include:
       file: db/changelog/changeset/add-column-payment-table.yaml
+  - include:
+      file: db/changelog/changeset/create-sequence-for-extId.yaml
