@@ -30,3 +30,8 @@ tinkoff:
     is-sandbox-mode: true
 quotes:
   supplier: tinkoff # bcs or tinkoff
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true

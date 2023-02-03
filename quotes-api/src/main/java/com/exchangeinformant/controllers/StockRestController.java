@@ -3,8 +3,6 @@ package com.exchangeinformant.controllers;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.StockDbService;
 import com.exchangeinformant.services.StockService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -45,7 +43,6 @@ public class StockRestController {
     {
         return stockDbService.getAllStocksByDate(dateFrom, dateTo);
     }
-
 
     @GetMapping("/all")
     public List<Stock> getAllStocks() {

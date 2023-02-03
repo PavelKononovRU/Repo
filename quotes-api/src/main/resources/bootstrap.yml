@@ -11,7 +11,6 @@ spring:
             url: https://api.bcs.ru
             request-interceptors:
               - com.exchangeinformant.configuration.StockClientInterceptor
-            logger-level: headers
     config:
       profile: local
       discovery:

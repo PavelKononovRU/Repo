@@ -1,6 +1,5 @@
 package com.exchangeinformant.util;
 
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 import java.lang.annotation.ElementType;

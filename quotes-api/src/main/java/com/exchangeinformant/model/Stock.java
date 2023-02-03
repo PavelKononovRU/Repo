@@ -23,9 +23,13 @@ public class Stock {
     @EqualsAndHashCode.Exclude
     private List<Info> infoList;
 
-    public Stock(String secureCode, String issuer, String currency) {
+    @Column
+    private String source;
+
+    public Stock(String secureCode, String issuer, String currency,String source) {
         this.secureCode = secureCode;
         this.issuer = issuer;
         this.currency = currency;
+        this.source=source;
     }
 }

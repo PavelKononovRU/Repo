@@ -11,6 +11,7 @@ import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Tinkoff;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.MarketContext;
@@ -35,15 +36,23 @@ public class TinkoffStockService implements StockService {
     private final StockRepository stockRepository;
     private final NameRepositoryRedis nameRepository;
     private final OpenApi openApi;
+    @Value("${quotes.supplier}")
+    private String serviceName;
 
-
-    @Scheduled(cron = "0 */2 * * * *")
+    @Scheduled(cron = "0 */3 * * * *")
     @Override
     public void updateAllStocks() {
-        if(nameRepository.findAll().isEmpty()){
+        if(nameRepository.findAll(serviceName).isEmpty()){
             getAllStocks();
         }
-        List<Stock> stocks = stockRepository.findAll();
+        if (stockRepository.findAll().isEmpty()) {
+            saveAllStocks();
+        }
+        List<Stock> stocks = stockRepository.findAll()
+                .stream()
+                .filter(code -> code.getSecureCode().length()<=5)
+                .limit(180)
+                .collect(Collectors.toList());
         for (Stock stock : stocks) {
             Info updatedStock = getInfoByCode(stock.getSecureCode());
             infoRepository.save(updatedStock);
@@ -55,28 +64,27 @@ public class TinkoffStockService implements StockService {
     public void getAllStocks() {
         MarketContext context = openApi.getMarketContext();
         CompletableFuture<MarketInstrumentList> marketList = context.getMarketStocks();
-            List<MarketInstrument> miList = marketList.join().getInstruments();
+        List<MarketInstrument> miList = marketList.join().getInstruments();
         for (MarketInstrument mi : miList) {
-            nameRepository.save(new Name(mi.getTicker(),mi.getName(),mi.getCurrency().name()));
+            nameRepository.save(serviceName,new Name(mi.getTicker(),mi.getName(),mi.getCurrency().name()));
         }
-        saveAllStocks();
     }
 
+    private void saveAllStocks() {
+        nameRepository.findAll(serviceName)
+                .stream().map(Name.class::cast)
+                .forEach(n -> stockRepository.save(new Stock(n.getSecureCode(),n.getIssuer(),n.getCurrency(), serviceName)));
+    }
     @Override
     public Stock getStockDirectly(String secureCode) {
-        Stock stock;
-        if (stockRepository.existsBySecureCode(secureCode)) {
-            stock = stockRepository.findBySecureCode(secureCode);
-        }else{
-            Name name = nameRepository.get(secureCode);
-            stock = new Stock(name.getSecureCode(), name.getIssuer(), name.getCurrency(), new ArrayList<>());
-        }
         MarketContext context = openApi.getMarketContext();
-        var list = context.searchMarketInstrumentsByTicker(secureCode);
+        CompletableFuture<MarketInstrumentList> list = context.searchMarketInstrumentsByTicker(secureCode);
         List<MarketInstrument> miList =list.join().getInstruments();
         MarketInstrument item = miList.get(0);
 
-        var lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().orElseThrow(()-> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice();
+        Stock stock = new Stock(item.getTicker(),item.getName(),item.getCurrency().name(),new ArrayList<>(),serviceName);
+
+        BigDecimal lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().orElseThrow(()-> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice();
 
         stock.getInfoList().add(new Info(
                 lastPrice,
@@ -106,7 +114,8 @@ public class TinkoffStockService implements StockService {
                         mi.getName(),
                         mi.getCurrency().name(),
                         new ArrayList<>(List.of(
-                                new Info(context.getMarketOrderbook(mi.getFigi(), 0).join().orElseThrow(() -> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice(), LocalDateTime.now(), mi.getTicker())))
+                                new Info(context.getMarketOrderbook(mi.getFigi(), 0).join().orElseThrow(() -> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice(), LocalDateTime.now(), mi.getTicker()))),
+                        serviceName
                         ))
                 .collect(Collectors.toList());
     }
@@ -117,12 +126,6 @@ public class TinkoffStockService implements StockService {
     }
 
 
-    private void saveAllStocks() {
-        nameRepository.findAll().stream()
-                .limit(200)
-                .forEach(n -> stockRepository.save(new Stock(n.getSecureCode(),n.getIssuer(),n.getCurrency())));
-    }
-
 
     private Info getInfoByCode(String secureCode) {
         MarketContext context = openApi.getMarketContext();
@@ -132,7 +135,6 @@ public class TinkoffStockService implements StockService {
             throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.name());
         }
         MarketInstrument item = miList.get(0);
-
         BigDecimal lastPrice= context.getMarketOrderbook(item.getFigi(),0).join().orElseThrow(()-> new QuotesException(ErrorCodes.NO_PRICE.getErrorMessage())).getLastPrice();
 
         return new Info(

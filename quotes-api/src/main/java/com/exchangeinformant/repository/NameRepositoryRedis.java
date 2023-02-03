@@ -1,28 +1,28 @@
 package com.exchangeinformant.repository;
 
 import com.exchangeinformant.util.Name;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 
 @Repository
 public class NameRepositoryRedis {
-    public static final String HASH_KEY = "Name";
+    private final RedisTemplate<String, Name> redisTemplate;
 
-    @Autowired
-    private RedisTemplate redisTemplate;
-
-    public void save(Name name) {
-        redisTemplate.opsForHash().put(HASH_KEY, name.getSecureCode(), name);
+    public NameRepositoryRedis(RedisTemplate<String, Name> redisTemplate) {
+        this.redisTemplate = redisTemplate;
     }
 
-    public Name get(String secureCode) {
-        return (Name) redisTemplate.opsForHash().get(HASH_KEY, secureCode);
+
+    public void save(String serviceName, Name name) {
+        redisTemplate.opsForHash().put(serviceName, name.getSecureCode(), name);
     }
 
-    public List<Name> findAll() {
-        return redisTemplate.opsForHash().values(HASH_KEY);
+    public Name get(String serviceName, String secureCode) {
+        return (Name) redisTemplate.opsForHash().get(serviceName, secureCode);
+    }
+
+    public List<Object> findAll(String serviceName) {
+        return redisTemplate.opsForHash().values(serviceName);
     }
 }

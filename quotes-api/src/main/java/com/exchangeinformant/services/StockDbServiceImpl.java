@@ -52,7 +52,6 @@ public class StockDbServiceImpl implements StockDbService {
         return stock;
     }
 
-
     @Override
     public List<Stock> getAllStocksByDate(LocalDateTime dateFrom, LocalDateTime dateTo) {
         List<Stock> stockList = stockRepository.findAll();
@@ -79,7 +78,7 @@ public class StockDbServiceImpl implements StockDbService {
     }
 
     @Override
-    public List<Stock> getAllStocks() {
+    public List<Stock> getAllStocks()    {
         return stockRepository.findAll();
     }
 

@@ -22,8 +22,6 @@ databaseChangeLog:
               - column:
                   name: last-price
                   type: real
-                  constraints:
-                    nullable: false
               - column:
                   name: updated-at
                   type: timestamp without time zone

@@ -13,7 +13,7 @@ import com.exchangeinformant.repository.StockRepository;
 import com.exchangeinformant.util.Bcs;
 import com.exchangeinformant.util.StockClient;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
@@ -38,6 +38,8 @@ public class BcsStockService implements StockService {
     private final StockRepository stockRepository;
     private final NameRepositoryRedis nameRepository;
     private final StockClient stockClient;
+    @Value("${quotes.supplier}")
+    private String serviceName;
 
     public BcsStockService(InfoRepository infoRepository, StockRepository stockRepository, NameRepositoryRedis nameRepository, StockClient stockClient) {
         this.infoRepository = infoRepository;
@@ -46,18 +48,21 @@ public class BcsStockService implements StockService {
         this.stockClient = stockClient;
     }
 
-    @Scheduled(cron = "0 */2 * * * *")
+    @Scheduled(cron = "0 */3 * * * *")
     @Override
     public void updateAllStocks() {
-        if(nameRepository.findAll().isEmpty()){
+        if(nameRepository.findAll(serviceName).isEmpty()){
             getAllStocks();
+        }
+        if (stockRepository.findAll().isEmpty()) {
+            saveAllStocks();
         }
         List<Stock> allStocks = stockRepository.findAll();
         for (Stock stock : allStocks) {
             try {
                 List<StockDTO> foundStock = stockClient.findOneStock(stock.getSecureCode());
                 StockDTO stockDTO = Objects.requireNonNull(foundStock).get(0);
-                stockRepository.save(new Stock(stockDTO.getSecureCode(),stockDTO.getIssuer(), stockDTO.getCurrency()));
+                stockRepository.save(new Stock(stockDTO.getSecureCode(),stockDTO.getIssuer(), stockDTO.getCurrency(),serviceName));
                 InfoDTO infoDTO = stockDTO.getInfoList();
                 Info info = convertInfoDTOToInfo(infoDTO);
                 info.setSecureCode(stock.getSecureCode());
@@ -75,9 +80,8 @@ public class BcsStockService implements StockService {
         try {
             List<Name> names = stockClient.findAllStocks().getName();
             for (Name name : names) {
-                nameRepository.save(name);
+                nameRepository.save(serviceName,name);
             }
-            saveAllStocks();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,7 +93,8 @@ public class BcsStockService implements StockService {
         StockDTO stockDTO = Objects.requireNonNull(foundStock).get(0);
         return new Stock(stockDTO.getSecureCode(), stockDTO.getIssuer(),stockDTO.getCurrency(),
                 new ArrayList<>(List.of(
-                        new Info(stockDTO.getInfoList().getLastPrice(), LocalDateTime.now(), stockDTO.getSecureCode()))));
+                        new Info(stockDTO.getInfoList().getLastPrice(), LocalDateTime.now(), stockDTO.getSecureCode()))),
+                serviceName);
     }
 
     @Override
@@ -102,8 +107,9 @@ public class BcsStockService implements StockService {
     }
 
     private void saveAllStocks() {
-        nameRepository.findAll()
-                .forEach(n -> stockRepository.save(new Stock(n.getSecureCode(),n.getIssuer(),n.getCurrency())));
+        nameRepository.findAll(serviceName)
+                .stream().map(Name.class::cast)
+                .forEach(n -> stockRepository.save(new Stock(n.getSecureCode(),n.getIssuer(),n.getCurrency(),serviceName)));
     }
 
     private Info convertInfoDTOToInfo(InfoDTO infoDTO) {
@@ -112,10 +118,4 @@ public class BcsStockService implements StockService {
         info.setLastPrice(infoDTO.getLastPrice());
         return info;
     }
-
-
-
-
-
-
 }

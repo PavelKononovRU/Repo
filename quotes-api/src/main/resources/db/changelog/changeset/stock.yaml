@@ -11,12 +11,12 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
                   name: issuer
                   type: varchar(100)
-                  constraints:
-                    nullable: false
               - column:
                   name: currency
                   type: varchar(100)
+              - column:
+                  name: source
+                  type: varchar(20)

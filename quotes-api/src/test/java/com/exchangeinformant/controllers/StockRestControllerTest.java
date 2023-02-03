@@ -1,21 +1,17 @@
 package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.configuration.TinkoffConfig;
-import com.exchangeinformant.exception.QuotesException;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -59,7 +55,7 @@ class StockRestControllerTest {
             {
                 add(new Info(1,new BigDecimal(34), LocalDateTime.now(),"AAPL"));
             }
-        });
+        },"Service");
     }
     @Test
     void shouldGetStock() throws Exception {
