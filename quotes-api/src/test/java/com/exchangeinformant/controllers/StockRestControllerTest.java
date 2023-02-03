@@ -1,5 +1,6 @@
 package com.exchangeinformant.controllers;
 
+import com.exchangeinformant.configuration.RedisConfig;
 import com.exchangeinformant.configuration.TinkoffConfig;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
@@ -34,11 +35,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.is;
 
 
-@SpringBootTest(classes = TinkoffStockService.class)
-@ContextConfiguration(classes = TinkoffConfig.class)
+@SpringBootTest(classes = StockService.class)
+@ContextConfiguration(classes = {TinkoffConfig.class, RedisConfig.class})
 @ExtendWith(SpringExtension.class)
 @Import(StockRestController.class)
 @ComponentScan(basePackages = "com.exchangeinformant")
+
 class StockRestControllerTest {
     private MockMvc mockMvc;
     @Mock
