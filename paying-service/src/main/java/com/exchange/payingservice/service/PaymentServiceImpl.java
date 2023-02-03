@@ -11,7 +11,6 @@ import com.exchange.payingservice.util.PaymentStatus;
 import com.exchange.payingservice.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -88,8 +87,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public ResponseEntity<Object> methodGetBodyToStubPayment(StubPaymentDTO stubPaymentDTO) {
-        Status status = Status.ERROR;
-        String message = "Ваш платеж не прошел, пожалуйста, повторите позже.";
         String extId = "1-" +
                 LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + paymentRepository.getNextValue();
         Map<String, String> testMap = new HashMap<>();
@@ -97,25 +94,22 @@ public class PaymentServiceImpl implements PaymentService {
         testMap.put("amount", stubPaymentDTO.getItems().get("amount"));
 
         RestTemplate restTemplateStubPayment = new RestTemplate();
-
-        PaymentStatus paymentStatus = new PaymentStatus(status, message);
-
-        ResponseEntity<Object> response = new ResponseEntity<>(Status.ERROR, HttpStatus.OK);
+        PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR, "Ваш платеж не прошел, пожалуйста, повторите позже."); //
+        ResponseEntity<Object> response = new ResponseEntity<>(paymentStatus, HttpStatus.OK);
 
         try {
-            response = restTemplateStubPayment.postForEntity("http://localhost:64467/stub/payment", testMap, Object.class);
+            response = restTemplateStubPayment.postForEntity("http://localhost:52794/stub/payment", testMap, Object.class);
+            paymentStatus.setStatus(Status.SUCCESSFULLY);
         } catch (PaymentException | HttpClientErrorException.UnprocessableEntity e) {
-
-
-//            paymentStatus.setUser_message("Ваш платеж не прошел, пожалуйста, повторите позже.");
+            paymentStatus.setStatus(Status.ERROR);//ignore Exception and save Error in DB
         }
 
-        this.createPayment(stubPaymentDTO, status);
+        this.createPayment(stubPaymentDTO, paymentStatus.getStatus());
         return response;
     }
 
     @Scheduled(cron = "0 0 * * * ?")
-    public void reloadSequence(){
+    public void reloadSequence() {
         paymentRepository.getNewSequence();
     }
 }
