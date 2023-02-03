@@ -13,7 +13,7 @@
     <name>subscription</name>
     <description>subscription</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <spring-cloud.version>2022.0.0-RC2</spring-cloud.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
     </properties>

@@ -57,6 +57,33 @@ spring:
           filters:
             - StripPrefix=1
             - name: Retry
+
+        #Регистрация  subscription
+        - id: stub-payment
+          uri: lb://stub-payment
+          predicates:
+            - Path=/stub-payment/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+        #Регистрация  config
+        - id: config
+          uri: lb://config
+          predicates:
+            - Path=/config/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
+
+        #Регистрация  config
+        - id: server
+          uri: lb://server
+          predicates:
+            - Path=/server/**
+          filters:
+            - StripPrefix=1
+            - name: Retry
               # noinspection SpringBootApplicationYaml
               # ругается но работает
               args:

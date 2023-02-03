@@ -25,14 +25,14 @@
 
 Реализуем функционал по мониторингу акций и ценных бумаг и получению актуальной информации из различных депозитариев.
 
-Схемы проекта - [майл облако](https://cloud.mail.ru/public/ERqf/41U6PrWAC)
+Схемы проекта - [mail.Облако](https://cloud.mail.ru/public/ERqf/41U6PrWAC)
 
 Проект рассчитан на студентов, успешно завершивших этап Pre-Project в Kata Academy.
 
 ### Stack
 
-Проект пишется на базе `Java 11`, `Spring Boot 2`, `Spring Cloud `, `Maven` и архитектуре REST. Работаем с базой
-данных `PostgreSQL` через `Spring Data` и `Hibernate`, общение между сервисами `REST` и брокер сообщений `RabbitQM` , для просмотра схемы приложения используется [drawio](https://app.diagrams.net/).
+Проект пишется на базе `Java 17`, `Spring Boot 3.0`, `Spring Cloud `, `Maven` и архитектуре REST. Работаем с базой
+данных `PostgreSQL` через `Spring Data` и `Hibernate`. Общение между сервисами `REST` и брокер сообщений `RabbitMQ` , для просмотра схемы приложения используется [drawio](https://app.diagrams.net/).
 
 Для работы с БД используем Docker. Быстрый запуск postgres в Docker - (docker run --name postgresql-container -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres).
 Для работы с брокером сообщений `RabbitQM` используем Docker. Быстрый запуск `RabbitQM` в Docker - (docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.11-management). 
