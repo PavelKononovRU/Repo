@@ -11,7 +11,8 @@ import lombok.Getter;
 public enum ErrorCodes {
 
     UPDATE_PROBLEM("external_system_is_not_available", "External systems can't process your request. Please try again later."),
-    NO_INFO("info_not_found", "Stocks not found, try to increase condition");
+    NO_INFO("info_not_found", "Stocks not found, try to increase condition"),
+    NO_PRICE("price_not_found", "There is no price for this stock");
 
     private final String errorCode;
 

@@ -8,15 +8,15 @@ databaseChangeLog:
             columns:
               - column:
                   name: secure-code
-                  type: varchar(5)
+                  type: varchar(100)
                   constraints:
                     primaryKey: true
-                    nullable: false
               - column:
                   name: issuer
-                  type: varchar(30)
-                  constraints:
-                    nullable: false
+                  type: varchar(100)
               - column:
                   name: currency
-                  type: varchar(4)
+                  type: varchar(100)
+              - column:
+                  name: source
+                  type: varchar(20)

@@ -1,21 +1,18 @@
 package com.exchangeinformant.controllers;
 
+import com.exchangeinformant.configuration.RedisConfig;
 import com.exchangeinformant.configuration.TinkoffConfig;
-import com.exchangeinformant.exception.QuotesException;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -24,6 +21,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,11 +35,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.is;
 
 
-@SpringBootTest(classes = TinkoffStockService.class)
-@ContextConfiguration(classes = TinkoffConfig.class)
+@SpringBootTest(classes = StockService.class)
+@ContextConfiguration(classes = {TinkoffConfig.class, RedisConfig.class})
 @ExtendWith(SpringExtension.class)
 @Import(StockRestController.class)
 @ComponentScan(basePackages = "com.exchangeinformant")
+
 class StockRestControllerTest {
     private MockMvc mockMvc;
     @Mock
@@ -56,9 +55,9 @@ class StockRestControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(stockRestController).build();
         stock = new Stock("AAPL", "Apple" ,"USD", new ArrayList<>(){
             {
-                add(new Info(1,34d, LocalDateTime.now(),"AAPL"));
+                add(new Info(1,new BigDecimal(34), LocalDateTime.now(),"AAPL"));
             }
-        });
+        },"Service");
     }
     @Test
     void shouldGetStock() throws Exception {

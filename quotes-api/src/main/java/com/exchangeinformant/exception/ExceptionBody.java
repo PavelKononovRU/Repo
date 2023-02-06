@@ -12,8 +12,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class ExceptionBody {
+
         private String message;
 
         private String errorCode;
-
 }

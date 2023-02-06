@@ -4,6 +4,13 @@ spring:
   application:
     name: quotes-api
   cloud:
+    openfeign:
+      client:
+        config:
+          stockClient:
+            url: https://api.bcs.ru
+            request-interceptors:
+              - com.exchangeinformant.configuration.StockClientInterceptor
     config:
       profile: local
       discovery:

@@ -1,11 +1,6 @@
 package com.exchangeinformant.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import java.util.List;
 
 @Data
@@ -25,8 +20,16 @@ public class Stock {
     private String currency;
 
     @OneToMany(mappedBy = "secureCode")
-    @JsonIgnore
     @EqualsAndHashCode.Exclude
     private List<Info> infoList;
 
+    @Column
+    private String source;
+
+    public Stock(String secureCode, String issuer, String currency,String source) {
+        this.secureCode = secureCode;
+        this.issuer = issuer;
+        this.currency = currency;
+        this.source=source;
+    }
 }

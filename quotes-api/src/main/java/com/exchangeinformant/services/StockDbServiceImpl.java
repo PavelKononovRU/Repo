@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Created in IntelliJ
@@ -43,9 +41,6 @@ public class StockDbServiceImpl implements StockDbService {
         return stock;
     }
 
-
-
-
     @Override
     public Stock getStockByDate(String stockName, LocalDateTime dateFrom, LocalDateTime dateTo) {
         Stock stock = stockRepository.findBySecureCode(stockName);
@@ -56,7 +51,6 @@ public class StockDbServiceImpl implements StockDbService {
         stock.setInfoList(infoList);
         return stock;
     }
-
 
     @Override
     public List<Stock> getAllStocksByDate(LocalDateTime dateFrom, LocalDateTime dateTo) {
@@ -84,7 +78,7 @@ public class StockDbServiceImpl implements StockDbService {
     }
 
     @Override
-    public List<Stock> getAllStocks() {
+    public List<Stock> getAllStocks()    {
         return stockRepository.findAll();
     }
 

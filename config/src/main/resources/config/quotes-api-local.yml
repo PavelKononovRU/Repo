@@ -3,6 +3,10 @@ spring:
     username: postgres
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
+  data:
+    redis:
+      host: localhost
+      port: 6379
 eureka:
   client:
     serviceUrl:
@@ -14,19 +18,17 @@ eureka:
 bcs:
   api:
     url: https://api.bcs.ru
-    all-stocks: /partner/quotations?portfolio_ids%5B0%5D=115&limit=500000
+    all-stocks: /partner/quotations?portfolio_ids%5B0%5D=115&limit=500
     partner-token: A5264D52-1510-4E42-8E90-E729FF405646
-    one-stock: /udfdatafeed/v1/info?instruments=SPBXM|%s&inOrderArray=true
+    one-stock: /udfdatafeed/v1/info?instruments={secureCode}&inOrderArray=true
 webclient:
   timeout: 10000
 tinkoff:
   api:
-    token: t.qkfYsq60_C584svox3zRIqfXVMp7emIdZLYMTJIc2dHfr7Jtssh9pJ-WjJiO98IUPJTYWThbIUWb37SrGTMiNg
     sandbox: t.OlKXgNUlgSJ9X1JGcJ8J_ABQcVhJJ6wdMYTZB6Owyx0zqA5i1MoWPcm-3b1ma_XrZtj5OooL7AI2GEQXZgZeMg
     is-sandbox-mode: true
 quotes:
   supplier: tinkoff # bcs or tinkoff
-
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

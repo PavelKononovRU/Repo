@@ -7,18 +7,16 @@ import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -51,9 +49,9 @@ class StockDbServiceImplTest {
     void shouldGetStockByCode() {
         Stock stock = new Stock("AAPL", "Apple" ,"USD", new ArrayList<>(){
             {
-                add(new Info(1,34d,LocalDateTime.now(),"AAPL"));
+                add(new Info(1,new BigDecimal(34),LocalDateTime.now(),"AAPL"));
             }
-        });
+        },"Service");
 
 
         when(stockRepository.findBySecureCode("AAPL")).thenReturn(stock);
@@ -77,9 +75,9 @@ class StockDbServiceImplTest {
         LocalDateTime actualTime = LocalDateTime.of(2021, Month.APRIL, 24, 14, 33, 48);
         Stock stock = new Stock("AAPL", "Apple" ,"USD", new ArrayList<>(){
             {
-                add(new Info(1,34d,actualTime,"AAPL"));
+                add(new Info(1,new BigDecimal(34),actualTime,"AAPL"));
             }
-        });
+        },"Service");
 
 
         when(stockRepository.findBySecureCode("AAPL")).thenReturn(stock);
@@ -95,9 +93,9 @@ class StockDbServiceImplTest {
         codes.add("AAPL");
         Stock stock = new Stock("AAPL", "Apple" ,"USD", new ArrayList<>(){
             {
-                add(new Info(1,34d,LocalDateTime.now(),"AAPL"));
+                add(new Info(1,new BigDecimal(34),LocalDateTime.now(),"AAPL"));
             }
-        });
+        },"Service");
         List<Stock> stocks = new ArrayList<>();
         stocks.add(stock);
 

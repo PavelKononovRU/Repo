@@ -1,11 +1,8 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.exception.ErrorCodes;
-import com.exchangeinformant.exception.QuotesException;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.StockDbService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import com.exchangeinformant.services.StockService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -21,44 +18,48 @@ import java.util.List;
 public class StockRestController {
 
     private final StockDbService stockDbService;
+    private final StockService stockService;
 
-    public StockRestController(StockDbService stockDbService) {
+    public StockRestController(StockDbService stockDbService, StockService stockService) {
         this.stockDbService = stockDbService;
+        this.stockService = stockService;
     }
 
     @GetMapping("/stock")
-    public ResponseEntity<?> getStock(@RequestParam("name") String secureCode) {
-        Stock stock = stockDbService.getStock(secureCode);
-        return new ResponseEntity<>(stock, HttpStatus.OK);
+    public Stock getStock(@RequestParam("name") String secureCode) {
+        return stockDbService.getStock(secureCode);
     }
 
     @GetMapping("/stock/query")
-    public ResponseEntity<?> getStockWithParameters(@RequestParam(name = "dateFrom", required = false, defaultValue = "#{T(java.time.LocalDateTime).now().toLocalDate().atStartOfDay()}") LocalDateTime dateFrom,
-                                     @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo,
-                                     @RequestParam("stock") String secureCode) {
-        return new ResponseEntity<>(stockDbService.getStockByDate(secureCode, dateFrom, dateTo), HttpStatus.OK);
+    public Stock getStockWithParameters(@RequestParam(name = "dateFrom", required = false, defaultValue = "#{T(java.time.LocalDateTime).now().toLocalDate().atStartOfDay()}") LocalDateTime dateFrom,
+                                                    @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo,
+                                                    @RequestParam("stock") String secureCode) {
+        return stockDbService.getStockByDate(secureCode, dateFrom, dateTo);
     }
 
     @GetMapping("/allWithDates")
-    public ResponseEntity<?> getAllStocksByDates(@RequestParam(name = "dateFrom", required = false, defaultValue = "#{T(java.time.LocalDateTime).now().toLocalDate().atStartOfDay()}") LocalDateTime dateFrom,
-                                                 @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo) {
-        return new ResponseEntity<>(stockDbService.getAllStocksByDate(dateFrom, dateTo), HttpStatus.OK);
+    public List<Stock> getAllStocksByDates(@RequestParam(name = "dateFrom", required = false, defaultValue = "#{T(java.time.LocalDateTime).now().toLocalDate().atStartOfDay()}") LocalDateTime dateFrom,
+                                           @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo)
+    {
+        return stockDbService.getAllStocksByDate(dateFrom, dateTo);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllStocks() {
-        return new ResponseEntity<>(stockDbService.getAllStocks(), HttpStatus.OK);
+    public List<Stock> getAllStocks() {
+        return stockDbService.getAllStocks();
     }
+
     @PostMapping("/availableStocks")
-    public ResponseEntity<?> getAllAvailableStocks(@RequestBody List<String> securityCodes) {
-        return new ResponseEntity<>(stockDbService.getAllAvailableStocksByCodes(securityCodes), HttpStatus.OK);
+    public List<Stock> getAllAvailableStocks(@RequestBody List<String> securityCodes) {
+        return stockDbService.getAllAvailableStocksByCodes(securityCodes);
+    }
+    @GetMapping("/directStock")
+    public Stock getStockDirectlyByBcs(@RequestParam("name") String secureCode) {
+        return stockService.getStockDirectly(secureCode);
     }
 
-    // для наглядности
-    @GetMapping("/error")
-    public ResponseEntity<?> getError() {
-        throw new QuotesException(ErrorCodes.UPDATE_PROBLEM.name());
+    @PostMapping("/directStock")
+    public List<Stock> getStocksDirectlyByBcs(@RequestBody List<String> secureCodes) {
+        return stockService.getStocksDirectly(secureCodes);
     }
-
-
 }

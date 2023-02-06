@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface StockRepository extends JpaRepository<Stock,Long> {
+public interface StockRepository extends JpaRepository<Stock,String> {
+    List<Stock> findAllBySecureCode(String secureCode);
     Stock findBySecureCode(String secureCode);
+
+    boolean existsBySecureCode(String secureCode);
 }
