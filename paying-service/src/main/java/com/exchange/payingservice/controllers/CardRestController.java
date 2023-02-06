@@ -42,7 +42,7 @@ public class CardRestController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateCard(@PathVariable Long id, @Valid @RequestBody CardDTO cardDTO) {
         cardService.updateCard(id, cardDTO);
-        return RestControllerAdvice.generateResponsePut(CardMapper.INSTANCE.toEntity(cardDTO));
+        return RestControllerAdvice.generateResponsePut();
     }
 
     @DeleteMapping("/{id}")

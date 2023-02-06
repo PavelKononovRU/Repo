@@ -51,7 +51,7 @@ public class RestControllerAdvice {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    public static ResponseEntity<Object> generateResponsePut(Card card) {
+    public static ResponseEntity<Object> generateResponsePut() {
         Map<String, Object> map = new HashMap<>();
         map.put("date", new StatusCards("Карта изменена",
                 "Управляйте картами в платежной информации"));
