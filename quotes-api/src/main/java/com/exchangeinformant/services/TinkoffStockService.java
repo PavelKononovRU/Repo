@@ -45,10 +45,11 @@ public class TinkoffStockService implements StockService {
         if(nameRepository.findAll(serviceName).isEmpty()){
             getAllStocks();
         }
-        if (stockRepository.findAll().isEmpty()) {
+        if (stockRepository.findAll().isEmpty() || stockRepository.findAll().stream().anyMatch(stock -> stock.getSource() != serviceName)) {
             saveAllStocks();
         }
-        List<Stock> stocks = stockRepository.findAll()
+
+        List<Stock> stocks = stockRepository.findAllBySource(serviceName)
                 .stream()
                 .filter(code -> code.getSecureCode().length()<=5)
                 .limit(180)
