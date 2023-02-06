@@ -1,13 +1,13 @@
 databaseChangeLog:
   - changeSet:
       id: create-stub-payment
-      author: Misha
+      author: Timur
       changes:
         - createTable:
-            tableName: stud_payment
+            tableName: stub_payment
             columns:
               - column:
-                  name: stud_payment_id
+                  name: stub_payment_id
                   type: bigint
                   autoIncrement: true
                   constraints:

@@ -1,14 +1,16 @@
 package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.dto.PaymentDTO;
-import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
+import com.exchange.payingservice.util.PaymentStatus;
 import com.exchange.payingservice.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,6 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentsMapper paymentsMapper;
     private final CardService cardService;
-    private static int flag;
 
     @Autowired
     public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService) {
@@ -51,9 +52,10 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public StudPaymentDTO createPayment(StudPaymentDTO payment, Status status) {
+    public StubPaymentDTO createPayment(StubPaymentDTO payment, Status status) {
         Card card = cardService.getCardById(payment.getCard_id());
         Payment created = new Payment();
+        created.setCard(card);
         if (created.getCard() == null) throw new PaymentException("Карты с данным номером не обнаружено.");
 
         created.setCard(card);
@@ -83,31 +85,31 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public ResponseEntity<Object> methodGetBodyToStudPayment(StudPaymentDTO studPayment) {
-        Status status = Status.SUCCESSFULLY;
+    @Transactional
+    public ResponseEntity<Object> methodGetBodyToStubPayment(StubPaymentDTO stubPaymentDTO) {
         String extId = "1-" +
-                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + ++flag;
+                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + paymentRepository.getNextValue();
         Map<String, String> testMap = new HashMap<>();
         testMap.put("ext_id", extId);
-        testMap.put("amount", studPayment.getItems().get("amount"));
+        testMap.put("amount", stubPaymentDTO.getItems().get("amount"));
 
-        RestTemplate restTemplateStudPayment = new RestTemplate();
+        RestTemplate restTemplateStubPayment = new RestTemplate();
+        PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR, "Ваш платеж не прошел, пожалуйста, повторите позже."); //
+        ResponseEntity<Object> response = new ResponseEntity<>(paymentStatus, HttpStatus.OK);
 
-        ResponseEntity<Object> response;
         try {
-            response = restTemplateStudPayment.postForEntity("http://localhost:8082/stud/payment", testMap, Object.class);
-        } catch (HttpClientErrorException.UnprocessableEntity e) {
-            status = Status.ERROR;
-            throw new PaymentException("Платеж не прошел,пожалуйста,повторите позже.");
-        } finally {
-            this.createPayment(studPayment, status);
+            response = restTemplateStubPayment.postForEntity("http://localhost:52794/stub/payment", testMap, Object.class);
+            paymentStatus.setStatus(Status.SUCCESSFULLY);
+        } catch (PaymentException | HttpClientErrorException.UnprocessableEntity e) {
+            paymentStatus.setStatus(Status.ERROR);//ignore Exception and save Error in DB
         }
+
+        this.createPayment(stubPaymentDTO, paymentStatus.getStatus());
         return response;
     }
 
-    @Scheduled(cron = "* * 1 * * ?")
-    protected void clearCounter() {
-        flag = 0;
+    @Scheduled(cron = "0 0 * * * ?")
+    public void reloadSequence() {
+        paymentRepository.getNewSequence();
     }
-
 }

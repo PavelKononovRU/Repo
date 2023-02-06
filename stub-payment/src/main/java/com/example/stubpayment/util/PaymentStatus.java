@@ -1,6 +1,6 @@
-package com.example.subpayment.util;
+package com.example.stubpayment.util;
 
-import com.example.subpayment.util.enums.Status;
+import com.example.stubpayment.util.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

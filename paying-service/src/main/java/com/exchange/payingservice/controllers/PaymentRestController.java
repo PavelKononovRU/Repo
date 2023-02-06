@@ -1,7 +1,7 @@
 package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.dto.PaymentDTO;
-import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.service.PaymentService;
@@ -48,8 +48,8 @@ public class PaymentRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createPayment(@Valid @RequestBody StudPaymentDTO studPayment) {
-        return paymentService.methodGetBodyToStudPayment(studPayment);
+    public ResponseEntity<Object> createPayment(@Valid @RequestBody StubPaymentDTO stubPayment) {
+        return paymentService.methodGetBodyToStubPayment(stubPayment);
     }
 
     @ExceptionHandler(Exception.class)

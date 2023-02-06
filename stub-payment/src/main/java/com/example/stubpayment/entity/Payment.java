@@ -1,6 +1,6 @@
-package com.example.subpayment.entity;
+package com.example.stubpayment.entity;
 
-import com.example.subpayment.util.enums.Status;
+import com.example.stubpayment.util.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,12 +12,12 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "stud_payment")
+@Table(name = "stub_payment")
 public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "stud_payment_id")
+    @Column(name = "stub_payment_id")
     private Long id;
 
     @Column(name = "ext_id")

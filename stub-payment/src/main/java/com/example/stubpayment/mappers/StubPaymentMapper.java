@@ -1,7 +1,7 @@
-package com.example.subpayment.mappers;
+package com.example.stubpayment.mappers;
 
-import com.example.subpayment.dto.PaymentDTO;
-import com.example.subpayment.entity.Payment;
+import com.example.stubpayment.dto.PaymentDTO;
+import com.example.stubpayment.entity.Payment;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

@@ -1,9 +1,9 @@
-package com.example.subpayment.controller;
+package com.example.stubpayment.controller;
 
-import com.example.subpayment.dto.PaymentDTO;
-import com.example.subpayment.service.PaymentsService;
-import com.example.subpayment.util.PaymentStatus;
-import com.example.subpayment.util.enums.Status;
+import com.example.stubpayment.dto.PaymentDTO;
+import com.example.stubpayment.service.PaymentsService;
+import com.example.stubpayment.util.PaymentStatus;
+import com.example.stubpayment.util.enums.Status;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/stud/payment")
-public class SubPaymentController {
+@RequestMapping("/stub/payment")
+public class StubPaymentController {
 
     private final PaymentsService paymentsService;
 
-    public SubPaymentController(PaymentsService paymentsService) {
+    public StubPaymentController(PaymentsService paymentsService) {
         this.paymentsService = paymentsService;
     }
 

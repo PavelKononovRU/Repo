@@ -2,7 +2,7 @@ package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.IntegrationTestBase;
 import com.exchange.payingservice.dto.PaymentDTO;
-import com.exchange.payingservice.dto.StudPaymentDTO;
+import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.mappers.PaymentsMapper;
@@ -50,14 +50,14 @@ public class PaymentServiceTest extends IntegrationTestBase {
         testItemsMap.put("ext_id", "1-");
         testItemsMap.put("amount", "1000");
 
-        StudPaymentDTO studPaymentDTO = new StudPaymentDTO();
-        studPaymentDTO.setCard_id(1L);
-        studPaymentDTO.setEmail("test@mail.ru");
-        studPaymentDTO.setItems(testItemsMap);
-        studPaymentDTO.setPhone("79876543210");
-        studPaymentDTO.setPromocode("PROMO412GWOT");
+        StubPaymentDTO stubPaymentDTO = new StubPaymentDTO();
+        stubPaymentDTO.setCard_id(1L);
+        stubPaymentDTO.setEmail("test@mail.ru");
+        stubPaymentDTO.setItems(testItemsMap);
+        stubPaymentDTO.setPhone("79876543210");
+        stubPaymentDTO.setPromocode("PROMO412GWOT");
 
-        paymentService.createPayment(studPaymentDTO, Status.SUCCESSFULLY);
+        paymentService.createPayment(stubPaymentDTO, Status.SUCCESSFULLY);
 
         boolean b = false;
         for (Payment em : paymentService.getAllPayment()) {
