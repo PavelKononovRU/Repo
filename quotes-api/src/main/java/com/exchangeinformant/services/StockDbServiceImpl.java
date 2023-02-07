@@ -60,15 +60,13 @@ public class StockDbServiceImpl implements StockDbService {
     @Override
     public List<Stock> getAllStocksByDate(LocalDateTime dateFrom, LocalDateTime dateTo) {
         List<Stock> stockList = stockRepository.findAll();
-        List<Stock> stockListWithInfo = new ArrayList<>();
         for (Stock stock : stockList) {
             List<Info> infoList = infoRepository.getInfoBySecureCodeAndDates(stock.getSecureCode(), dateFrom, dateTo);
             if (!infoList.isEmpty()) {
                 stock.setInfoList(infoList);
             }
-            stockListWithInfo = stockList.stream().filter(n -> !n.getInfoList().isEmpty()).collect(Collectors.toList());
         }
-        return stockListWithInfo;
+        return stockList.stream().filter(n -> !n.getInfoList().isEmpty()).collect(Collectors.toList());
     }
 
     @Override
