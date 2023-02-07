@@ -55,7 +55,7 @@ public class BcsStockService implements StockService {
             getAllStocks();
         }
 
-        if (stockRepository.findAll().isEmpty() || stockRepository.findAll().stream().anyMatch(stock -> stock.getSource() != serviceName)) {
+        if (stockRepository.findAllBySource(serviceName).isEmpty()) {
             saveAllStocks();
         }
 

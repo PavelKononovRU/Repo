@@ -128,29 +128,4 @@ class StockRestControllerTest {
                 .andExpect(jsonPath("$").isNotEmpty());
     }
 
-//    @Test
-//    void shouldGetStockWithParameters() throws Exception {
-//        when(stockDbService.getStockByDate(Mockito.any(), Mockito.eq(java.time.LocalDateTime.now().toLocalDate().atStartOfDay()),
-//                Mockito.eq(java.time.LocalDateTime.now()))).thenReturn(stock);
-//
-//        mockMvc.perform(get("/stock/query?stock=AAPL"))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.issuer", is("Apple")))
-//                .andExpect(jsonPath("$.currency", is("USD")))
-//                .andExpect(jsonPath("$").isNotEmpty());
-//    }
-
-    void shouldGetAllStocksByDates() throws Exception {
-        when(stockDbService.getAllStocksByDate(java.time.LocalDateTime.now().toLocalDate().atStartOfDay(),
-                java.time.LocalDateTime.now())).thenReturn(Collections.singletonList(stock));
-        mockMvc.perform(get("/allWithDates"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$").isArray());
-    }
-
 }
