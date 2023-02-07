@@ -46,7 +46,7 @@ class StockRestControllerTest {
     @Mock
     private StockDbServiceImpl stockDbService;
     @Mock
-    private BcsStockService stockService;
+    private StockService stockService;
     @InjectMocks
     private StockRestController stockRestController;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -101,7 +101,7 @@ class StockRestControllerTest {
     }
 
     @Test
-    void shouldGetStockDirectlyByBcs() throws Exception {
+    void shouldGetStockDirectly() throws Exception {
         when(stockService.getStockDirectly(Mockito.any())).thenReturn(stock);
 
         mockMvc.perform(get("/directStock?name=AAPL"))
@@ -114,7 +114,7 @@ class StockRestControllerTest {
     }
 
     @Test
-    void shouldGetStocksDirectlyByBcs() throws Exception {
+    void shouldGetStocksDirectly() throws Exception {
         List<String> codes = new ArrayList<>();
         codes.add("AAPL");
         when(stockService.getStocksDirectly(Mockito.anyList())).thenReturn(Collections.singletonList(stock));
