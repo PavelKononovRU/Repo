@@ -9,5 +9,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Data {
 
-    private final List<ValidationErrorResponse> required_parametrs;
+    private final String ERROR = "Данные не прошли валидацию";
+    private final List<Violation> REQUIRED_PARAMETERS;
+
+
 }

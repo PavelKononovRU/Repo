@@ -18,19 +18,23 @@ public class ErrorHandlingControllerAdvice {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ValidationErrorResponse onConstraintValidationException(ConstraintViolationException e) {
-        List<Violation> required_parametrs = e.getConstraintViolations().stream()
+        List<Violation> required_parameters = e.getConstraintViolations().stream()
                 .map(violation -> new Violation(violation.getPropertyPath().toString()))
                 .collect(Collectors.toList());
-        return new ValidationErrorResponse(required_parametrs);
+        Data data = new Data(required_parameters);
+
+        return new ValidationErrorResponse(data);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     public ValidationErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        List<Violation> required_parametrs = e.getBindingResult().getFieldErrors().stream()
+        List<Violation> required_parameters = e.getBindingResult().getFieldErrors().stream()
                 .map(error -> new Violation(error.getField()))
                 .collect(Collectors.toList());
-        return new ValidationErrorResponse(required_parametrs);
+        Data data = new Data(required_parameters);
+
+        return new ValidationErrorResponse(data);
     }
 }

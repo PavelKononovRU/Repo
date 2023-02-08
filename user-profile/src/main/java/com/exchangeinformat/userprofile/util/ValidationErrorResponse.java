@@ -9,5 +9,5 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ValidationErrorResponse {
 
-    private final List<Violation> required_parametrs;
+    private final Data DATA;
 }
