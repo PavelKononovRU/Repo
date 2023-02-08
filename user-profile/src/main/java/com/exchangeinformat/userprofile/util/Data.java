@@ -1,5 +1,6 @@
 package com.exchangeinformat.userprofile.util;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -7,10 +8,11 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class Data {
 
-    private final String ERROR = "Данные не прошли валидацию";
-    private final List<Violation> REQUIRED_PARAMETERS;
+    private final String title;
+    private List<Violation> REQUIRED_PARAMETERS;
 
 
 }

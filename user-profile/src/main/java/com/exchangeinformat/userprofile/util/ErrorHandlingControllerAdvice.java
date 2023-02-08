@@ -17,24 +17,24 @@ public class ErrorHandlingControllerAdvice {
     @ResponseBody
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public ValidationErrorResponse onConstraintValidationException(ConstraintViolationException e) {
+    public ValidationResponse onConstraintValidationException(ConstraintViolationException e) {
         List<Violation> required_parameters = e.getConstraintViolations().stream()
                 .map(violation -> new Violation(violation.getPropertyPath().toString()))
                 .collect(Collectors.toList());
-        Data data = new Data(required_parameters);
+        Data data = new Data("Данные не прошли валидацию", required_parameters);
 
-        return new ValidationErrorResponse(data);
+        return new ValidationResponse(data);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public ValidationErrorResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ValidationResponse onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         List<Violation> required_parameters = e.getBindingResult().getFieldErrors().stream()
                 .map(error -> new Violation(error.getField()))
                 .collect(Collectors.toList());
-        Data data = new Data(required_parameters);
+        Data data = new Data("Данные не прошли валидацию", required_parameters);
 
-        return new ValidationErrorResponse(data);
+        return new ValidationResponse(data);
     }
 }

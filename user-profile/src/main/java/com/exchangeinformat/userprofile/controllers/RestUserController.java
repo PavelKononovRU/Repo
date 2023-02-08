@@ -2,13 +2,14 @@ package com.exchangeinformat.userprofile.controllers;
 
 import com.exchangeinformat.userprofile.entity.User;
 import com.exchangeinformat.userprofile.entityDTO.UserDTO;
-import com.exchangeinformat.userprofile.repository.UserRepository;
+import com.exchangeinformat.userprofile.mappers.UserMappers;
 import com.exchangeinformat.userprofile.service.UserService;
+import com.exchangeinformat.userprofile.util.Data;
+import com.exchangeinformat.userprofile.util.ValidationResponse;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -16,19 +17,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("api/user")
 public class RestUserController {
     private final UserService userService;
-    private final UserRepository userRepository;
+
 
     @Autowired
-    public RestUserController(UserService userService,
-                              UserRepository userRepository) {
+    public RestUserController(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @GetMapping("/findOne")
@@ -91,7 +89,7 @@ public class RestUserController {
 
     @PostMapping(value = "/update")
     @RolesAllowed({"USER"})
-    public String getWord(Principal principal, @RequestBody @Valid UserDTO userDTO) {
+    public ResponseEntity<ValidationResponse> getWord(Principal principal, @RequestBody @Valid UserDTO userDTO) {
         JwtAuthenticationToken kp = (JwtAuthenticationToken) principal;
         Jwt token = kp.getToken();
         System.out.println(userDTO);
@@ -99,22 +97,10 @@ public class RestUserController {
 
         String extId = cl.get("sub").toString();
         if (!userService.isUserPresent(extId)) {
-            String answer = "нет такого юзера 500";
-            return answer;
-        } else if (Objects.equals(extId, userDTO.getExtId())) { //Проверка, что у принципала и юзера одинаковые extID
-            //проверка валидации
-//            try {
-//                userService.updateUser(user);
-//            } catch (Exception ignored) {
-//                return
-//            }
-            String v1 = "валидация";
-            return v1;
+            return ResponseEntity.status(500).body(new ValidationResponse(new Data("нет такого юзера 500")));
         } else {
-            return "0";
+            userService.updateUser(UserMappers.INSTANCE.userDTOToEntity(userDTO));
+            return ResponseEntity.status(200).body(new ValidationResponse(new Data("Данные успешно сохранены")));
         }
-//        User user = userService.getUserByExtId(extId);
-//        System.out.println(user);
     }
-
 }
