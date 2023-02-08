@@ -23,7 +23,6 @@ import java.util.List;
 public class RestUserController {
     private final UserService userService;
 
-
     @Autowired
     public RestUserController(UserService userService) {
         this.userService = userService;
@@ -82,19 +81,15 @@ public class RestUserController {
         } else {
             user = userService.getUserByExtId(extId);
         }
-
         return ResponseEntity.ok(user);
     }
-
 
     @PostMapping(value = "/update")
     @RolesAllowed({"USER"})
     public ResponseEntity<ValidationResponse> getWord(Principal principal, @RequestBody @Valid UserDTO userDTO) {
         JwtAuthenticationToken kp = (JwtAuthenticationToken) principal;
         Jwt token = kp.getToken();
-        System.out.println(userDTO);
         var cl = token.getClaims();
-
         String extId = cl.get("sub").toString();
         if (!userService.isUserPresent(extId)) {
             return ResponseEntity.status(500).body(new ValidationResponse(new Data("нет такого юзера 500")));

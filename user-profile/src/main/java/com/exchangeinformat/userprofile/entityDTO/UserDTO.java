@@ -1,9 +1,5 @@
 package com.exchangeinformat.userprofile.entityDTO;
 
-import com.exchangeinformat.userprofile.entity.Address;
-import com.exchangeinformat.userprofile.entity.Job;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;

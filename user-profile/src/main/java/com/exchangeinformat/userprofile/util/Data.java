@@ -10,9 +10,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Data {
-
     private final String title;
     private List<Violation> REQUIRED_PARAMETERS;
-
-
 }

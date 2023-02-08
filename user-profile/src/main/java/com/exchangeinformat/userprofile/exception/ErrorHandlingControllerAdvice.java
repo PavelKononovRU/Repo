@@ -1,5 +1,8 @@
-package com.exchangeinformat.userprofile.util;
+package com.exchangeinformat.userprofile.exception;
 
+import com.exchangeinformat.userprofile.util.Data;
+import com.exchangeinformat.userprofile.util.ValidationResponse;
+import com.exchangeinformat.userprofile.util.Violation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
