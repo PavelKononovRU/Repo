@@ -11,7 +11,9 @@ import java.util.Optional;
 @Repository
 @Transactional
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("select u from User u  where u.extId =:extId")
-    Optional<User> findByExtId(String extId);
+//    @Query("select u from User u  where u.extId =:extId")
+
+    Optional<User> findByExtId(String exId);
     boolean existsByExtId(String exId);
+
 }
