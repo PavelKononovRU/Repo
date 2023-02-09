@@ -16,3 +16,7 @@ spring:
       discovery:
         enabled: false
         service-id: config-server
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: false
