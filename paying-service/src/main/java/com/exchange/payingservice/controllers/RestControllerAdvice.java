@@ -3,7 +3,6 @@ package com.exchange.payingservice.controllers;
 import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StatusCards;
-import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.util.PaymentStatus;
 import com.exchange.payingservice.util.Status;
