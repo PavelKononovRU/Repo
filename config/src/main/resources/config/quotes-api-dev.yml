@@ -18,7 +18,7 @@ eureka:
 bcs:
   api:
     url: https://api.bcs.ru
-    all-stocks: /partner/quotations?portfolio_ids%5B0%5D=115&limit=500
+    all-stocks: /partner/quotations?portfolio_ids%5B0%5D=115 # &limit=500 (параметр limit указывает кол-во акций, выгружаемых с BCS)
     partner-token: A5264D52-1510-4E42-8E90-E729FF405646
     one-stock: /udfdatafeed/v1/info?instruments={secureCode}&inOrderArray=true
 webclient:
@@ -32,6 +32,7 @@ quotes:
   supplier: tinkoff # bcs or tinkoff
 springdoc:
   swagger-ui:
-    path: /swagger-ui.html
+    configUrl: /quotes/v3/api-docs/swagger-config
+    url: /quotes/v3/api-docs
   api-docs:
     enabled: true
