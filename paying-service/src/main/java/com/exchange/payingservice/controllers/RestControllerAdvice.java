@@ -71,10 +71,7 @@ public class RestControllerAdvice {
         if (paymentDTO == null) {
             throw new UsernameNotFoundException("Payment not found");
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("date", paymentDTO);
-        map.put("create_at", LocalDateTime.now());
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(paymentDTO, HttpStatus.OK);
     }
 
     //Перехватывает исключения валидации
