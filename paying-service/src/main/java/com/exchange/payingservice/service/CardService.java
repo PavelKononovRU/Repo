@@ -13,7 +13,7 @@ public interface CardService {
 
     void deleteCard(Long id);
 
-    List<Card> getAllCard();
+    List<CardDTO> getAllCard();
 
      Card getCardById(Long id);
 }

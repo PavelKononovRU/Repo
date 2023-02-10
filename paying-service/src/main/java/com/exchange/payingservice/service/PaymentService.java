@@ -12,9 +12,9 @@ public interface PaymentService {
 
     Payment getPaymentById(Long id);
 
-    List<Payment> getAllPayment();
+    List<PaymentDTO> getAllPayment();
 
-    StubPaymentDTO createPayment(StubPaymentDTO payment, Status status);
+    StubPaymentDTO createPayment(StubPaymentDTO stubPaymentDTO, Status status);
 
     void updatePayment(Long id, PaymentDTO paymentDTO);
 

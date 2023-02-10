@@ -2,7 +2,7 @@ package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.dto.PaymentDTO;
-import com.exchange.payingservice.dto.StatusCards;
+import com.exchange.payingservice.util.StatusCards;
 import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.util.PaymentStatus;
 import com.exchange.payingservice.util.Status;
@@ -26,12 +26,12 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class RestControllerAdvice {
 
-    public static ResponseEntity<Object> generateResponsePost(CardDTO card) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("date", new StatusCards(String.format("Карта с номером %s сохранена", card.getNumber()),
-                "Управляйте картами в платежной информации"));
-        map.put("update_at", LocalDateTime.now());
-        return new ResponseEntity<>(map, HttpStatus.OK);
+    private static final String user_message = "Управляйте картами в платежной информации";
+
+    public static ResponseEntity<StatusCards> generateResponsePost(CardDTO card) {
+        StatusCards statusCards = new StatusCards(String.format("Карта с номером %s сохранена", card.getNumber()), user_message,
+                String.format("created at %s", LocalDateTime.now()));
+        return new ResponseEntity<>(statusCards, HttpStatus.OK);
     }
 
     public static ResponseEntity<Object> generateResponse(String message, HttpStatus status) {
@@ -40,33 +40,26 @@ public class RestControllerAdvice {
         return new ResponseEntity<>(map, status);
     }
 
-    public static ResponseEntity<Object> generateResponse(CardDTO cardDTO) {
+    public static ResponseEntity<CardDTO> generateResponse(CardDTO cardDTO) {
         if (cardDTO == null) {
             throw new UsernameNotFoundException("Card not found");
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("date", cardDTO);
-        map.put("create_at", LocalDateTime.now());
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(cardDTO, HttpStatus.OK);
     }
 
-    public static ResponseEntity<Object> generateResponsePut() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("date", new StatusCards("Карта изменена",
-                "Управляйте картами в платежной информации"));
-        map.put("create_at", LocalDateTime.now());
-        return new ResponseEntity<>(map, HttpStatus.OK);
+    public static ResponseEntity<StatusCards> generateResponsePut() {
+        StatusCards statusCards = new StatusCards("Карта изменена", user_message,
+                String.format("updated at at %s", LocalDateTime.now()));
+        return new ResponseEntity<>(statusCards, HttpStatus.OK);
     }
 
-    public static ResponseEntity<Object> generateResponseDelete(Long id) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("date", new StatusCards(String.format("Карта c id %d удалена", id),
-                "Управляйте картами в платежной информации"));
-        map.put("delete_at", LocalDateTime.now());
-        return new ResponseEntity<>(map, HttpStatus.OK);
+    public static ResponseEntity<StatusCards> generateResponseDelete(Long id) {
+        StatusCards statusCards = new StatusCards(String.format("Карта c id %d удалена", id), user_message,
+                String.format("deleted at %s", LocalDateTime.now()));
+        return new ResponseEntity<>(statusCards, HttpStatus.OK);
     }
 
-    public static ResponseEntity<Object> generatePaymentsResponse(PaymentDTO paymentDTO) {
+    public static ResponseEntity<PaymentDTO> generatePaymentsResponse(PaymentDTO paymentDTO) {
         if (paymentDTO == null) {
             throw new UsernameNotFoundException("Payment not found");
         }
@@ -82,7 +75,8 @@ public class RestControllerAdvice {
                 .map(
                         status -> new StatusCards(
                                 status.getObjectName(),
-                                status.getDefaultMessage()
+                                user_message,
+                                LocalDateTime.now().toString()
                         )
                 )
                 .collect(Collectors.toList());
@@ -94,13 +88,13 @@ public class RestControllerAdvice {
     @ExceptionHandler({HttpClientErrorException.UnprocessableEntity.class})
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public PaymentStatus catchPaymentException(HttpClientErrorException.UnprocessableEntity e) {
-        return new PaymentStatus(Status.ERROR,"Платеж не прошел,пожалуйста,повторите позже.");
+        return new PaymentStatus(Status.ERROR, "Платеж не прошел,пожалуйста,повторите позже.");
     }
 
     @ResponseBody
     @ExceptionHandler({PaymentException.class})
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
     public PaymentStatus catchPaymentException(PaymentException e) {
-        return new PaymentStatus(Status.ERROR,e.getMessage());
+        return new PaymentStatus(Status.ERROR, e.getMessage());
     }
 }

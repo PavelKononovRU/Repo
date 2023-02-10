@@ -1,6 +1,7 @@
 package com.exchange.payingservice.entity;
 
 import com.exchange.payingservice.util.Status;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+@Hidden //hide in swagger
 @Entity
 @Table(name = "payment_table")
 @Data

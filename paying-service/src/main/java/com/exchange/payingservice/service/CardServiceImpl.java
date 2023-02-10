@@ -51,8 +51,8 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<Card> getAllCard() {
-        return cardRepository.findAll();
+    public List<CardDTO> getAllCard() {
+        return cardRepository.findAll().stream().map(cardMapper::toDTO).toList();
     }
 
     @Override
