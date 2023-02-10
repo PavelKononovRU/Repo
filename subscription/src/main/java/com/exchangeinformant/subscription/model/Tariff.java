@@ -1,9 +1,7 @@
 package com.exchangeinformant.subscription.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.util.Objects;
@@ -12,7 +10,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-//@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "tariff")
 public class Tariff {
