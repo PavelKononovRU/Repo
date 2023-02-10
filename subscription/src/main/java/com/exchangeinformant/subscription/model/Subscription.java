@@ -3,14 +3,14 @@ package com.exchangeinformant.subscription.model;
 import com.exchangeinformant.subscription.util.enums.Interval;
 import com.exchangeinformant.subscription.util.enums.Status;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
+@Builder
 @Entity
+@AllArgsConstructor
 @Table(name = "subscriptions")
 public class Subscription {
 
@@ -39,7 +39,7 @@ public class Subscription {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(name = "interval")
+    @Column(name = "interval_format")
     @Enumerated(EnumType.STRING)
     private Interval interval;
 
@@ -62,4 +62,8 @@ public class Subscription {
     @JoinColumn(name = "promocode_id")
     private PromoSubscription promoSubscription;
 
+
+    public Subscription() {
+
+    }
 }
