@@ -2,7 +2,6 @@ package com.exchangeinformant.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,7 +31,6 @@ public class Info {
     private long id;
 
     @Column(name = "last-price")
-    @JsonSetter("close")
     private BigDecimal lastPrice;
 
     @Column(name = "updated-at")
