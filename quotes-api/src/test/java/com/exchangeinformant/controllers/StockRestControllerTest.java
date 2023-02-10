@@ -45,6 +45,8 @@ class StockRestControllerTest {
     private MockMvc mockMvc;
     @Mock
     private StockDbServiceImpl stockDbService;
+    @Mock
+    private StockService stockService;
     @InjectMocks
     private StockRestController stockRestController;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -63,7 +65,7 @@ class StockRestControllerTest {
     void shouldGetStock() throws Exception {
         when(stockDbService.getStock(Mockito.any())).thenReturn(stock);
 
-        mockMvc.perform(get("/stock/?name=AAPL"))
+        mockMvc.perform(get("/stock?name=AAPL"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -97,4 +99,33 @@ class StockRestControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isNotEmpty());
     }
+
+    @Test
+    void shouldGetStockDirectly() throws Exception {
+        when(stockService.getStockDirectly(Mockito.any())).thenReturn(stock);
+
+        mockMvc.perform(get("/directStock?name=AAPL"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.issuer", is("Apple")))
+                .andExpect(jsonPath("$.currency", is("USD")))
+                .andExpect(jsonPath("$").isNotEmpty());
+    }
+
+    @Test
+    void shouldGetStocksDirectly() throws Exception {
+        List<String> codes = new ArrayList<>();
+        codes.add("AAPL");
+        when(stockService.getStocksDirectly(Mockito.anyList())).thenReturn(Collections.singletonList(stock));
+        mockMvc.perform(post("/directStock")
+                        .content(objectMapper.writeValueAsString(codes))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isNotEmpty());
+    }
+
 }

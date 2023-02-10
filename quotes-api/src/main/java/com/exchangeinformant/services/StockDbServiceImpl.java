@@ -6,12 +6,14 @@ import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.StockRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created in IntelliJ
@@ -24,6 +26,9 @@ public class StockDbServiceImpl implements StockDbService {
 
     private final StockRepository stockRepository;
     private final InfoRepository infoRepository;
+
+    @Value("${quotes.supplier}")
+    private String serviceName;
 
     public StockDbServiceImpl(StockRepository stockRepository, InfoRepository infoRepository) {
         this.stockRepository = stockRepository;
@@ -57,12 +62,11 @@ public class StockDbServiceImpl implements StockDbService {
         List<Stock> stockList = stockRepository.findAll();
         for (Stock stock : stockList) {
             List<Info> infoList = infoRepository.getInfoBySecureCodeAndDates(stock.getSecureCode(), dateFrom, dateTo);
-            if (infoList.isEmpty()) {
-                throw new QuotesException(ErrorCodes.NO_INFO.name());
+            if (!infoList.isEmpty()) {
+                stock.setInfoList(infoList);
             }
-            stock.setInfoList(infoList);
         }
-        return stockList;
+        return stockList.stream().filter(n -> !n.getInfoList().isEmpty()).collect(Collectors.toList());
     }
 
     @Override
@@ -79,7 +83,7 @@ public class StockDbServiceImpl implements StockDbService {
 
     @Override
     public List<Stock> getAllStocks()    {
-        return stockRepository.findAll();
+        return stockRepository.findAllBySource(serviceName);
     }
 
 }

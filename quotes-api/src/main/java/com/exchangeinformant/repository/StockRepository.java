@@ -12,4 +12,7 @@ public interface StockRepository extends JpaRepository<Stock,String> {
     Stock findBySecureCode(String secureCode);
 
     boolean existsBySecureCode(String secureCode);
+
+    List<Stock> findAllBySource(String source);
+
 }
