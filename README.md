@@ -243,10 +243,16 @@ Swagger и Postman.
 1. В Maven сделать clean и install по всем сервисам.
 2. Запустить все сервисы в docker-compose.yaml.
 3. Наслаждаться моментом. 
-4. Keycloak запускается на порту 8890, заходить в keycloak под логин admin с паролем admin. 
-5. В Users Создаем юзера с логином  admin и паролем admin, c ролями ADMIN и USER.
-6. Проверяем всех пользователей с помощью юзера admin по ссылке - http://localhost:8080/api/user
-7. Полезная ссылка по Keycloak: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
+4. Keycloak запускается на порту 8890, заходить в keycloak через "Administration Console" под логином admin с паролем admin.
+5. В Users создаем пользователя с любым логином и паролем, обязательные поля при создании пользователя в keycloak: username, email, first и last name, иначе выпадет null в контроллере api/user/home.
+6. Переходим в созданного юзера, во вкладку credentials: создаем пароль, далее вкладка Role: ставим роли ADMIN и USER.
+7. Переходим по любой ссылке из контролеров, нас всё равно обяжут авторизоваться, авторизуемся под созданным юзером, далее нас перекинет на http://localhost:8080/api/user/home, мы должны получить json с нашим пользователем.
+8. Подключитесь к БД запущенной из контейнера: PASSWORD=postgres, USER=postgres, POSTGRES_DB=postgres, port=5432, table - users и проверьте, попал ли пользователь в БД после авторизации
+9. Можно создать ещё пару пользователей и проверить их всех по ссылке http://localhost:8080/api/user (пользователь должен иметь роль ADMIN). 
+10. Будет полезно посмотреть урок по Keycloak: https://www.youtube.com/playlist?list=PL8X2nqRlWfaZbGSfSCnNyQ7g5VW3irLjX
+
+  <h6> P.S. Лучше всего работать через POSTMAN. </h6>
+
 
 ### Подключить service к Keycloak в качестве ресурс сервера
 
