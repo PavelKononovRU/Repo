@@ -33,11 +33,10 @@ public class Info {
 
     @Column(name = "last-price")
     @JsonSetter("close")
-    @Schema(description = "Цена акции", example = "150,00", accessMode = Schema.AccessMode.READ_ONLY)
     private BigDecimal lastPrice;
 
     @Column(name = "updated-at")
-    @Schema(description = "Дата и время полученной цены", example = "2023-02-03T18:46:09.267384")
+    @Schema(description = "Дата и время полученной цены", type = "string", format = "date-time", example = "2023-02-03T12:00:00.000000")
     private LocalDateTime updatedAt;
 
     @Column(name = "secure-code")
@@ -45,7 +44,7 @@ public class Info {
     private String secureCode;
 
     @JsonGetter("price")
-//    @Schema(description = "Цена акции", example = "150,00")
+    @Schema(description = "Цена акции", type = "string", example = "150,00")
     public BigDecimal getLastPrice() {
         return lastPrice;
     }
