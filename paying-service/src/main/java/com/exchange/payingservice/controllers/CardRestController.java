@@ -4,7 +4,6 @@ import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.mappers.CardMapper;
 import com.exchange.payingservice.service.CardService;
-import com.exchange.payingservice.util.RestControllerAdvice;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +42,7 @@ public class CardRestController {
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateCard(@PathVariable Long id, @Valid @RequestBody CardDTO cardDTO) {
         cardService.updateCard(id, cardDTO);
-        return RestControllerAdvice.generateResponsePut(CardMapper.INSTANCE.toEntity(cardDTO));
+        return RestControllerAdvice.generateResponsePut();
     }
 
     @DeleteMapping("/{id}")

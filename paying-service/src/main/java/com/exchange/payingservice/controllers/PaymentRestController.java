@@ -5,7 +5,6 @@ import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.service.PaymentService;
-import com.exchange.payingservice.util.RestControllerAdvice;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
