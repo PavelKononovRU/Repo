@@ -1,10 +1,12 @@
-package com.exchange.payingservice.util;
+package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StatusCards;
-import com.exchange.payingservice.entity.Card;
 import com.exchange.payingservice.exceptions.PaymentException;
+import com.exchange.payingservice.util.PaymentStatus;
+import com.exchange.payingservice.util.Status;
+import com.exchange.payingservice.util.ValidationErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,15 +27,15 @@ import java.util.stream.Collectors;
 public class RestControllerAdvice {
 
     public static ResponseEntity<Object> generateResponsePost(CardDTO card) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("date", new StatusCards("Карта сохранена",
+        Map<String, Object> map = new HashMap<>();
+        map.put("date", new StatusCards(String.format("Карта с номером %s сохранена", card.getNumber()),
                 "Управляйте картами в платежной информации"));
         map.put("update_at", LocalDateTime.now());
-        return new ResponseEntity<Object>(map, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
     public static ResponseEntity<Object> generateResponse(String message, HttpStatus status) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("title", message);
         return new ResponseEntity<>(map, status);
     }
@@ -42,14 +44,14 @@ public class RestControllerAdvice {
         if (cardDTO == null) {
             throw new UsernameNotFoundException("Card not found");
         }
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("date", cardDTO);
         map.put("create_at", LocalDateTime.now());
-        return new ResponseEntity<Object>(map, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    public static ResponseEntity<Object> generateResponsePut(Card card) {
-        Map<String, Object> map = new HashMap<String, Object>();
+    public static ResponseEntity<Object> generateResponsePut() {
+        Map<String, Object> map = new HashMap<>();
         map.put("date", new StatusCards("Карта изменена",
                 "Управляйте картами в платежной информации"));
         map.put("create_at", LocalDateTime.now());
@@ -57,7 +59,7 @@ public class RestControllerAdvice {
     }
 
     public static ResponseEntity<Object> generateResponseDelete(Long id) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("date", new StatusCards(String.format("Карта c id %d удалена", id),
                 "Управляйте картами в платежной информации"));
         map.put("delete_at", LocalDateTime.now());
@@ -68,10 +70,7 @@ public class RestControllerAdvice {
         if (paymentDTO == null) {
             throw new UsernameNotFoundException("Payment not found");
         }
-        Map<String, Object> map = new HashMap<>();
-        map.put("date", paymentDTO);
-        map.put("create_at", LocalDateTime.now());
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        return new ResponseEntity<>(paymentDTO, HttpStatus.OK);
     }
 
     //Перехватывает исключения валидации
@@ -82,7 +81,7 @@ public class RestControllerAdvice {
         final List<StatusCards> violations = e.getAllErrors().stream()
                 .map(
                         status -> new StatusCards(
-                                status.getObjectName().toString(),
+                                status.getObjectName(),
                                 status.getDefaultMessage()
                         )
                 )
