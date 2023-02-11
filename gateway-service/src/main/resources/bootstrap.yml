@@ -35,7 +35,7 @@ spring:
         - id: user-profile
           uri: lb://user-profile
           predicates:
-            - Path=/user/**
+            - Path=/profile/**
           filters:
             - StripPrefix=1
             - name: Retry
