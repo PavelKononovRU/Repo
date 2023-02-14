@@ -1,6 +1,7 @@
 package com.exchange.payingservice.service;
 
 import com.exchange.payingservice.IntegrationTestBase;
+import com.exchange.payingservice.dto.CardDTO;
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Card;
@@ -60,7 +61,7 @@ public class PaymentServiceTest extends IntegrationTestBase {
         paymentService.createPayment(stubPaymentDTO, Status.SUCCESSFULLY);
 
         boolean b = false;
-        for (Payment em : paymentService.getAllPayment()) {
+        for (PaymentDTO em : paymentService.getAllPayment()) {
             if (em.getStatus().equals(Status.SUCCESSFULLY)) {
                 b = true;
                 break;
@@ -84,7 +85,7 @@ public class PaymentServiceTest extends IntegrationTestBase {
         paymentDTO.setUpdateAt(new Date());
         paymentDTO.setCreateAt(new Date());
         paymentDTO.setUser_id(2L);
-        paymentDTO.setCard(new Card("22222-3333-4444-5555", "user55", "654", 2L));
+        paymentDTO.setCardDTO(new CardDTO("22222-3333-4444-5555", "user55", "654", 2L));
         paymentDTO.setMessage("UPDATE");
         paymentService.updatePayment(paymentDTO.getId(), paymentDTO);
         assertEquals("UPDATE", paymentService.getPaymentById(1L).getMessage());

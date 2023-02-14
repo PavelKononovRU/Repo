@@ -38,7 +38,8 @@ public class SecurityConfig {
                 .authenticationSuccessHandler(successHandler)
                 .and()
                 .logout()
-                .logoutSuccessHandler(handler);
+                .logoutSuccessHandler(handler)
+                .and().csrf().disable();
 
         return http.build();
     }
