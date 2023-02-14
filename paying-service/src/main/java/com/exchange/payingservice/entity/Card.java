@@ -1,12 +1,15 @@
 package com.exchange.payingservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+@Hidden //hide in swagger
 @Entity
 @Table(name = "cards")
 @Data
