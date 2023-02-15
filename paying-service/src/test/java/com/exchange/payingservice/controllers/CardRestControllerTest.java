@@ -37,9 +37,14 @@ class CardRestControllerTest extends IntegrationTestBase {
     @Test
     @DisplayName("Should create new card")
     void shouldSaveCard() throws Exception {
-        CardDTO cardDTO = new CardDTO("2103-1122-2323-2323", "user55", "754", 3L);
         mockMvc.perform(post("/api/cards")
-                        .content(objectMapper.writeValueAsString(cardDTO))
+                        .content(objectMapper
+                                .writeValueAsString(
+                                        new CardDTO(
+                                                "2103-1122-2323-2323",
+                                                "user55",
+                                                "754",
+                                                3L)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
