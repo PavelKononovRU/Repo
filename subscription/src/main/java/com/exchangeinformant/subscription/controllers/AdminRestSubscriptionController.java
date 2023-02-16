@@ -25,8 +25,8 @@ public class AdminRestSubscriptionController {
     }
 
     @GetMapping("/subscriptions")
-    @RolesAllowed({"USER", "ADMIN"})
-    public ResponseEntity<List<SubscriptionDTO>> getSubscription() {
+    @RolesAllowed({"ADMIN"})
+    public ResponseEntity<List<SubscriptionDTO>> getSubscriptions() {
         return ResponseEntity.ok(subscriptionService.getAllSubscription());
     }
 

@@ -35,12 +35,15 @@ public class PromoSubscriptionServiceImpl implements PromoSubscriptionService {
         promoSubscriptionRepository.save(PromoSubscriptionMapper
                 .INSTANCE.promoSubscriptionDTOToModel(promoSubscriptionDTO));
     }
+
     @Override
     public PromoSubscriptionDTO getPromoSubscription(Long id) {
         return PromoSubscriptionMapper
                 .INSTANCE
-                .promoSubscriptionToDTO(promoSubscriptionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Промоподписка с id '" + id + "' не найдена")));
+                .promoSubscriptionToDTO(promoSubscriptionRepository.findById(id).orElseThrow(() ->
+                        new ResourceNotFoundException("Промоподписка с id '" + id + "' не найдена")));
     }
+
     @Override
     @Transactional
     public void updatePromoSubscription(PromoSubscriptionDTO promoSubscriptionDTO) {
@@ -48,6 +51,7 @@ public class PromoSubscriptionServiceImpl implements PromoSubscriptionService {
                 .INSTANCE
                 .promoSubscriptionDTOToModel(promoSubscriptionDTO));
     }
+
     @Override
     @Transactional
     public void deletePromoSubscription(Long id) {
