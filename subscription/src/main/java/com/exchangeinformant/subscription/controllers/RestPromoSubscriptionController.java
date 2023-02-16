@@ -18,7 +18,7 @@ public class RestPromoSubscriptionController {
     private final PromoSubscriptionService promoSubscriptionService;
 
     @Autowired
-    public RestPromoSubscriptionController(PromoSubscriptionService promoSubscriptionService, PromoSubscriptionRepository promoSubscriptionRepository, PromoSubscriptionRepository promoSuлbscriptionRepository) {
+    public RestPromoSubscriptionController(PromoSubscriptionService promoSubscriptionService) {
         this.promoSubscriptionService = promoSubscriptionService;
     }
 
