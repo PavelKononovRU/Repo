@@ -2,11 +2,12 @@ package com.exchangeinformant.subscription.model;
 
 import com.exchangeinformant.subscription.util.enums.Interval;
 import com.exchangeinformant.subscription.util.enums.Status;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
+@Schema(name = "Подписка", description = "Сущность подписки")
 @Data
 @Builder
 @Entity
