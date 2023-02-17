@@ -1,6 +1,11 @@
 server:
   port: 0
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rm
+    password: rmp
   application:
     name: quotes-api
   cloud:
@@ -16,6 +21,11 @@ spring:
       discovery:
         enabled: false
         service-id: config-server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8890/realms/project-realm/protocol/openid-connect/certs
 springdoc:
   swagger-ui:
     csrf:

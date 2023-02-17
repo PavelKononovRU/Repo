@@ -1,15 +1,23 @@
 package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.model.Stock;
+import com.exchangeinformant.model.UserInfo;
+import com.exchangeinformant.repository.InfoRepository;
+import com.exchangeinformant.repository.UserInfoRepository;
 import com.exchangeinformant.services.StockDbService;
 import com.exchangeinformant.services.StockService;
+import com.exchangeinformant.services.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by e-davidenko
@@ -23,10 +31,16 @@ public class StockRestController {
 
     private final StockDbService stockDbService;
     private final StockService stockService;
+    private final UserInfoService userInfoService;
+    private final UserInfoRepository userInfoRepository;
 
-    public StockRestController(StockDbService stockDbService, StockService stockService) {
+    public StockRestController(StockDbService stockDbService, StockService stockService,
+                               UserInfoService userInfoService,
+                               UserInfoRepository userInfoRepository) {
         this.stockDbService = stockDbService;
         this.stockService = stockService;
+        this.userInfoService = userInfoService;
+        this.userInfoRepository = userInfoRepository;
     }
 
     @Operation(summary = "Получение акции из БД по её SecureCode (тикеру)")
@@ -53,7 +67,9 @@ public class StockRestController {
 
     @Operation(summary = "Получение списка всех акций из БД")
     @GetMapping("/all")
-    public List<Stock> getAllStocks() {
+    public List<Stock> getAllStocks(Principal principal)
+    {
+        userInfoService.save(principal);
         return stockDbService.getAllStocks();
     }
 
