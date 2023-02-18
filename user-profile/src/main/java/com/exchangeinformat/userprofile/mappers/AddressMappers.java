@@ -17,6 +17,6 @@ public interface AddressMappers {
 
     Address addressDTOToEntity(AddressDTO userDTO);
 
-    List<AddressDTO> addressesTODTO(List<Address> addresses);
+    List<AddressDTO> addressesToDTOs(List<Address> addresses);
 }
 

@@ -1,6 +1,5 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.Address;
 import com.exchangeinformat.userprofile.entityDTO.AddressDTO;
 import com.exchangeinformat.userprofile.mappers.AddressMappers;
 import com.exchangeinformat.userprofile.repository.AddressRepository;
@@ -21,7 +20,7 @@ public class AddressServiceImpl implements AddressService{
 
     @Override
     public List<AddressDTO> getAllAddress() {
-        return AddressMappers.INSTANCE.addressesTODTO(addressRepository.findAll());
+        return AddressMappers.INSTANCE.addressesToDTOs(addressRepository.findAll());
 //        return addressRepository.findAll();
     }
 
