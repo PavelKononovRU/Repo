@@ -5,15 +5,21 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.mapstruct.Mapper;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
 
+@Builder
 @Validated
 @Data
 @Mapper
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(name = "Пользователь", description = "Сущность пользователя")
 public class UserDTO {
 

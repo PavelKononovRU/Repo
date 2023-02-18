@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-
 @Table(name = "address")
 public class Address {
 
