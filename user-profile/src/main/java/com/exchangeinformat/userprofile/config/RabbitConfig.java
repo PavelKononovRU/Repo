@@ -1,4 +1,4 @@
-package com.exchangeinformant.configuration;
+package com.exchangeinformat.userprofile.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
     private final CachingConnectionFactory connectionFactory;
     private static final String EXCHANGE_NAME = "stock.ex";
-    private static final String QUEUE_NAME = "user.queue";
+    private static final String QUEUE_NAME = "stock.queue";
 
     public RabbitConfig(CachingConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
@@ -32,7 +32,7 @@ public class RabbitConfig {
 
     @Bean
     public Binding queueBiding() {
-        return new Binding(QUEUE_NAME, Binding.DestinationType.QUEUE,EXCHANGE_NAME,"response",null);
+        return new Binding(QUEUE_NAME, Binding.DestinationType.QUEUE,EXCHANGE_NAME,"request",null);
     }
 
     @Bean

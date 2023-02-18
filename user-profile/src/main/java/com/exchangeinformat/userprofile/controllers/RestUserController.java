@@ -8,6 +8,7 @@ import com.exchangeinformat.userprofile.util.Data;
 import com.exchangeinformat.userprofile.util.ValidationResponse;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,12 @@ import java.util.Map;
 @RequestMapping("api/user")
 public class RestUserController {
     private final UserService userService;
+    private final RabbitTemplate template;
 
     @Autowired
-    public RestUserController(UserService userService) {
+    public RestUserController(UserService userService, RabbitTemplate template) {
         this.userService = userService;
+        this.template = template;
     }
 
     @GetMapping("/findOne")
@@ -94,6 +97,15 @@ public class RestUserController {
             userService.updateUser(UserMappers.INSTANCE.userDTOToEntity(userDTO));
             return ResponseEntity.status(200).body(new ValidationResponse(new Data("Данные успешно сохранены")));
         }
+    }
+
+    @GetMapping(value = "/getInfo")
+    @RolesAllowed({"USER"})
+    public String getInfo(Principal principal) {
+        Map<String, Object> cl = getExtID(principal);
+        String extId = cl.get("sub").toString();
+        template.convertAndSend("stock.ex","request",extId);
+        return "We will send yoy the info asap";
     }
 
     private Map<String, Object> getExtID(Principal principal) {

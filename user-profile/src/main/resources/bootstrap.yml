@@ -3,6 +3,11 @@ server:
 spring:
   application:
     name: user-profile
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rm
+    password: rmp
   cloud:
     config:
       profile: local
