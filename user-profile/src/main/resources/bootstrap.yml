@@ -14,3 +14,7 @@ spring:
       resourceserver:
         jwt:
           jwk-set-uri: http://localhost:8890/realms/project-realm/protocol/openid-connect/certs
+springdoc:
+  swagger-ui:
+    csrf:
+      enabled: false

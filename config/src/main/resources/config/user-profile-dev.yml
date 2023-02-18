@@ -6,3 +6,10 @@ spring:
   instance:
     preferIpAddress: true
     lease-renewal-interval-in-seconds: 30
+
+springdoc:
+  swagger-ui:
+    configUrl: /profile/v1/api-docs/swagger-config
+    url: /profile/v1/api-docs
+    api-docs:
+      enabled: true
