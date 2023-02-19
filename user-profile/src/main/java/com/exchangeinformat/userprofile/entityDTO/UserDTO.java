@@ -65,4 +65,11 @@ public class UserDTO {
     @Schema(description = "Идентификационный номер налогоплательщика") //Это точно ИНН? уточнить
     @NotBlank(message = "Поле не должно быть пустым и не должно содержать пробелов")
     private String inn;
+
+    @Schema(description = "Адрес пользователя")
+    private AddressDTO address;
+
+    @Schema(description = "Работа пользователя")
+    private JobDTO job;
+
 }
