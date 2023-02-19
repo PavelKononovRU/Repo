@@ -1,16 +1,15 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.Product;
-
+import com.exchangeinformat.userprofile.entityDTO.ProductDTO;
 import java.util.List;
 
 public interface ProductService {
-    void createProduct(Product product);
+    void createProduct(ProductDTO productDTO);
 
-    List<Product> getAllProducts();
-    Product getProduct(Long id);
+    List<ProductDTO> getAllProducts();
+    ProductDTO getProduct(Long id);
 
-    void updateProduct(Product product);
+    void updateProduct(ProductDTO productDTO);
 
     void deleteProduct(Long id);
 }

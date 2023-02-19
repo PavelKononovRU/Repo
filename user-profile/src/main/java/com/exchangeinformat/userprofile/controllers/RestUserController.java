@@ -1,8 +1,6 @@
 package com.exchangeinformat.userprofile.controllers;
 
-import com.exchangeinformat.userprofile.entity.User;
 import com.exchangeinformat.userprofile.entityDTO.UserDTO;
-import com.exchangeinformat.userprofile.mappers.UserMappers;
 import com.exchangeinformat.userprofile.service.UserService;
 import com.exchangeinformat.userprofile.util.Data;
 import com.exchangeinformat.userprofile.util.ValidationResponse;
@@ -54,7 +52,7 @@ public class RestUserController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @Operation(summary = "Обновление пользователя", description = "Метод принимает в параметры UserDTO (нужно передать в теле запроса), доступ только у админа")
+    @Operation(summary = "Обновление пользователя", description = "Метод принимает в параметры UserDTO, доступ только у админа")
     @PutMapping
     @RolesAllowed({"ADMIN"})
     public ResponseEntity<HttpStatus> updateUser(@RequestBody UserDTO userDTO) {

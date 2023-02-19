@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/address")
 public class RestAddressController {
+
     private final AddressService addressService;
 
     public RestAddressController(AddressService addressService) {
