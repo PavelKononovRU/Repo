@@ -13,7 +13,7 @@ public interface JobMappers {
 
     JobMappers INSTANCE = Mappers.getMapper(JobMappers.class);
 
-    JobDTO jobToDTO (Job job);
+    JobDTO jobToDTO(Job job);
 
     Job jobDTOToEntity(JobDTO jobDTO);
 

@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Service
-public class AddressServiceImpl implements AddressService{
+public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
 
@@ -21,7 +22,6 @@ public class AddressServiceImpl implements AddressService{
     @Override
     public List<AddressDTO> getAllAddress() {
         return AddressMappers.INSTANCE.addressesToDTOs(addressRepository.findAll());
-//        return addressRepository.findAll();
     }
 
     @Override

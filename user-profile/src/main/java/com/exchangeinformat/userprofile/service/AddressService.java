@@ -1,6 +1,5 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.Address;
 import com.exchangeinformat.userprofile.entityDTO.AddressDTO;
 
 import java.util.List;

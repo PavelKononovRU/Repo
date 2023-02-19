@@ -1,6 +1,5 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.User;
 import com.exchangeinformat.userprofile.entityDTO.UserDTO;
 import com.exchangeinformat.userprofile.mappers.UserMappers;
 import com.exchangeinformat.userprofile.repository.UserRepository;

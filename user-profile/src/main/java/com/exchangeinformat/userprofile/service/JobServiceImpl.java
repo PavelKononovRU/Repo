@@ -1,6 +1,5 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.Job;
 import com.exchangeinformat.userprofile.entityDTO.JobDTO;
 import com.exchangeinformat.userprofile.mappers.JobMappers;
 import com.exchangeinformat.userprofile.repository.JobRepository;

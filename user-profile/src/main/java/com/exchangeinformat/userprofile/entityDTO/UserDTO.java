@@ -71,5 +71,4 @@ public class UserDTO {
 
     @Schema(description = "Работа пользователя")
     private JobDTO job;
-
 }
