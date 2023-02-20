@@ -2,10 +2,11 @@ package com.exchangeinformant.subscription.model;
 
 
 import com.exchangeinformant.subscription.util.enums.Type;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 
-
+@Schema(name = "Промоподписка", description = "Сущность промоподписки")
 @Data
 @Entity
 @Table(name = "promosubscription")
