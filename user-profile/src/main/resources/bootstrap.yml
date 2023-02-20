@@ -14,6 +14,27 @@ spring:
       discovery:
         enabled: false
         service-id: config-server
+    stream:
+      function:
+        definition: userInfoConsumer
+      bindings:
+        producer-out-0:
+          destination: ei.user
+          producer:
+              required-groups:
+                - user-group
+        userInfoConsumer-in-0:
+          destination: ei.quotes
+          group: quotes-group
+#      rabbit:
+#        default:
+#          producer:
+#            exchangeDurable: true
+#            exchangeAutoDelete: false
+#            consumer:
+#              exchangeDurable: true
+#              exchangeAutoDelete: false
+#              durableSubscription: true
   security:
     oauth2:
       resourceserver:

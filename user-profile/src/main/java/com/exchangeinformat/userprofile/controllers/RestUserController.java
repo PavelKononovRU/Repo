@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.cloud.stream.function.StreamBridge;
 
 import java.security.Principal;
 import java.util.List;
@@ -25,11 +26,13 @@ import java.util.Map;
 public class RestUserController {
     private final UserService userService;
     private final RabbitTemplate template;
+    private StreamBridge streamBridge;
 
     @Autowired
-    public RestUserController(UserService userService, RabbitTemplate template) {
+    public RestUserController(UserService userService, RabbitTemplate template, StreamBridge streamBridge) {
         this.userService = userService;
         this.template = template;
+        this.streamBridge = streamBridge;
     }
 
     @GetMapping("/findOne")
@@ -104,7 +107,8 @@ public class RestUserController {
     public String getInfo(Principal principal) {
         Map<String, Object> cl = getExtID(principal);
         String extId = cl.get("sub").toString();
-        template.convertAndSend("stock.ex","request",extId);
+//        template.convertAndSend("stock.ex","request",extId);
+        streamBridge.send("producer-out-0", extId);
         return "We will send yoy the info asap";
     }
 

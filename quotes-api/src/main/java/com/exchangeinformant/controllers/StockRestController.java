@@ -1,8 +1,6 @@
 package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.model.Stock;
-import com.exchangeinformant.model.UserInfo;
-import com.exchangeinformant.repository.InfoRepository;
 import com.exchangeinformant.repository.UserInfoRepository;
 import com.exchangeinformant.services.StockDbService;
 import com.exchangeinformant.services.StockService;
@@ -10,14 +8,11 @@ import com.exchangeinformant.services.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by e-davidenko
