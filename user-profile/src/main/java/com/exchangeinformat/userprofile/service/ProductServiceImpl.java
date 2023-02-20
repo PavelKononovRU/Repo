@@ -1,6 +1,7 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.Product;
+import com.exchangeinformat.userprofile.entityDTO.ProductDTO;
+import com.exchangeinformat.userprofile.mappers.ProductMappers;
 import com.exchangeinformat.userprofile.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,24 +21,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void createProduct(Product product) {
-        productRepository.save(product);
+    public void createProduct(ProductDTO productDTO) {
+        productRepository.save(ProductMappers.INSTANCE.productDTOToEntity(productDTO));
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return ProductMappers.INSTANCE.productsToDTOs(productRepository.findAll());
     }
 
     @Override
-    public Product getProduct(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public ProductDTO getProduct(Long id) {
+        return ProductMappers.INSTANCE.productToDTO(productRepository.findById(id).orElse(null));
     }
 
     @Override
     @Transactional
-    public void updateProduct(Product product) {
-        productRepository.save(product);
+    public void updateProduct(ProductDTO productDTO) {
+        productRepository.save(ProductMappers.INSTANCE.productDTOToEntity(productDTO));
     }
 
     @Override

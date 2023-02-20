@@ -38,7 +38,7 @@ public class Product {
     private Date experiesedAt;
 
     @Column(name = "is_blocked")
-    private Boolean isBlocked;
+    private Boolean isBlocked = false;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "products")

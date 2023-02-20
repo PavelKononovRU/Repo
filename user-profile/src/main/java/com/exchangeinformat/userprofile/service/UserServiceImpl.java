@@ -1,6 +1,7 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.User;
+import com.exchangeinformat.userprofile.entityDTO.UserDTO;
+import com.exchangeinformat.userprofile.mappers.UserMappers;
 import com.exchangeinformat.userprofile.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,25 +20,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return UserMappers.INSTANCE.usersTODTO(userRepository.findAll());
     }
 
     @Override
     @Transactional
-    public void createUser(User user) {
-        userRepository.save(user);
+    public void createUser(UserDTO userDTO) {
+        userRepository.save(UserMappers.INSTANCE.userDTOToEntity(userDTO));
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public UserDTO getUserById(Long id) {
+        return UserMappers.INSTANCE.userToDTO(userRepository.findById(id).orElse(null));
     }
 
     @Override
     @Transactional
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public void updateUser(UserDTO userDTO) {
+        userRepository.save(UserMappers.INSTANCE.userDTOToEntity(userDTO));
     }
 
     @Override
@@ -47,8 +48,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByExtId(String extId) {
-        return userRepository.findByExtId(extId).orElse(null);
+    public UserDTO getUserByExtId(String extId) {
+        return UserMappers.INSTANCE.userToDTO(userRepository.findByExtId(extId).orElse(null));
     }
 
     @Override
