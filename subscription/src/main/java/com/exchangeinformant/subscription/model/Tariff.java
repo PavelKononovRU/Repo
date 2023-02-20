@@ -1,12 +1,13 @@
 package com.exchangeinformant.subscription.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.util.Objects;
 
-
+@Schema(name = "Тариф", description = "Сущность тарифа")
 @Getter
 @Setter
 @ToString

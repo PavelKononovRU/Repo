@@ -2,8 +2,6 @@ package com.exchange.payingservice.controllers;
 
 import com.exchange.payingservice.IntegrationTestBase;
 import com.exchange.payingservice.dto.CardDTO;
-import com.exchange.payingservice.entity.Card;
-import com.exchange.payingservice.repository.CardRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,51 +23,67 @@ class CardRestControllerTest extends IntegrationTestBase {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private CardRepository cardRepository;
-    @Autowired
     private MockMvc mockMvc;
 
 
     @Test
-    @DisplayName("get card by id")
-    void getCard() throws Exception {
+    @DisplayName("Should get card by id")
+    void shouldGetCard() throws Exception {
         mockMvc.perform(get("/api/cards/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("create card")
-    void saveCard() throws Exception {
-        CardDTO cardDTO = new CardDTO("9999-4321-2323-2323", "user55", "754", 3L);
+    @DisplayName("Should create new card")
+    void shouldSaveCard() throws Exception {
         mockMvc.perform(post("/api/cards")
-                        .content(objectMapper.writeValueAsString(cardDTO))
+                        .content(objectMapper
+                                .writeValueAsString(
+                                        new CardDTO(
+                                                "2103-1122-2323-2323",
+                                                "user55",
+                                                "754",
+                                                3L)))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("get all card")
-    void getAllCards() throws Exception {
+    @DisplayName("Should not create card with same number")
+    void shouldNotSaveCard() throws Exception {
+        CardDTO cardDTO = new CardDTO("2101-2222-3333-4444", "user55", "754", 3L);
+        mockMvc.perform(post("/api/cards")
+                        .content(objectMapper.writeValueAsString(cardDTO))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(jsonPath("$.title").value("Данный номер карты уже существует"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @DisplayName("Should get all card")
+    void shouldGetAllCards() throws Exception {
         mockMvc.perform(get("/api/cards"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("delete card")
-    void deleteCard() throws Exception {
+    @DisplayName("Should delete card by id")
+    void shouldDeleteCard() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/cards/{id}", 1))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("update")
-    void updateCard() throws Exception {
+    @DisplayName("Should update card by id")
+    void shouldUpdateCard() throws Exception {
+        CardDTO cardDTO = new CardDTO(2L, "2011-2222-3333-3333", "user3", "777", 2L);
         mockMvc.perform(put("/api/cards/{id}", 2L)
-                        .content(objectMapper.writeValueAsString(new Card(2L, "1111-2222-3333-3333", "user3", "777", 2L)))
+                        .content(objectMapper.writeValueAsString(cardDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
@@ -77,11 +91,11 @@ class CardRestControllerTest extends IntegrationTestBase {
     }
 
     @Test
-    @DisplayName("card not found")
-    void cardGetIdNotFound() throws Exception {
+    @DisplayName("Should not found card by wrong id")
+    void shouldGetIdNotFound() throws Exception {
         mockMvc.perform(get("/api/cards/{id}", 10))
                 .andDo(print())
-                .andExpect(jsonPath("$.title").value("Card not found"))
+                .andExpect(jsonPath("$.title").value("Карта с номером 10 не найдена"))
                 .andExpect(status().is4xxClientError());
     }
 
