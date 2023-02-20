@@ -7,17 +7,22 @@ import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
+import com.exchange.payingservice.util.rabbitMQ.PaymentProof;
 import com.exchange.payingservice.util.PaymentStatus;
 import com.exchange.payingservice.util.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -29,15 +34,16 @@ import java.util.Map;
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
-
     private final PaymentsMapper paymentsMapper;
     private final CardService cardService;
+    private final StreamBridge streamBridge;
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService, StreamBridge streamBridge) {
         this.paymentRepository = paymentRepository;
         this.paymentsMapper = paymentsMapper;
         this.cardService = cardService;
+        this.streamBridge = streamBridge;
     }
 
     @Override
@@ -86,7 +92,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     @Transactional
-    public ResponseEntity<Object> methodGetBodyToStubPayment(StubPaymentDTO stubPaymentDTO) {
+    public ResponseEntity<PaymentStatus> methodGetBodyToStubPayment(StubPaymentDTO stubPaymentDTO, Principal principal) {
         String extId = "1-" +
                 LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + paymentRepository.getNextValue();
         Map<String, String> testMap = new HashMap<>();
@@ -95,11 +101,17 @@ public class PaymentServiceImpl implements PaymentService {
 
         RestTemplate restTemplateStubPayment = new RestTemplate();
         PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR, "Ваш платеж не прошел, пожалуйста, повторите позже."); //
-        ResponseEntity<Object> response = new ResponseEntity<>(paymentStatus, HttpStatus.OK);
+        ResponseEntity<PaymentStatus> response = new ResponseEntity<>(paymentStatus, HttpStatus.OK);
 
         try {
-            response = restTemplateStubPayment.postForEntity("http://localhost:52794/stub/payment", testMap, Object.class);
+            response = restTemplateStubPayment.postForEntity("http://localhost:51861/stub/payment", testMap, PaymentStatus.class);
             paymentStatus.setStatus(Status.SUCCESSFULLY);
+
+            //RabbitMQ toSubscription
+            streamBridge.send("payment-proof",new PaymentProof(
+                    Long.parseLong(stubPaymentDTO.getItems().get("subscription_id")),
+                    stubPaymentDTO.getItems().get("amount"),
+                    getExtID(principal)));
         } catch (PaymentException | HttpClientErrorException.UnprocessableEntity e) {
             paymentStatus.setStatus(Status.ERROR);//ignore Exception and save Error in DB
         }
@@ -111,5 +123,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Scheduled(cron = "0 0 * * * ?")
     public void reloadSequence() {
         paymentRepository.getNewSequence();
+    }
+
+    private String getExtID(Principal principal) {
+        JwtAuthenticationToken kp = (JwtAuthenticationToken) principal;
+        Jwt token = kp.getToken();
+        Map<String, Object> userInfo = token.getClaims();
+        return userInfo.get("sub").toString();
     }
 }

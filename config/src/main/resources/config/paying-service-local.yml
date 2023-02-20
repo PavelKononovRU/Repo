@@ -7,6 +7,20 @@ spring:
     password: postgres
     url: jdbc:postgresql://localhost:5432/postgres
 
+  application:
+    name: paying-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rm
+    password: rmp
+  cloud:
+    stream:
+      bindings:
+        paymentProofEventProcessor-out-0:
+          destination: payment-proof
+
+
 eureka:
   client:
     serviceUrl:

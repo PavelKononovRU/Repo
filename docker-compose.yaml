@@ -106,14 +106,9 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=rm
       - RABBITMQ_DEFAULT_PASS=rmp
-    volumes:
-      - ./rabbitmq:/var/lib/rabbitmq
-    networks:
-      - rabbitmq_go_net
-    depends_on:
-      - keycloak
     ports:
       - 15672:15672
+      - 5672:5672
   keycloak:
     image: quay.io/keycloak/keycloak:18.0.0
     command: ['start-dev --import-realm']
