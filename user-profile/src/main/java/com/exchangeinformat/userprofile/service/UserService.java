@@ -1,21 +1,21 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.User;
+import com.exchangeinformat.userprofile.entityDTO.UserDTO;
 
 import java.util.List;
 
 public interface UserService {
-    List<User> getAllUsers();
+    List<UserDTO> getAllUsers();
 
-    void createUser(User user);
+    void createUser(UserDTO userDTO);
 
-    User getUserById(Long id);
+    UserDTO getUserById(Long id);
 
-    void updateUser( User user);
+    void updateUser(UserDTO userDTO);
 
     void deleteUser(Long id);
 
-    User getUserByExtId(String extId);
+    UserDTO getUserByExtId(String extId);
 
     boolean isUserPresent(String extId);
 }
