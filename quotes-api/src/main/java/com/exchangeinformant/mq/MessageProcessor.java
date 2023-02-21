@@ -20,8 +20,6 @@ public class MessageProcessor {
 
     @Bean
     public Function<String, UserInfo> processor() {
-        return (extId) -> {
-            return userInfoRepository.findById(extId).get();
-        };
+        return extId -> userInfoRepository.findById(extId).get();
     }
 }

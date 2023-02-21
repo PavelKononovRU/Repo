@@ -26,15 +26,6 @@ spring:
         userInfoConsumer-in-0:
           destination: ei.quotes
           group: quotes-group
-#      rabbit:
-#        default:
-#          producer:
-#            exchangeDurable: true
-#            exchangeAutoDelete: false
-#            consumer:
-#              exchangeDurable: true
-#              exchangeAutoDelete: false
-#              durableSubscription: true
   security:
     oauth2:
       resourceserver:

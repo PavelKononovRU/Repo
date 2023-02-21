@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.time.LocalDateTime;
 import java.util.function.Consumer;
 
 @Configuration
@@ -22,7 +21,6 @@ public class MessageListener {
     @Bean
     public Consumer<UserInfo> userInfoConsumer() {
         return (userInfo) -> {
-            userInfo.setLastRequest(LocalDateTime.now());
             userInfoRepository.save(userInfo);
             log.info(userInfo.toString());
         };

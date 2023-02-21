@@ -1,7 +1,6 @@
 package com.exchangeinformant.controllers;
 
 import com.exchangeinformant.model.Stock;
-import com.exchangeinformant.repository.UserInfoRepository;
 import com.exchangeinformant.services.StockDbService;
 import com.exchangeinformant.services.StockService;
 import com.exchangeinformant.services.UserInfoService;
@@ -27,15 +26,12 @@ public class StockRestController {
     private final StockDbService stockDbService;
     private final StockService stockService;
     private final UserInfoService userInfoService;
-    private final UserInfoRepository userInfoRepository;
 
     public StockRestController(StockDbService stockDbService, StockService stockService,
-                               UserInfoService userInfoService,
-                               UserInfoRepository userInfoRepository) {
+                               UserInfoService userInfoService) {
         this.stockDbService = stockDbService;
         this.stockService = stockService;
         this.userInfoService = userInfoService;
-        this.userInfoRepository = userInfoRepository;
     }
 
     @Operation(summary = "Получение акции из БД по её SecureCode (тикеру)")

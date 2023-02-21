@@ -2,6 +2,7 @@ package com.exchangeinformant.services;
 
 import com.exchangeinformant.model.UserInfo;
 import com.exchangeinformant.repository.UserInfoRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import java.util.Map;
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
     private final UserInfoRepository infoRepository;
+    @Value("${quotes.supplier}")
+    private String serviceName;
 
     public UserInfoServiceImpl(UserInfoRepository infoRepository) {
         this.infoRepository = infoRepository;
@@ -25,9 +28,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo userInfo = UserInfo.builder()
                 .userId(id)
                 .counter(counterSetter(id))
-                .lastVisit(LocalDateTime.now())
+                .lastVisit(visitSetter(id))
                 .lastRequest(LocalDateTime.now())
-                .source("bcs")
+                .source(serviceName)
                 .build();
         infoRepository.save(userInfo);
     }
@@ -35,7 +38,18 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (infoRepository.findById(id).isEmpty()) {
             return 1;
         }else {
-            return infoRepository.findById(id).get().getCounter() + 1;
+            if(infoRepository.findById(id).orElseThrow().getLastVisit().getMonth().equals(LocalDateTime.now().getMonth())){
+                return infoRepository.findById(id).orElseThrow().getCounter() + 1;
+            } else{
+                return 1;
+            }
+        }
+    }
+    private LocalDateTime visitSetter(String id) {
+        if (infoRepository.findById(id).isEmpty()) {
+            return LocalDateTime.now();
+        } else {
+            return infoRepository.findById(id).orElseThrow().getLastVisit();
         }
     }
     private Map<String, Object> getExtID(Principal principal) {

@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: user-info_user-profile
+      id: user-info_quotes_api_activity
       author: Roman Isakov
       changes:
         - createTable:
-            tableName: user_info_user-profile
+            tableName: user_info_quotes_activity
             columns:
               - column:
                   name: user_id

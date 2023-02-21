@@ -3,13 +3,12 @@ package com.exchangeinformat.userprofile.controllers;
 import com.exchangeinformat.userprofile.entity.User;
 import com.exchangeinformat.userprofile.entityDTO.UserDTO;
 import com.exchangeinformat.userprofile.mappers.UserMappers;
-import com.exchangeinformat.userprofile.repository.UserInfoRepository;
+import com.exchangeinformat.userprofile.service.UserInfoService;
 import com.exchangeinformat.userprofile.service.UserService;
 import com.exchangeinformat.userprofile.util.Data;
 import com.exchangeinformat.userprofile.util.ValidationResponse;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,17 +27,14 @@ import java.util.Map;
 @RequestMapping("api/user")
 public class RestUserController {
     private final UserService userService;
-    private final RabbitTemplate template;
-    private StreamBridge streamBridge;
-
-    private final UserInfoRepository userInfoRepository;
+    private final StreamBridge streamBridge;
+    private final UserInfoService userInfoService;
 
     @Autowired
-    public RestUserController(UserService userService, RabbitTemplate template, StreamBridge streamBridge, UserInfoRepository userInfoRepository) {
+    public RestUserController(UserService userService,  StreamBridge streamBridge, UserInfoService userInfoService) {
         this.userService = userService;
-        this.template = template;
         this.streamBridge = streamBridge;
-        this.userInfoRepository = userInfoRepository;
+        this.userInfoService = userInfoService;
     }
 
     @GetMapping("/findOne")
@@ -113,13 +109,11 @@ public class RestUserController {
     public String getInfo(Principal principal) {
         Map<String, Object> cl = getExtID(principal);
         String extId = cl.get("sub").toString();
-        if (userInfoRepository.findById(extId).isPresent()) {
-            if (ChronoUnit.HOURS.between(userInfoRepository.findById(extId).get().getLastRequest(), LocalDateTime.now()) < 1) {
-                return "ИНФО ИЗ БАЗЫ USER: " + userInfoRepository.findById(extId).get().toString();
-            }
+        if (userInfoService.getById(extId) != null && ChronoUnit.HOURS.between(userInfoService.getById(extId).getLastRequest(), LocalDateTime.now()) < 1) {
+                return "ИНФО ИЗ БАЗЫ USER: " + userInfoService.getById(extId);
         }
         streamBridge.send("producer-out-0", extId);
-        return "ИНФО ИЗ quotes: " + userInfoRepository.findById(extId).get().toString();
+        return "ИНФО ИЗ quotes: " + userInfoService.getById(extId);
     }
 
     private Map<String, Object> getExtID(Principal principal) {

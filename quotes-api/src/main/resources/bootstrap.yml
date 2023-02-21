@@ -28,15 +28,6 @@ spring:
         processor-in-0:
           destination: ei.user
           group: user-group
-#      rabbit:
-#        default:
-#          producer:
-#            exchangeDurable: true
-#            exchangeAutoDelete: true
-#            consumer:
-#              exchangeDurable: true
-#              exchangeAutoDelete: true
-#              durableSubscription: true
     config:
       profile: local
       discovery:
