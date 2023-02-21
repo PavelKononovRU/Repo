@@ -27,7 +27,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .counter(counterSetter(id))
                 .lastVisit(LocalDateTime.now())
                 .lastRequest(LocalDateTime.now())
-                .source("first_visit")
+                .source("bcs")
                 .build();
         infoRepository.save(userInfo);
     }

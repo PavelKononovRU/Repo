@@ -40,7 +40,9 @@ public class StockRestController {
 
     @Operation(summary = "Получение акции из БД по её SecureCode (тикеру)")
     @GetMapping("/stock")
-    public Stock getStock(@RequestParam("name") @Parameter(description = "SecureCode акции (тикер)") String secureCode) {
+    public Stock getStock(@RequestParam("name") @Parameter(description = "SecureCode акции (тикер)") String secureCode, Principal principal) {
+
+        userInfoService.save(principal);
         return stockDbService.getStock(secureCode);
     }
 
@@ -48,15 +50,17 @@ public class StockRestController {
     @GetMapping("/stock/query")
     public Stock getStockWithParameters(@RequestParam(name = "dateFrom", required = false, defaultValue = "#{T(java.time.LocalDateTime).now().toLocalDate().atStartOfDay()}") LocalDateTime dateFrom,
                                                     @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo,
-                                                    @RequestParam("stock") @Parameter(description = "SecureCode акции (тикер)") String secureCode) {
+                                                    @RequestParam("stock") @Parameter(description = "SecureCode акции (тикер)") String secureCode, Principal principal) {
+        userInfoService.save(principal);
         return stockDbService.getStockByDate(secureCode, dateFrom, dateTo);
     }
 
     @Operation(summary = "Получение всех акций из БД с ценами за текущий день")
     @GetMapping("/allWithDates")
     public List<Stock> getAllStocksByDates(@RequestParam(name = "dateFrom", required = false, defaultValue = "#{T(java.time.LocalDateTime).now().toLocalDate().atStartOfDay()}") LocalDateTime dateFrom,
-                                           @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo)
+                                           @RequestParam(name = "dateTo", required = false, defaultValue = "#{T(java.time.LocalDateTime).now()}") LocalDateTime dateTo, Principal principal)
     {
+        userInfoService.save(principal);
         return stockDbService.getAllStocksByDate(dateFrom, dateTo);
     }
 
@@ -70,19 +74,22 @@ public class StockRestController {
 
     @Operation(summary = "Получение списка акций из БД по их SecureCode (тикерам)")
     @PostMapping("/availableStocks")
-    public List<Stock> getAllAvailableStocks(@RequestBody List<String> securityCodes) {
+    public List<Stock> getAllAvailableStocks(@RequestBody List<String> securityCodes, Principal principal) {
+        userInfoService.save(principal);
         return stockDbService.getAllAvailableStocksByCodes(securityCodes);
     }
     
     @Operation(summary = "Получение акции по её SecureCode (тикеру) напрямую с подключенного сервиса (BCS или Tinkoff)")
     @GetMapping("/directStock")
-    public Stock getStockDirectlyByBcs(@RequestParam("name") @Parameter(description = "SecureCode акции (тикер)") String secureCode) {
+    public Stock getStockDirectlyByBcs(@RequestParam("name") @Parameter(description = "SecureCode акции (тикер)") String secureCode, Principal principal) {
+        userInfoService.save(principal);
         return stockService.getStockDirectly(secureCode);
     }
 
     @Operation(summary = "Получение списка акций по их SecureCode (тикерам) напрямую с подключенного сервиса (BCS или Tinkoff)")
     @PostMapping("/directStock")
-    public List<Stock> getStocksDirectlyByBcs(@RequestBody List<String> secureCodes) {
+    public List<Stock> getStocksDirectlyByBcs(@RequestBody List<String> secureCodes, Principal principal) {
+        userInfoService.save(principal);
         return stockService.getStocksDirectly(secureCodes);
     }
 }

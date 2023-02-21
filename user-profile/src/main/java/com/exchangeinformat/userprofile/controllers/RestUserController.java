@@ -3,6 +3,7 @@ package com.exchangeinformat.userprofile.controllers;
 import com.exchangeinformat.userprofile.entity.User;
 import com.exchangeinformat.userprofile.entityDTO.UserDTO;
 import com.exchangeinformat.userprofile.mappers.UserMappers;
+import com.exchangeinformat.userprofile.repository.UserInfoRepository;
 import com.exchangeinformat.userprofile.service.UserService;
 import com.exchangeinformat.userprofile.util.Data;
 import com.exchangeinformat.userprofile.util.ValidationResponse;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.cloud.stream.function.StreamBridge;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +31,14 @@ public class RestUserController {
     private final RabbitTemplate template;
     private StreamBridge streamBridge;
 
+    private final UserInfoRepository userInfoRepository;
+
     @Autowired
-    public RestUserController(UserService userService, RabbitTemplate template, StreamBridge streamBridge) {
+    public RestUserController(UserService userService, RabbitTemplate template, StreamBridge streamBridge, UserInfoRepository userInfoRepository) {
         this.userService = userService;
         this.template = template;
         this.streamBridge = streamBridge;
+        this.userInfoRepository = userInfoRepository;
     }
 
     @GetMapping("/findOne")
@@ -107,9 +113,13 @@ public class RestUserController {
     public String getInfo(Principal principal) {
         Map<String, Object> cl = getExtID(principal);
         String extId = cl.get("sub").toString();
-//        template.convertAndSend("stock.ex","request",extId);
+        if (userInfoRepository.findById(extId).isPresent()) {
+            if (ChronoUnit.HOURS.between(userInfoRepository.findById(extId).get().getLastRequest(), LocalDateTime.now()) < 1) {
+                return "ИНФО ИЗ БАЗЫ USER: " + userInfoRepository.findById(extId).get().toString();
+            }
+        }
         streamBridge.send("producer-out-0", extId);
-        return "We will send yoy the info asap";
+        return "ИНФО ИЗ quotes: " + userInfoRepository.findById(extId).get().toString();
     }
 
     private Map<String, Object> getExtID(Principal principal) {
