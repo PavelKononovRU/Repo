@@ -22,22 +22,13 @@ public class Tariff {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Tariff(String title, String description, String type, Boolean isActive) {
-        this.title = title;
-        this.description = description;
-        this.type = type;
-        this.isActive = isActive;
-    }
-
-    public Tariff() {
-    }
     @Column(name = "title")
     private String title;
 
     @Column(name = "description")
     private String description;
 
-    @Column(name="type")
+    @Column(name = "type")
     private String type;
 
     @Column(name = "is_active")
@@ -54,5 +45,8 @@ public class Tariff {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public Tariff() {
     }
 }

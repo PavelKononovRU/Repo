@@ -29,9 +29,15 @@ public class AdminRestSubscriptionController {
     }
 
     @GetMapping("/subscriptions")
+<<<<<<< subscription/src/main/java/com/exchangeinformant/subscription/controllers/AdminRestSubscriptionController.java
+    @RolesAllowed({"ADMIN"})
+    @Operation(summary = "Получить все подписки.")
+    public ResponseEntity<List<SubscriptionDTO>> getSubscriptions() {
+=======
     @RolesAllowed({"USER", "ADMIN"})
     @Operation(summary = "Получить все подписки.")
     public ResponseEntity<List<SubscriptionDTO>> getSubscription() {
+>>>>>>> subscription/src/main/java/com/exchangeinformant/subscription/controllers/AdminRestSubscriptionController.java
         return ResponseEntity.ok(subscriptionService.getAllSubscription());
     }
 
