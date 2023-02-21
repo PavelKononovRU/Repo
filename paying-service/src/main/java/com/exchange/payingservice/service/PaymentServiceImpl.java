@@ -1,5 +1,6 @@
 package com.exchange.payingservice.service;
 
+import com.example.core.common.UserInfo;
 import com.exchange.payingservice.dto.PaymentDTO;
 import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Card;
@@ -15,8 +16,6 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
@@ -37,6 +36,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentsMapper paymentsMapper;
     private final CardService cardService;
     private final StreamBridge streamBridge;
+    private String amount;
 
     @Autowired
     public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService, StreamBridge streamBridge) {
@@ -93,25 +93,27 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public ResponseEntity<PaymentStatus> methodGetBodyToStubPayment(StubPaymentDTO stubPaymentDTO, Principal principal) {
+        UserInfo userInfo = new UserInfo();
+        amount = stubPaymentDTO.getItems().get("amount");
         String extId = "1-" +
                 LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + paymentRepository.getNextValue();
         Map<String, String> testMap = new HashMap<>();
         testMap.put("ext_id", extId);
-        testMap.put("amount", stubPaymentDTO.getItems().get("amount"));
+        testMap.put("amount", amount);
 
         RestTemplate restTemplateStubPayment = new RestTemplate();
         PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR, "Ваш платеж не прошел, пожалуйста, повторите позже."); //
         ResponseEntity<PaymentStatus> response = new ResponseEntity<>(paymentStatus, HttpStatus.OK);
 
         try {
-            response = restTemplateStubPayment.postForEntity("http://localhost:51861/stub/payment", testMap, PaymentStatus.class);
+            response = restTemplateStubPayment.postForEntity("http://localhost:57395/stub/payment", testMap, PaymentStatus.class);
             paymentStatus.setStatus(Status.SUCCESSFULLY);
 
             //RabbitMQ toSubscription
             streamBridge.send("payment-proof",new PaymentProof(
                     Long.parseLong(stubPaymentDTO.getItems().get("subscription_id")),
-                    stubPaymentDTO.getItems().get("amount"),
-                    getExtID(principal)));
+                    amount,
+                    userInfo.getExtID(principal)));
         } catch (PaymentException | HttpClientErrorException.UnprocessableEntity e) {
             paymentStatus.setStatus(Status.ERROR);//ignore Exception and save Error in DB
         }
@@ -123,12 +125,5 @@ public class PaymentServiceImpl implements PaymentService {
     @Scheduled(cron = "0 0 * * * ?")
     public void reloadSequence() {
         paymentRepository.getNewSequence();
-    }
-
-    private String getExtID(Principal principal) {
-        JwtAuthenticationToken kp = (JwtAuthenticationToken) principal;
-        Jwt token = kp.getToken();
-        Map<String, Object> userInfo = token.getClaims();
-        return userInfo.get("sub").toString();
     }
 }
