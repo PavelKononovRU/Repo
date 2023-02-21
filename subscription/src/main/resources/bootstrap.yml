@@ -11,7 +11,7 @@ spring:
         service-id: config-server
     stream:
       bindings:
-        MessageFromPayment-in-0:
+        getPaymentProof-in-0:
           destination: payment-proof
   security:
     oauth2:
