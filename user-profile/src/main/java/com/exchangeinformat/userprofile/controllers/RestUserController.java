@@ -72,7 +72,7 @@ public class RestUserController {
     @GetMapping("/home")
     @RolesAllowed({"ADMIN", "USER"})
     public ResponseEntity<UserDTO> getUserDetails(Principal principal) {
-        Map<String, Object> cl = getExtID(principal);
+        Map<String, Object> cl = getClaims(principal);
         UserDTO userDTO;
         String extId = cl.get("sub").toString();
         if (!userService.isUserPresent(extId)) {
@@ -94,7 +94,7 @@ public class RestUserController {
     @PostMapping(value = "/update")
     @RolesAllowed({"USER"})
     public ResponseEntity<ValidationResponse> updatingUserFields(Principal principal, @RequestBody @Valid UserDTO userDTO) {
-        Map<String, Object> cl = getExtID(principal);
+        Map<String, Object> cl = getClaims(principal);
         String extId = cl.get("sub").toString();
         if (!userService.isUserPresent(extId) || !extId.equals(userDTO.getExtId())) { //Проверка, что пользователь существует с таким extID и проверка равенства extID principal и переданного юзера
             return ResponseEntity.status(500).body(new ValidationResponse(new Data("Не удалось обновить пользователя")));
@@ -104,7 +104,7 @@ public class RestUserController {
         }
     }
 
-    private Map<String, Object> getExtID(Principal principal) {
+    private Map<String, Object> getClaims(Principal principal) {
         JwtAuthenticationToken kp = (JwtAuthenticationToken) principal;
         Jwt token = kp.getToken();
         return token.getClaims();
