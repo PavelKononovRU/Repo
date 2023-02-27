@@ -8,9 +8,9 @@ import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.exceptions.PaymentException;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.repository.PaymentRepository;
-import com.exchange.payingservice.util.rabbitMQ.PaymentProof;
 import com.exchange.payingservice.util.PaymentStatus;
 import com.exchange.payingservice.util.Status;
+import com.exchange.payingservice.util.rabbitMQ.PaymentProof;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
@@ -36,14 +36,16 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentsMapper paymentsMapper;
     private final CardService cardService;
     private final StreamBridge streamBridge;
-    private String amount;
+    private final RestTemplate restTemplate;
+
 
     @Autowired
-    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService, StreamBridge streamBridge) {
+    public PaymentServiceImpl(PaymentRepository paymentRepository, PaymentsMapper paymentsMapper, CardService cardService, StreamBridge streamBridge, RestTemplate restTemplate) {
         this.paymentRepository = paymentRepository;
         this.paymentsMapper = paymentsMapper;
         this.cardService = cardService;
         this.streamBridge = streamBridge;
+        this.restTemplate = restTemplate;
     }
 
     @Override
@@ -94,32 +96,34 @@ public class PaymentServiceImpl implements PaymentService {
     @Transactional
     public ResponseEntity<PaymentStatus> methodGetBodyToStubPayment(StubPaymentDTO stubPaymentDTO, Principal principal) {
         UserInfo userInfo = new UserInfo();
-        amount = stubPaymentDTO.getItems().get("amount");
-        String extId = "1-" +
-                LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + paymentRepository.getNextValue();
+        String amount = stubPaymentDTO.getItems().get("amount");
+
         Map<String, String> testMap = new HashMap<>();
-        testMap.put("ext_id", extId);
+        testMap.put("ext_id", getPaymentExtId());
         testMap.put("amount", amount);
 
-        RestTemplate restTemplateStubPayment = new RestTemplate();
         PaymentStatus paymentStatus = new PaymentStatus(Status.ERROR, "Ваш платеж не прошел, пожалуйста, повторите позже."); //
         ResponseEntity<PaymentStatus> response = new ResponseEntity<>(paymentStatus, HttpStatus.OK);
 
         try {
-            response = restTemplateStubPayment.postForEntity("http://localhost:57395/stub/payment", testMap, PaymentStatus.class);
+            response = restTemplate.postForEntity("http://localhost:64382/stub/payment", testMap, PaymentStatus.class);
             paymentStatus.setStatus(Status.SUCCESSFULLY);
 
             //RabbitMQ toSubscription
-            streamBridge.send("payment-proof",new PaymentProof(
+            streamBridge.send("payment-proof", new PaymentProof(
                     Long.parseLong(stubPaymentDTO.getItems().get("subscription_id")),
                     amount,
                     userInfo.getExtID(principal)));
         } catch (PaymentException | HttpClientErrorException.UnprocessableEntity e) {
-            paymentStatus.setStatus(Status.ERROR);//ignore Exception and save Error in DB
+            paymentStatus.setStatus(Status.ERROR); //ignore Exception and save Error in DB
         }
 
         this.createPayment(stubPaymentDTO, paymentStatus.getStatus());
         return response;
+    }
+
+    public String getPaymentExtId() {
+        return "1-" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "-" + paymentRepository.getNextValue();
     }
 
     @Scheduled(cron = "0 0 * * * ?")
