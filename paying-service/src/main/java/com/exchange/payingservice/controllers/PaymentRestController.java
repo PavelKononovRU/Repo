@@ -5,6 +5,7 @@ import com.exchange.payingservice.dto.StubPaymentDTO;
 import com.exchange.payingservice.entity.Payment;
 import com.exchange.payingservice.mappers.PaymentsMapper;
 import com.exchange.payingservice.service.PaymentService;
+import com.exchange.payingservice.util.PaymentStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Tag(name = "Контроллер платежей", description = "CRUD операции с платежами.")
@@ -57,8 +59,8 @@ public class PaymentRestController {
 
     @Operation(summary = "Добавление нового платежа.")
     @PostMapping
-    public ResponseEntity<Object> createPayment(@Valid @RequestBody StubPaymentDTO stubPaymentDTO) {
-        return paymentService.methodGetBodyToStubPayment(stubPaymentDTO);
+    public ResponseEntity<PaymentStatus> createPayment(@Valid @RequestBody StubPaymentDTO stubPaymentDTO, Principal principal) {
+        return paymentService.methodGetBodyToStubPayment(stubPaymentDTO, principal);
     }
 
     @ExceptionHandler(Exception.class)

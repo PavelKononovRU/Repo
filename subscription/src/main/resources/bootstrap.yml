@@ -9,8 +9,17 @@ spring:
       discovery:
         enabled: false
         service-id: config-server
+    stream:
+      bindings:
+        getPaymentProof-in-0:
+          destination: payment-proof
   security:
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: http://localhost:8890/realms/project-realm/protocol/openid-connect/certs
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rm
+    password: rmp
