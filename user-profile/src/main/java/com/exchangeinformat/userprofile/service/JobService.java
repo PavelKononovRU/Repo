@@ -1,17 +1,17 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.Job;
+import com.exchangeinformat.userprofile.entityDTO.JobDTO;
 
 import java.util.List;
 
 public interface JobService {
-    List<Job> getAllJobs();
+    List<JobDTO> getAllJobs();
 
-    void createJob(Job job);
+    void createJob(JobDTO jobDTO);
 
-    Job getJobById(Long id);
+    JobDTO getJobById(Long id);
 
-    void updateJob(Job job);
+    void updateJob(JobDTO jobDTO);
 
     void deleteJob(Long id);
 }

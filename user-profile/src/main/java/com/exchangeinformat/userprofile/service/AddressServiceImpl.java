@@ -1,14 +1,16 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.Address;
+import com.exchangeinformat.userprofile.entityDTO.AddressDTO;
+import com.exchangeinformat.userprofile.mappers.AddressMappers;
 import com.exchangeinformat.userprofile.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
 @Service
-public class AddressServiceImpl implements AddressService{
+public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
 
@@ -18,25 +20,25 @@ public class AddressServiceImpl implements AddressService{
     }
 
     @Override
-    public List<Address> getAllAddress() {
-        return addressRepository.findAll();
+    public List<AddressDTO> getAllAddress() {
+        return AddressMappers.INSTANCE.addressesToDTOs(addressRepository.findAll());
     }
 
     @Override
     @Transactional
-    public void createAddress(Address address) {
-        addressRepository.save(address);
+    public void createAddress(AddressDTO addressDTO) {
+        addressRepository.save(AddressMappers.INSTANCE.addressDTOToEntity(addressDTO));
     }
 
     @Override
-    public Address getAddressById(Long id) {
-        return addressRepository.findById(id).orElse(null);
+    public AddressDTO getAddressById(Long id) {
+        return AddressMappers.INSTANCE.addressToDTO(addressRepository.findById(id).orElse(null));
     }
 
     @Override
     @Transactional
-    public void updateAddress(Address address) {
-        addressRepository.save(address);
+    public void updateAddress(AddressDTO addressDTO) {
+        addressRepository.save(AddressMappers.INSTANCE.addressDTOToEntity(addressDTO));
     }
 
     @Override

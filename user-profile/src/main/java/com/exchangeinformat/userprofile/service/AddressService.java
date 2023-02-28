@@ -1,17 +1,17 @@
 package com.exchangeinformat.userprofile.service;
 
-import com.exchangeinformat.userprofile.entity.Address;
+import com.exchangeinformat.userprofile.entityDTO.AddressDTO;
 
 import java.util.List;
 
 public interface AddressService {
-    List<Address> getAllAddress();
+    List<AddressDTO> getAllAddress();
 
-    void createAddress(Address address);
+    void createAddress(AddressDTO addressDTO);
 
-    Address getAddressById(Long id);
+    AddressDTO getAddressById(Long id);
 
-    void updateAddress(Address address);
+    void updateAddress(AddressDTO addressDTO);
 
     void deleteAddress(Long id);
 }
