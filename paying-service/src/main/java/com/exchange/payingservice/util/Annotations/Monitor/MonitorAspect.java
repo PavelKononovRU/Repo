@@ -1,20 +1,22 @@
 package com.exchange.payingservice.util.Annotations.Monitor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 
-@Component
 @Aspect
+@Component
 @Slf4j
 public class MonitorAspect {
-
-    /*PointCuts*/
     @Pointcut("within(@com.exchange.payingservice.util.Annotations.Monitor.Monitor *)")
     public void beanAnnotatedRestInfo() {
     }
@@ -27,56 +29,65 @@ public class MonitorAspect {
     public void publicMethodInsideAClassMarkedWithAtMonitor() {
     }
 
-    /*Advices*/
-    @Before("publicMethodInsideAClassMarkedWithAtMonitor())")
-    public void logBefore(JoinPoint joinPoint) {
-        Object[] args = joinPoint.getArgs();
+    @Around("publicMethodInsideAClassMarkedWithAtMonitor()")
+    public Object Scanner(ProceedingJoinPoint pjp) throws Throwable {
+        String name = pjp.getSignature().getName();
+        Object[] args = pjp.getArgs();
+        String[] nameParams = ((MethodSignature) pjp.getSignature()).getParameterNames();
 
-        log.info("------------------------------------------------");
+        //logBefore
+        logBefore(args, nameParams, name);
+
+        //invoke method
+        var start = Instant.now();
+        Object retVal = pjp.proceed();
+        var finish = Instant.now();
+        var executionTime = (double) (Duration.between(start, finish).toMillis());
+
+        //logAfter
+        logAfter(name, retVal);
+
+        //count time
+        log.info("Время выполнения метода " + name + " составило " + executionTime + " ms");
+        System.out.println();
+        return retVal;
+    }
+
+    static void logBefore(Object[] args, String[] nameParams, String methodName) {
+        System.out.println("=============================================================================");
         log.info("**REQUEST**");
-        log.info("METHOD: " + "*" + joinPoint.getSignature().getName() + "*");
 
         if (args.length == 0) {
-            log.info("NO ARGUMENTS");
-        } else {
-            log.info("ARGUMENTS: <<<" + Arrays.stream(args).map(String::valueOf)
-                    .collect(Collectors.joining(", ")) + ">>>");
+            log.info("ПАРАМЕТРЫ ОТСУТСТВУЮТ");
+        } {
+            log.info("METHOD " + methodName.toUpperCase() + " STARTED");
         }
-        log.info("------------------------------------------------");
+        if (Objects.nonNull(nameParams) && args.length == nameParams.length) {
+            Map<String, Object> values = new HashMap<>();
+            for (int i = 0; i < nameParams.length; i++) {
+                values.put(nameParams[i], args[i]);
+            }
+            log.info("PARAMS: " + values);
+            System.out.println();
+        }
     }
 
-    @AfterReturning(pointcut = "publicMethodInsideAClassMarkedWithAtMonitor()", returning = "retVal")
-    public void logAfter(JoinPoint jp, Object retVal) {
+    static void logAfter(String name, Object retVal) {
         log.info("**RESPONSE**");
-        log.info("METHOD: " + "*" + jp.getSignature().getName() + "*");
 
-        if (retVal.equals("")) {
-            log.info("NO ARGUMENTS");
+        if (retVal == null) {
+            log.info("МЕТОД НИЧЕГО НЕ ВОЗВРАЩАЕТ");
         } else {
-            log.info("ARGUMENT: <<<" + retVal + ">>>");
-        }
+            if (retVal instanceof ResponseEntity<?>) {
 
-        log.info("------------------------------------------------");
-    }
-
-    @Around("publicMethodInsideAClassMarkedWithAtMonitor()")
-    public Object logTime(ProceedingJoinPoint proceedingJoinPoint) {
-        String name = proceedingJoinPoint.getSignature().getName();
-
-        long startTime = System.nanoTime();
-
-        try {
-            return proceedingJoinPoint.proceed();
-        } catch (Throwable e) {
-            throw new RuntimeException("Произошла ошибка" + e);
-        } finally {
-            long finishTime = System.nanoTime();
-
-            String totatTime = String.format("%.3f", (double) (finishTime - startTime) / 1_000_000_000);
-            log.info("Время выполнения метода " + name.toUpperCase() + ": "
-                    + totatTime + " s");
-
+                String status = ((ResponseEntity<?>) retVal).getStatusCode().toString();
+                String body = Objects.requireNonNull(((ResponseEntity<?>) retVal).getBody()).toString();
+                Set<Map.Entry<String, List<String>>> headers = ((ResponseEntity<?>) retVal).getHeaders().entrySet();
+                log.info("РЕЗУЛЬТАТ ЗАПРОСА МЕТОДА: " + name.toUpperCase() +
+                                " STATUS: " + status);
+                log.info("BODY: " + body);
+                log.info("HEADERS: " + headers);
+            }
         }
     }
 }
-
