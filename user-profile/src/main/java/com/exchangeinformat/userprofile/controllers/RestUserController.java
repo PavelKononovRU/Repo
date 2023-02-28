@@ -106,13 +106,14 @@ public class RestUserController {
 
     @GetMapping(value = "/getInfo")
     @RolesAllowed({"USER"})
-    public String getInfo(Principal principal) {
+    public String getInfo(Principal principal) throws InterruptedException {
         Map<String, Object> cl = getExtID(principal);
         String extId = cl.get("sub").toString();
         if (userInfoService.getById(extId) != null && ChronoUnit.HOURS.between(userInfoService.getById(extId).getLastRequest(), LocalDateTime.now()) < 1) {
                 return "ИНФО ИЗ БАЗЫ USER: " + userInfoService.getById(extId);
         }
         streamBridge.send("producer-out-0", extId);
+        Thread.sleep(1000);
         return "ИНФО ИЗ quotes: " + userInfoService.getById(extId);
     }
 

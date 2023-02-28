@@ -4,14 +4,12 @@ import com.exchangeinformant.aop.UserInfoInsertion;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.StockDbService;
 import com.exchangeinformant.services.StockService;
-import com.exchangeinformant.services.UserInfoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
