@@ -1,9 +1,7 @@
 package com.exchangeinformat.userprofile.controllers;
 
-import com.exchangeinformat.userprofile.entity.User;
 import com.exchangeinformat.userprofile.entity.UserInfo;
 import com.exchangeinformat.userprofile.service.UserInfoService;
-import com.exchangeinformat.userprofile.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,13 +25,10 @@ class RestUserControllerTest {
     private MockMvc mockMvc;
     @Mock
     private UserInfoService userInfoService;
-    @Mock
-    private UserService userService;
     @InjectMocks
     private RestUserController restUserController;
 
     private UserInfo userInfo;
-    private User user;
 
 
     @BeforeEach
@@ -43,11 +38,6 @@ class RestUserControllerTest {
                 LocalDateTime.of(2023, 2, 2, 12, 0, 0),
                 LocalDateTime.of(2023, 2, 2, 12, 30, 0),
                 "bcs");
-        user = User.builder()
-                .id(1L)
-                .firstName("TestName")
-                .username("TestUserName")
-                .build();
     }
 
     @Test
@@ -58,15 +48,6 @@ class RestUserControllerTest {
         Mockito.when(userInfoService.getById(mockPrincipal.getName())).thenReturn(userInfo);
 
         mockMvc.perform(get("/getInfo"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isNotEmpty());
-    }
-    @Test
-    void shouldGetUser() throws Exception {
-        Mockito.when(userService.getUserById(1L)).thenReturn(user);
-
-        mockMvc.perform(get("/findOne"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty());
