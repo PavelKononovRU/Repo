@@ -17,7 +17,7 @@
     <modules>
         <module>core</module>
         <module>user-profile</module>
-        <module>subscription</module>
+        <!--<module>subscription</module>-->
         <module>server</module>
         <module>config</module>
         <module>quotes-api</module>
@@ -55,6 +55,33 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.1.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>10.7.0</version>
+                    </dependency>
+                </dependencies>
+<!--                <configuration>
+                    <configLocation>google_checks.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                </configuration>-->
+                <!--                <executions>
+                                    <execution>
+                                        <phase>install</phase>
+                                        <goals>
+                                            <goal>check</goal>
+                                        </goals>
+                                    </execution>
+                                </executions>-->
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
