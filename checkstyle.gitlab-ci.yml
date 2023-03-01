@@ -1,0 +1,22 @@
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - deploy
+
+install:
+  stage: build
+  script:
+    - mvn clean install
+  tags:
+    - check
+
+
+
+build:      # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - echo 'checkstyle'
+  tags:
+    - check
+    #- mvn clean install
+    # - mvn checkstyle:checkstyle-aggregate
