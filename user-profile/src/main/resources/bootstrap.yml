@@ -3,12 +3,29 @@ server:
 spring:
   application:
     name: user-profile
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rm
+    password: rmp
   cloud:
     config:
       profile: local
       discovery:
         enabled: false
         service-id: config-server
+    stream:
+      function:
+        definition: userInfoConsumer
+      bindings:
+        producer-out-0:
+          destination: ei.user
+          producer:
+              required-groups:
+                - user-group
+        userInfoConsumer-in-0:
+          destination: ei.quotes
+          group: quotes-group
   security:
     oauth2:
       resourceserver:

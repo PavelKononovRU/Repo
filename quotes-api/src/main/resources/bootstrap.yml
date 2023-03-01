@@ -1,6 +1,11 @@
 server:
   port: 0
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: rm
+    password: rmp
   application:
     name: quotes-api
   cloud:
@@ -11,11 +16,28 @@ spring:
             url: https://api.bcs.ru
             request-interceptors:
               - com.exchangeinformant.configuration.StockClientInterceptor
+    stream:
+      function:
+        definition: processor
+      bindings:
+        processor-out-0:
+          destination: ei.quotes
+          producer:
+            required-groups:
+              - quotes-group
+        processor-in-0:
+          destination: ei.user
+          group: user-group
     config:
       profile: local
       discovery:
         enabled: false
         service-id: config-server
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8890/realms/project-realm/protocol/openid-connect/certs
 springdoc:
   swagger-ui:
     csrf:

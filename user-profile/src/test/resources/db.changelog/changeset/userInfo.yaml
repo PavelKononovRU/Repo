@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: user-info_quotes_api_activity
+      author: Roman Isakov
+      changes:
+        - createTable:
+            tableName: user_info_quotes_activity
+            columns:
+              - column:
+                  name: user_id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: counter
+                  type: bigint
+              - column:
+                  name: last_visit
+                  type: timestamp without time zone
+              - column:
+                  name: last_request
+                  type: timestamp without time zone
+              - column:
+                  name: source
+                  type: varchar(50)

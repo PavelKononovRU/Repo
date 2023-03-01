@@ -1,26 +1,19 @@
 package com.exchangeinformant.controllers;
 
-import com.exchangeinformant.configuration.RedisConfig;
-import com.exchangeinformant.configuration.TinkoffConfig;
 import com.exchangeinformant.model.Info;
 import com.exchangeinformant.model.Stock;
 import com.exchangeinformant.services.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,12 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.is;
 
 
-@SpringBootTest(classes = StockService.class)
-@ContextConfiguration(classes = {TinkoffConfig.class, RedisConfig.class})
-@ExtendWith(SpringExtension.class)
-@Import(StockRestController.class)
+@SpringBootTest
 @ComponentScan(basePackages = "com.exchangeinformant")
-
 class StockRestControllerTest {
     private MockMvc mockMvc;
     @Mock

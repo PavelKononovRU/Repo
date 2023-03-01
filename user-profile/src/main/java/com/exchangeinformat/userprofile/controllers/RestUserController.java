@@ -1,6 +1,8 @@
 package com.exchangeinformat.userprofile.controllers;
 
 import com.exchangeinformat.userprofile.entityDTO.UserDTO;
+import com.exchangeinformat.userprofile.mappers.UserMappers;
+import com.exchangeinformat.userprofile.service.UserInfoService;
 import com.exchangeinformat.userprofile.service.UserService;
 import com.exchangeinformat.userprofile.util.Data;
 import com.exchangeinformat.userprofile.util.ValidationResponse;
@@ -14,8 +16,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.cloud.stream.function.StreamBridge;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +29,14 @@ import java.util.Map;
 @RequestMapping("api/user")
 public class RestUserController {
     private final UserService userService;
+    private final StreamBridge streamBridge;
+    private final UserInfoService userInfoService;
 
     @Autowired
-    public RestUserController(UserService userService) {
+    public RestUserController(UserService userService, StreamBridge streamBridge, UserInfoService userInfoService) {
         this.userService = userService;
+        this.streamBridge = streamBridge;
+        this.userInfoService = userInfoService;
     }
 
     @Operation(summary = "Получение пользователя", description = "Метод принимает в параметры long ID пользователя, доступ только у админа")
@@ -102,6 +111,19 @@ public class RestUserController {
             userService.updateUser(userDTO);
             return ResponseEntity.status(200).body(new ValidationResponse(new Data("Данные успешно сохранены")));
         }
+    }
+
+    @GetMapping(value = "/getInfo")
+    @RolesAllowed({"USER"})
+    public String getInfo(Principal principal) throws InterruptedException {
+        Map<String, Object> cl = getClaims(principal);
+        String extId = cl.get("sub").toString();
+        if (userInfoService.getById(extId) != null && ChronoUnit.HOURS.between(userInfoService.getById(extId).getLastRequest(), LocalDateTime.now()) < 1) {
+            return "ИНФО ИЗ БАЗЫ USER: " + userInfoService.getById(extId);
+        }
+        streamBridge.send("producer-out-0", extId);
+        Thread.sleep(1000);
+        return "ИНФО ИЗ quotes: " + userInfoService.getById(extId);
     }
 
     private Map<String, Object> getClaims(Principal principal) {
